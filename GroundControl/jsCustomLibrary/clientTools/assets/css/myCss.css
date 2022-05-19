@@ -1,0 +1,263 @@
+.sidenav {
+    height: 100%;
+    width: 150px;
+    position: fixed; /* stay in place on scroll */
+    z-index: 1; /* stay on top */
+    top: 0; /*stay at the top */
+    left: 0;
+    background-color: whitesmoke;
+    color: black;
+    overflow-x: hidden; /*disable horizontal scroll*/
+    padding-top: 40px;
+}
+panelRelative{
+    position: relative;
+}
+.myPanelTest{
+    margin-left:10%;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+.customCardColor{
+    background-color: rgba(166, 166, 224, 0.18);    
+}
+
+.tooltip .tooltiptext {
+   
+    max-width:100px;
+    padding:15px;
+    min-height:30px;
+    background:#fff;
+    visibility: hidden;
+    border: 1px solid black;
+    color: #000;
+    text-align: center;
+    border-radius: 6px;
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    word-wrap:break-word;
+}
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+
+.singleLine{
+    white-space: nowrap;    
+}
+.numberWidth{
+    width: 75px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+.startFieldMargin{
+    padding-left: 170px;
+}
+.fieldLabel{
+    width: 158px;    
+    text-align: left;
+}
+.alignTop{
+    vertical-align: top;
+}
+.alignMiddle{
+    vertical-align: middle;
+}
+.alignBottom{
+    vertical-align: bottom;
+}
+.fieldGap{
+    margin-left:65px;
+}
+.greenTextGap{
+    margin-left:30px;
+}
+.sliderWidth.rzslider{
+    width: 200px;    
+    height: 0px;  
+    vertical-align: top;  
+}
+.myContainer{
+  padding-right: 10px;
+  padding-left: 10px;
+  margin-right: auto;
+  margin-left: auto;
+}
+.rightAlignButton{
+    display: flex; justify-content: flex-end
+}
+.textBlackNotBold {            
+    font-size: 1000px;
+}
+.singleSpace{
+    line-height: 1;
+}
+.textCentered {
+    text-align:center;    
+}
+.textNewLine {
+    white-space: pre-line;
+}
+.grid-container{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    padding: 10px;
+}
+.params label{
+    display:inline-block;
+}
+.grid-item{
+    background-color: rgba(255,255,255,0.8);
+    border: 1px solid rgba(0,0,0,0.8);
+    padding: 20px;
+    font-size: 30px;
+    text-align: center;
+    vertical-align: middle;
+}
+.threeQuartersScreenIndent{
+    max-width: 5000px;
+}
+.halfScreenIndent {
+   /* padding-left: 1000px;*/
+    max-width: 500px;
+}
+.smallWidth {
+    max-width: 400px;
+}
+.vertical-text{
+    transform: rotate(-90deg);
+    transform-origin: left top 0;
+    float:left;
+}
+.backgroundRed {
+    background-color: rgb(223, 120, 120);
+}
+.fontRed{
+    color: red;
+}
+.fontOrange{
+    color: orange;
+}
+.backgroundBlue {
+    background-color:blue;
+}
+.backgroundYellow {
+    background-color:yellow;
+}
+.backgroundGreen {
+    background-color:rgb(62, 197, 62);
+}
+
+.smallerImage{
+    width: 100%;
+}
+/*
+@media screen and (max-width: 1585px){
+    .sidenav{
+        /* display:none
+        width: 50px;
+        }
+}*/
+.mainCtrlsWithSideMenu{
+    padding-left: 150px;
+}
+.sidenav a:hover{
+    background-color: black;
+    color: white;
+}
+
+.sidenav a.active{
+    background-color: #0074D9;
+    color: white;
+}
+.navbar a.active{
+    background-color: #4CAF50;    
+}
+
+@media (max-width: 767px) {
+    .sidenav .open .dropdown-menu {
+      position: static;
+      float: none;
+      width: auto;
+      margin-top: 0;
+      background-color: transparent;
+      border: 0;
+      -webkit-box-shadow: none;
+              box-shadow: none;
+    }
+}
+
+.submenuList {
+    color: black;
+}
+.greenText {
+    color: green;
+}
+.smallText {
+    font-size: x-small;
+}
+.indent {
+    text-indent: 50px;
+}
+.bigIndent {
+    text-indent: 500px;
+}
+.datePickerSmall {
+    width: 3px
+}
+
+/*****
+ Custom rz slider
+*/
+.custom-slider.rzslider{
+    width: 200px; 
+}
+.custom-slider.rzslider .rz-bar {
+    background: blue;/*#ffe4d1;*/
+    height: 1px;
+  }
+  .custom-slider.rzslider .rz-selection {
+    background: black;
+  }
+  
+  
+  .custom-slider.rzslider .rz-pointer {
+    width: 8px;
+    height: 16px;
+    top: auto; /* to remove the default positioning */
+    bottom: 0;
+    background-color: blue;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+  }
+  
+  .custom-slider.rzslider .rz-pointer:after {
+    display: none;
+  }
+  
+  .custom-slider.rzslider .rz-bubble {
+    bottom: 14px;
+  }
+  
+  .custom-slider.rzslider .rz-limit {
+    font-weight: bold;
+    color:  orange;
+  }
+  
+  .custom-slider.rzslider .rz-tick {
+    width: 1px;
+    height: 10px;
+    margin-left: 4px;
+    border-radius: 0;
+    background:#ffe4d1;
+    top: -1px;
+  }
+  
+  .custom-slider.rzslider .rz-tick.rz-selected {
+    background: orange;
+  }

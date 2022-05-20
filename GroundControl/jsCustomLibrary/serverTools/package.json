@@ -1,0 +1,34 @@
+{
+  "name": "meansimplerapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "set DEBUG=errlog* & nodemon server.js MCPC100-PC",
+    "start": "set DEBUG=errlog* & nodemon server.js feature"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "angular": "^1.6.10",
+    "angular-animate": "^1.7.8",
+    "angular-aria": "^1.7.8",
+    "angular-chart.js": "^1.1.1",
+    "angular-material": "^1.1.20",
+    "angular-spinner": "^1.0.1",
+    "body-parser": "^1.18.3",
+    "chart.js": "^2.7.2",
+    "d3": "^5.4.0",
+    "ejs": "^2.6.1",
+    "express": "^4.17.1",
+    "jquery": "^3.3.1",
+    "morgan": "^1.9.0",
+    "mssql": "^4.3.2",
+    "nodemon": "^1.19.0",
+    "tc-angular-chartjs": "^2.1.4",
+    "upath": "^1.1.2"
+  },
+  "devDependencies": {
+    "@angular/cli": "^6.0.8"
+  }
+}

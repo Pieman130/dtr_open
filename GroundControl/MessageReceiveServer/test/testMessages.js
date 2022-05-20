@@ -11,7 +11,7 @@ var inputJson = JSON.stringify(input);
 
 var options = {
     host: "127.0.0.1",    
-    port: 1234,
+    port: 4000,
 	path: '/debug/status/',
 	method: "POST",
 	headers: {

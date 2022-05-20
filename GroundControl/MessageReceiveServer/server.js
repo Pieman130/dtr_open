@@ -2,18 +2,12 @@ var title = "DTR - Message Receiver";
 console.log(title)
 process.title = title;
 
-if (process.argv.length === 2)
-{
-    var dbName = "concead";
-}else{
-    var dbName = process.argv[2];
-}
+
+var dbName = "dtr";
 
 var os = require('os');
 
 var serverName = os.hostname();
-    
-var dbName = "concead";
 
 var links = require('../jsCustomLibrary/serverTools/requireLinks.js');
 var express = links.express;
@@ -32,7 +26,7 @@ var port = process.env.PORT || 4000;
 
 var sqlTools = links.sqlTools;
 
-//sqlTools.createDbConnection(serverName,dbName);
+sqlTools.createDbConnection(serverName,dbName);
 
 app.set('view engine', 'ejs');
 

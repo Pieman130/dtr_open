@@ -7,8 +7,10 @@ router.route('/status/')
 .post(function(req,res){
     var stateID = req.body.stateID;
     var message = req.body.message;
-
-    res.send({success: true});    
+    var lastHeartbeat = sqlTools.makeDateForSqlServer();
+    console.log("heartbeat!");
+    var sqlStr = " UPDATE systemStatus SET blimpLastHeartbeat = '" + lastHeartbeat + "'";
+    sqlTools.run(sqlStr,res);    
 })
 
 module.exports = router;

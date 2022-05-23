@@ -1,0 +1,63 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+      
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
+    <meta name="description" content="">
+    <meta name="author" content="">    
+  
+    
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-4.5.3.css">    
+    <link rel="stylesheet" type="text/css" href="assets/css/myCss.css">
+
+    
+    <script src="assets/js/angular.js"></script>     
+
+    <script src="assets/js/angular-route.js"></script>            
+
+    <script src="app.js"></script>
+    <script src="routes.js"></script>
+
+    <script src="main/mainController.js"></script>    
+    <script src="main/mainModel.js"></script>
+    <script src="main/mainToServer.js"></script>
+
+    
+    <script src="jsUtilityServices.js"></script>
+
+    <script src="assets/js/lodash.js"></script>
+
+   <!-- <script src="navbarCtrl.js"></script> -->
+
+    <title>Test Control</title>
+
+
+  </head>
+
+  <body ng-app="userApp" ></body> 
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+        <div class="col"> 
+
+        <ul class="navbar-nav" >                                                                      
+          <a ng-class="links[0].css" href="#!/main">Main</a>                                                               
+        </ul>   
+                
+      </nav>
+      
+
+   <div class="theme-showcase" role="main">
+      <!-- this is where views from routes.js (front end routing) results get pasted to -->
+      <div ng-view></div>                      
+
+     
+      <script src="assets/js/jquery-3.3.1.js"></script>
+      <script src="assets/js/bootstrap.js"></script>
+      
+      
+  </body>    
+</html>
+

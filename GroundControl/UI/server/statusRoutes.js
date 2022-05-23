@@ -5,7 +5,7 @@ var router = express.Router();
 
 router.route('/heartbeat/')
 .get(function(req,res){   
-    var sqlStr = " SELECT ID, convert(varchar(50),blimpLastHeartbeat,13) as blimpLastHeartbeat FROM systemStatus ";
+    var sqlStr = " SELECT ID, convert(varchar(50),blimpLastHeartbeat,13) as blimpLastHeartbeat, cameraDetectionStr FROM systemStatus ";
     sqlTools.run(sqlStr,res);    
 })
 

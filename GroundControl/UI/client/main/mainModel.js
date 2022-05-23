@@ -4,13 +4,19 @@ angular.module('mainModel',[])
     service.getModel = function(){
         return new Promise(function(resolve,reject){
             var obj = {
-                status: {},            
+                status: {},       
+                intervalTimeMs: 1000,     
                 getStatus(){
                     MainToServer.getStatus().then(function(ret){
                         obj.status = ret.data[0];
                     })                    
-                }        
+                },
+                refreshFcn(){
+                    obj.getStatus()
+                }     
             }
+            obj.intervalObj = TimerObjects.getRefreshIntervalObj(obj.refreshFcn,obj.intervalTimeMs)
+            obj.intervalObj.start();
             resolve(obj);
         })
     }

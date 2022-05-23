@@ -22,7 +22,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 var logRoute = require('./debugRoutes.js');
 app.use('/debug/',logRoute);
 
-var port = process.env.PORT || 4000;
+var port = process.env.PORT || 1111;
 
 var sqlTools = links.sqlTools;
 

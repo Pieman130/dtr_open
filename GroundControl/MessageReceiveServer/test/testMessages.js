@@ -2,16 +2,14 @@ const http = require('http');
 var os = require('os');
 
 var input = {    
-    stateID:    1,
-    message: "aha",
-    processedDataFolderPath: 'myPath/path/files'
+    cameraDetectionStr:    "asdf"
 }
 var inputJson = JSON.stringify(input);
 
 
 var options = {
     host: "127.0.0.1",    
-    port: 4000,
+    port: 1111,
 	path: '/debug/status/',
 	method: "POST",
 	headers: {

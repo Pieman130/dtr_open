@@ -10,7 +10,7 @@ def sendStatusMessage(ipAddress: str, colorDetected: str):
     #r = urequests.request('POST',fullAddress,data )
     headers = {'Content-Type': 'application/json'}
 
-    fullAddress = getServerAddress(ipAddress,'/debug/status')
+    fullAddress = getServerAddress(ipAddress,'debug/status')
     print(fullAddress)
     #a = uping.ping(GROUND_STATION_IP);
     try:

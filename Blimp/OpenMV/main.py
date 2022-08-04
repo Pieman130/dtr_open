@@ -1,9 +1,16 @@
 # Untitled - By: timothy.woodbridge - Fri May 20 2022
 
 import sensor, image, time,network,urequests,json,math
-import groundStation
-import imageProcessing
 import uping
+
+
+import externalSensors
+
+import processing
+import actionEngine
+import groundStation
+
+
 
 SSID='DTR_team_a' # Network SSID
 KEY='GoBigRed'  # Network key
@@ -16,11 +23,10 @@ def main() -> None:
     wlan.connect(SSID, KEY)
 
     #q = uping.ping(GROUND_STATION_IP)
-    sensor.reset()
-    sensor.set_pixformat(sensor.RGB565)
-    sensor.set_framesize(sensor.QVGA)
-    sensor.skip_frames(time = 2000)
+  
 
+
+    externalSensors.initialize()
 
     print(wlan.ifconfig())
 
@@ -29,11 +35,20 @@ def main() -> None:
 
     while(True):
         clock.tick()
-        img = sensor.snapshot()
+        #img = sensor.snapshot()
 
-        time.sleep(1)
-        colorDetected = imageProcessing.colorDetectedByCamera(img)
+        time.sleep(0.5)
+
+        externalSensors.collectData()
+
+        processing.parseSensorData()
+
+        actionEngine.getNextStep()
+        
+       # actionEngine.executeNextStep()               
+
+        #colorDetected = imageProcessing.colorDetectedByCamera(img)
         #groundStation.sendStatusMessage(GROUND_STATION_IP,colorDetected)
-        print(colorDetected)
+        #print(colorDetected)
 
 main()

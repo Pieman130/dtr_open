@@ -26,20 +26,21 @@ def colorDetectedByCamera(img)-> str:
     return colorDetected
 
 def lookForAprilTag(img):
-    # taken from find_apriltags_1.py example in open mv drop down example files
+    print("in look for april tag")
+    
     foundIt = 0
-    for tag in img.find_apriltags(): # defaults to TAG36H11 without "families".
-        img.draw_rectangle(tag.rect(), color = (255, 0, 0))
-        img.draw_cross(tag.cx(), tag.cy(), color = (0, 255, 0))
+    
+    for tag in img.find_apriltags(): # defaults to TAG36H11 without "families".        
         foundIt = 1
         print_args = (family_name(tag), tag.id(), (180 * tag.rotation()) / math.pi)
         print("Tag Family %s, Tag ID %d, rotation %f (degrees)" % print_args)
-    
+
+    print("found april tag?: " + str(foundIt))
+
     return foundIt
 
 
-def lookForAprilTagStupid():
-        
+def lookForAprilTagStupid():    
     sensor.reset()
     sensor.set_pixformat(sensor.RGB565)
     sensor.set_framesize(sensor.QQVGA) # we run out of memory if the resolution is much bigger...
@@ -53,13 +54,13 @@ def lookForAprilTagStupid():
     # The apriltag code supports up to 6 tag families which can be processed at the same time.
     # Returned tag objects will have their tag family and id within the tag family.
 
-    tag_families = 0
-    tag_families |= image.TAG16H5 # comment out to disable this family
-    tag_families |= image.TAG25H7 # comment out to disable this family
-    tag_families |= image.TAG25H9 # comment out to disable this family
-    tag_families |= image.TAG36H10 # comment out to disable this family
-    tag_families |= image.TAG36H11 # comment out to disable this family (default family)
-    tag_families |= image.ARTOOLKIT # comment out to disable this family
+    #tag_families = 0
+    #tag_families |= image.TAG16H5 # comment out to disable this family
+    #tag_families |= image.TAG25H7 # comment out to disable this family
+    #tag_families |= image.TAG25H9 # comment out to disable this family
+    #tag_families |= image.TAG36H10 # comment out to disable this family
+    #tag_families |= image.TAG36H11 # comment out to disable this family (default family)
+    #tag_families |= image.ARTOOLKIT # comment out to disable this family
 
     # What's the difference between tag families? Well, for example, the TAG16H5 family is effectively
     # a 4x4 square tag. So, this means it can be seen at a longer distance than a TAG36H11 tag which

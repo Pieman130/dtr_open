@@ -19,8 +19,8 @@ def parseSensorData(): # https://github.com/mavlink/c_library_v1/blob/master/che
 
     parseIrSensorData()
     data.colorDetected = imageProcessing.colorDetectedByCamera(rawData.img)
-    #data.foundAprilTag = imageProcessing.lookForAprilTag(rawData.img)
-    data.foundAprilTag = imageProcessing.lookForAprilTagStupid()
+    data.foundAprilTag = imageProcessing.lookForAprilTag(rawData.img)
+    #data.foundAprilTag = imageProcessing.lookForAprilTagStupid()
 
     #print("found april tag: " + data.foundAprilTag)
 

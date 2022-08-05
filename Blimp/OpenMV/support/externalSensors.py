@@ -34,6 +34,7 @@ def initializePixracerUart():
 
 def pixracerWrite(msg):
     global sensors
+    print("sending to pixracer: " + str(msg))
     sensors.pixracer.write(msg)
 
 def initializeIrSensor():

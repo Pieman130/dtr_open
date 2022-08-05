@@ -1,4 +1,3 @@
-
 import mavlink_messages
 from processing import data
 import externalSensors
@@ -15,8 +14,10 @@ def getNextStep(): # https://github.com/mavlink/c_library_v1/blob/master/checksu
     output = 0
     print("get next step")
 
-    print(processedData.foundAprilTag)
-    if (processedData.foundAprilTag):
+    
+    print(processedData.aprilTag.foundIt)
+    print("rotation: " + str(processedData.aprilTag.rotation))
+    if (processedData.aprilTag.foundIt):
         moveForwardFull()
     else:
         stopForwardMotion()

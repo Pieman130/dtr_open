@@ -46,7 +46,8 @@ def initializeCamera():
 
     sensor.reset()
     sensor.set_pixformat(sensor.RGB565)
-    sensor.set_framesize(sensor.QVGA)
+    #sensor.set_framesize(sensor.QVGA)
+    sensor.set_framesize(sensor.QQVGA) #needed for april tag detections
     sensor.skip_frames(time = 2000)
 
     # needed for april tag finder

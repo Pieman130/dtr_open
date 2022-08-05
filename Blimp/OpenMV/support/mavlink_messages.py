@@ -5,6 +5,7 @@
 ## ELSE??
 
 #NOTE: All Mavlink serial messages follow this format: https://mavlink.io/en/guide/serialization.html#v1_packet_format
+#NOTE: packet_sequence is the monotonically increasing integer value of the message being sent
 
 import struct
 
@@ -57,5 +58,17 @@ def mvlnk_manual_control(packet_sequence, x=0, #pitch (fwd/bk of right stick)
     
     return __msg_frame(69,243,payload,packet_sequence)
 
+
+def mvlink_ch_overide(packet_sequence, ch=(0,0,0,0,0,0,0,0)):
+    '''https://github.com/mavlink/c_library_v1/blob/master/common/mavlink_msg_rc_channels_override.h'''
+    target_system = 1
+    target_component = 1
+    payload = struct.pack("<8HBB",ch[0],ch[1],ch[2],ch[3],ch[4],ch[5],ch[6],ch[7],
+                            target_system,target_component)
+
+    return __msg_frame(70,124,payload,packet_sequence)
+
+
+def mvlink_get_attitude
 
 #def mvlnk_

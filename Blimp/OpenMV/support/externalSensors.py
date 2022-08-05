@@ -22,9 +22,12 @@ def initialize(): # https://github.com/mavlink/c_library_v1/blob/master/checksum
     output = 0
     print("initialize sensors")
     initializeCamera()
-    sensors.irSensor = Pin('P4',Pin.IN,Pin.PULL_NONE)
+    initializeIrSensor()
     return output
     
+def initializeIrSensor():
+    global sensors
+    sensors.irSensor = Pin('P4',Pin.IN,Pin.PULL_NONE)
 
 def initializeCamera():
     global sensors

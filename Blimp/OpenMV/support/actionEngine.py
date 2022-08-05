@@ -44,8 +44,14 @@ def score():
 
 def stopForwardMotion():
     print("stop moving forward")
-   # mavlink_messages.
+    ch=(0,0,0,0,0,0,0,0)
+    mavlink_messages.mvlink_ch_overide(1,ch)
 
 def moveForwardFull():
-   # mavlink_messages
+    # mavlink_messages 
+    # #2 = lift
+    # #3 = throttle
+    # #4 = up
+    ch=(0,0,0,0,0,0,0,0)
+    mavlink_messages.mvlink_ch_overide(1,ch)
     print("forward ahead!")

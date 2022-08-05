@@ -5,17 +5,17 @@ from machine import Pin
 
 # globals
 class Sensors:
-    def __init__():
-        self.irSensor: None
-        self.camera: None
+    def __init__(self):
+        self.irSensor = None
+        self.camera = None
 
 class RawData:
-    def __init__():
+    def __init__(self):
         self.img = None
         self.irSensor = None
 
-rawData = RawData
-sensors = Sensors
+rawData = RawData()
+sensors = Sensors()
 
 def initialize(): # https://github.com/mavlink/c_library_v1/blob/master/checksum.h
     global sensors

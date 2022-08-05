@@ -1,11 +1,12 @@
 import imageProcessing
 
 class ProcessedData:
-    def __init__():
-        self.irData: None
-        self.colorDetected: None
+    def __init__(self):
+        self.irData = None
+        self.colorDetected = None
+        self.distanceToBall = None
 
-data = ProcessedData
+data = ProcessedData()
 # Do processing of sensor data
 from externalSensors import rawData
 
@@ -26,3 +27,16 @@ def parseIrSensorData():
     
     print('ir sensor: ' + str(data.irData))
    
+
+def distanceToBall():
+    global rawData
+
+def distanceToCeiling():
+    global rawData
+
+
+def distanceToFloor(): #may not actually ever do this one.
+    global rawData 
+
+def distanceToGoal():
+    global rawData

@@ -69,6 +69,16 @@ def mvlink_ch_overide(packet_sequence, ch=(0,0,0,0,0,0,0,0)):
     return __msg_frame(70,124,payload,packet_sequence)
 
 
-def mvlink_get_attitude
+def mvlink_cmd_long(packet_sequence,cmd,params=[float('NaN')]*7):
+    if len(params)<7:
+        print("ERROR: command_long message requires exactly 7 parameters, unused param locations should be filled with NaN.")
+        return False
+    target_system = 1
+    target_component = 1 #TODO maybe "0"?
+    confirm = 0 #TODO nonzero for retransmits
+    #payload = struct.pack("")
+
+
+    pass
 
 #def mvlnk_

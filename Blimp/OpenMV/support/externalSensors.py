@@ -34,7 +34,14 @@ def initializeCamera():
     sensor.set_pixformat(sensor.RGB565)
     sensor.set_framesize(sensor.QVGA)
     sensor.skip_frames(time = 2000)
+
+    # needed for april tag finder
+    sensor.set_auto_gain(False)  # must turn this off to prevent image washout...
+    sensor.set_auto_whitebal(False)  # must turn this off to prevent image washout...
+
+
     sensors.camera = sensor
+        
 
 
 def collectData():
@@ -42,7 +49,8 @@ def collectData():
     global rawData
     output = 0
     print("collecting data")
-    rawData.img = sensors.camera.snapshot()
+    rawData.img = sensors.camera.snapshot()     
+
     rawData.irSensor = sensors.irSensor.value()
 
     return output

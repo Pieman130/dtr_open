@@ -1,4 +1,5 @@
 import image, math, pyb, sensor, struct, time
+from mavlink_messages import *
 
 uart_baudrate = 115200
 
@@ -15,3 +16,9 @@ while True:
     msg = 'PACKET' #serial packet
 
     send_msg(msg)
+
+    time.sleep(1)
+
+    a = uart.readline()
+    if a != None:
+        parse_mavlink(a)

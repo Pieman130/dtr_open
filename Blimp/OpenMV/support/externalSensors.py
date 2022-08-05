@@ -1,5 +1,5 @@
 import sensor
-
+import pyb
 from machine import Pin
 
 
@@ -8,6 +8,7 @@ class Sensors:
     def __init__(self):
         self.irSensor = None
         self.camera = None
+        self.pixracer = None
 
 class RawData:
     def __init__(self):
@@ -23,11 +24,21 @@ def initialize(): # https://github.com/mavlink/c_library_v1/blob/master/checksum
     print("initialize sensors")
     initializeCamera()
     initializeIrSensor()
+    initializePixracerUart()
     return output
     
+def initializePixracerUart():
+    global sensors
+    uart_baudrate = 115200
+    sensors.pixracer = pyb.UART(3, uart_baudrate, timeout_char = 1000)    
+
+def pixracerWrite(msg):
+    global sensors
+    sensors.pixracer.write(msg)
+
 def initializeIrSensor():
     global sensors
-    sensors.irSensor = Pin('P4',Pin.IN,Pin.PULL_NONE)
+    sensors.irSensor = Pin('P6',Pin.IN,Pin.PULL_NONE)
 
 def initializeCamera():
     global sensors

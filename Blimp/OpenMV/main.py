@@ -34,7 +34,7 @@ def main() -> None:
 
         actionEngine.getNextStep()
 
-        #actionEngine.executeNextStep()               
+        actionEngine.executeNextStep()               
 
         
 main()

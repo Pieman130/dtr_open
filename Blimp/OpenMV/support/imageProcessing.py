@@ -80,6 +80,7 @@ def lookForAprilTagStupid():
 
     print("found april tag?: " + str(foundIt))
 
+    return foundIt
 
 def family_name(tag):
     if(tag.family() == image.TAG16H5):

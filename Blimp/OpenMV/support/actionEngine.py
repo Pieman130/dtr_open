@@ -1,4 +1,5 @@
 
+import mavlink_messages
 from processing import data
 processedData = data
 
@@ -9,6 +10,12 @@ def getNextStep(): # https://github.com/mavlink/c_library_v1/blob/master/checksu
     print(" action engine! img: " + str(processedData.colorDetected))
     output = 0
     print("get next step")
+
+    if (processedData.foundAprilTag):
+        moveForwardFull()
+    else:
+        stopForwardMotion()
+
     return output
 
 
@@ -34,3 +41,11 @@ def moveToGoal():
 
 def score():
     global processedData
+
+def stopForwardMotion():
+    print("stop moving forward")
+   # mavlink_messages.
+
+def moveForwardFull():
+   # mavlink_messages
+    print("forward ahead!")

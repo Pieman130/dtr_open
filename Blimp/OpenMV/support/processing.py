@@ -5,6 +5,7 @@ class ProcessedData:
         self.irData = None
         self.colorDetected = None
         self.distanceToBall = None
+        self.foundAprilTag = False
 
 data = ProcessedData()
 # Do processing of sensor data
@@ -18,6 +19,10 @@ def parseSensorData(): # https://github.com/mavlink/c_library_v1/blob/master/che
 
     parseIrSensorData()
     data.colorDetected = imageProcessing.colorDetectedByCamera(rawData.img)
+    #data.foundAprilTag = imageProcessing.lookForAprilTag(rawData.img)
+    imageProcessing.lookForAprilTagStupid()
+
+    #print("found april tag: " + data.foundAprilTag)
 
     return output
 

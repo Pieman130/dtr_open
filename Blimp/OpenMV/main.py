@@ -12,7 +12,7 @@ import groundStation
 
 
 def main() -> None:
-
+    loopPause = 0.25
     externalSensors.initialize()
     groundStation.initialize()
     
@@ -22,17 +22,19 @@ def main() -> None:
     while(True):
         clock.tick()        
 
-        time.sleep(0.5)
+        time.sleep(loopPause)
 
         externalSensors.collectData()
 
         processing.parseSensorData()
 
-        groundStation.sendStatusMessage()
+        #
+
+        #groundStation.sendStatusMessage()
 
         actionEngine.getNextStep()
 
-        actionEngine.executeNextStep()               
+        #actionEngine.executeNextStep()               
 
         
 main()

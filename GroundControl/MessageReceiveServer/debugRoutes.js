@@ -6,8 +6,10 @@ var router = express.Router();
 router.route('/status/')
 .post(function(req,res){    
     var cameraDetectionStr = req.body.cameraDetectionStr;
-    var lastHeartbeat = sqlTools.makeDateForSqlServer();        
-    var sqlStr = " UPDATE systemStatus SET blimpLastHeartbeat = '" + lastHeartbeat + "', cameraDetectionStr = '" + cameraDetectionStr + "'" ;
+    var lastHeartbeat = sqlTools.makeDateForSqlServer();   
+    var irSensorDetection = req.body.isIrSensorDetection;     
+    var sqlStr = " UPDATE systemStatus SET blimpLastHeartbeat = '" + lastHeartbeat + "', cameraDetectionStr = '" + cameraDetectionStr + "'" +
+                 " ,isIrSensorDetection = " + irSensorDetection ;
     sqlTools.run(sqlStr,res);    
 })
 

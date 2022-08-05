@@ -19,6 +19,7 @@ def executeNextStep():
         
 
 def searchForBall():
+    # sensors: camera, lidar
     global processedData
 
 

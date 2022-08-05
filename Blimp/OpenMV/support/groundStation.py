@@ -25,14 +25,16 @@ def sendStatusMessage():
     global processedData
     
     print('in print status message')
-    data= '{"cameraDetectionStr":"' + processedData.colorDetected + '"}'
+    data = '{"cameraDetectionStr":"' + processedData.colorDetected + '"'
+    ir1_0str = str(int(processedData.irData))
+    data = data + ',"isIrSensorDetection":"' + ir1_0str + '"}'
     print(data)
     #r = urequests.request('POST',fullAddress,data )
     headers = {'Content-Type': 'application/json'}
 
     fullAddress = getServerAddress(wifiInfo.ip,'debug/status')
-    print(fullAddress)
-    print("about to use uping on ip: " + wifiInfo.ip)
+    print("about to post data to: " + fullAddress)
+
     #a = uping.ping(wifiInfo.ip) # - EINVAL error.. ? why
     
     try:

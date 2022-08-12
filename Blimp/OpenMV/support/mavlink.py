@@ -12,7 +12,7 @@ class MavLink():
     def __init__(self,uart=3,baudrate=115200):
         self._uart = pyb.UART(uart,baudrate,timeout_char=1000)
         self.__ps = -1 #starting packet number
-        self.ser_buf = []
+        self.ser_buf = bytearray()
 
         time.sleep(0.25) #Allow UART to initialize before sending messages MAYBE NOT NEEDED
 
@@ -50,7 +50,7 @@ class MavLink():
         payload_len = len(payload)
         msg = struct.pack("<BBBBB{}s".format(payload_len), #https://mavlink.io/en/guide/serialization.html#v1_packet_format
                             payload_len,
-                            pkt_seq & 0xFF,
+                            ps & 0xFF,
                             sys_id,
                             comp_id,
                             msg_id,
@@ -110,14 +110,14 @@ class MavLink():
                                         params[4],params[5],params[6],
                                         cmd,target_system,target_component,confirm)
 
-        return __msg_frame(76,152,payload,self.__get_ps())
+        return self.__msg_frame(76,152,payload,self.__get_ps())
 
 
     def _build_msg_set_msg_int(self,msg_id,interval,target=0):
         '''Set params for mav_cmd_set_message_interval #511
         id = message number
         inter = interval in usec'''
-        return [msg_id,inter,float('Nan'),float('NaN'),float('NaN'),float('NaN'),target]
+        return [msg_id,interval,float('Nan'),float('NaN'),float('NaN'),float('NaN'),target]
 
 
     def _build_msg_cmd_req_msg(self,id):
@@ -138,14 +138,14 @@ class MavLink():
         '''Send cmd message #511 to set desired publish rate of msg.
         msg_id = message type to be published
         interval = message interval in us'''
-        cmd = _build_msg_cmd_long(511,params=self._build_msg_set_msg_int(msg_id,interval,target=0))
-        uart.write(cmd)
+        cmd = self._build_msg_cmd_long(511,params=self._build_msg_set_msg_int(msg_id,interval,target=0))
+        self._uart.write(cmd)
 
 
     def send_set_servo_cmd(self,servo,pwm):
         '''Send command messsage to set values of individual servos'''
         cmd = self._build_msg_cmd_long(183,params=self._build_frame_cmd_do_set_servo(servo,pwm))
-        uart.write(cmd)
+        self._uart.write(cmd)
 
 
     def __cntl_to_pwm(self,value):

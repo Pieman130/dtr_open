@@ -1,12 +1,5 @@
-#from processing import data
-class Silly:
-    colorDetected = False
-    aprilTagDetected = False
+import dataClasses
 
-testData = Silly
-testData.colorDetected = False
-
-data = testData
 
 TIME_INCREMENT_S = 1
 
@@ -26,12 +19,12 @@ class ExitCriterion:
 
 class Maneuver:
     def __init__(self,description,controls,exitCriteria):
-        global data
+        
         self.description = description
         self.timeClock = 0
         self.exitCriteria = exitCriteria
         self.controls = controls
-        self.data = data
+        self.data = dataClasses.data
 
     def execute(self):
         print(self.description + " -  Maneuver")

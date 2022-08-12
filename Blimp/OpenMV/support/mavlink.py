@@ -163,9 +163,45 @@ class MavLink():
 
     def _read_uart(self):
         '''Read contents of serial buffer and parse messages'''
-        result = self._uart.readinto(self.ser_buf)
+        result = self._uart.readline()
         if result == None:
             print("Nothing Read.")
+        else:
+            self.parse_mavlink(result)
+
+
+    def parse_mavlink(self,ser_msg):
+    '''
+    0th B = preamble (254)
+    1st B = payload length
+    2nd B = seq #
+    3rd B = sys id
+    4th B = Comp id
+    5th B = Msg id (message type)
+    6th - n B = payload
+    n-2 = 1st byte chksum
+    n-1 = 2nd byte chksum
+    '''
+    header = []
+    try:
+        for i in range(6):
+            header.append(ser_msg[i])
+        if ser_msg[0] != 254: #if inital byte not 254, it is misaligned message, ignore
+            return None
+        else:
+            #print("Payload Length: ", ser_msg[1])
+            #print("Message Type: ", ser_msg[5])
+            msg_type = ser_msg[5]
+        payload = ser_msg[6:-2]
+        if msg_type == 36:
+            print("SERVO 1 VALUE: ", int.from_bytes(payload[4:6], "little"))
+            print("SERVO 2 VALUE: ", int.from_bytes(payload[6:8], "little"))
+            print("SERVO 3 VALUE: ", int.from_bytes(payload[8:10], "little"))
+        else:
+            print("Message Type: ", msg_type)
+        return 1
+    except IndexError:
+        return None
 
 
 

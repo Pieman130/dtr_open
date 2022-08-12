@@ -37,9 +37,16 @@ def sendStatusMessage():
     #a = uping.ping(wifiInfo.ip) # - EINVAL error.. ? why
     
     try:
-       r = urequests.post(fullAddress,data = data,headers = headers)
-       
-       print('status to server success! received:')
-       print(r)
+        r = urequests.post(fullAddress,data = data,headers = headers)
+                
+        print('status to server success! received:')              
+        jsonList = r.json()
+        jsonDict = jsonList[0]                    
+                
+        dataClasses.gndStationCmd.maneuverDescription = jsonDict['maneuverDescription']
+        dataClasses.gndStationCmd.baseUpVal = jsonDict['baseUpVal']
+        dataClasses.gndStationCmd.duration = jsonDict['duration']
+        
+
     except:
        print('cannot connect to server')

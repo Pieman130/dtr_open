@@ -9,8 +9,12 @@ router.route('/status/')
     var lastHeartbeat = sqlTools.makeDateForSqlServer();   
     var irSensorDetection = req.body.isIrSensorDetection;     
     var sqlStr = " UPDATE systemStatus SET blimpLastHeartbeat = '" + lastHeartbeat + "', cameraDetectionStr = '" + cameraDetectionStr + "'" +
-                 " ,isIrSensorDetection = " + irSensorDetection ;
-    sqlTools.run(sqlStr,res);    
+                 " ,isIrSensorDetection = " + irSensorDetection ;    
+                 sqlTools.sqlRequestPromise(sqlStr)
+    .then(function(){
+        sqlStr = " SELECT * FROM maneuverToExecute "
+        sqlTools.run(sqlStr,res);
+    });    
 })
 
 module.exports = router;

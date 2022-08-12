@@ -49,4 +49,9 @@ def collectData():
 
     dataClasses.rawData.irSensor = sensors.irSensor.value()
 
+   # data_dict = mavlink.getDataFromPixRacer
+
+  #  mavlink.refreshPixRacerCurrentValues
+
+
     return output

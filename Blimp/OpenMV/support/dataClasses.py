@@ -9,22 +9,25 @@ class RawData:
         self.motor_up = None #or do we put this somewhere else?
         self.motor_yaw = None #or do we put this somewhere else?
 
-
-data = None
-rawData = None
-
 class ProcessedData:
     def __init__(self):
         self.irData = None
         self.colorDetected = None
         self.distanceToBall = None
-        self.aprilTagDetected = None
+        self.aprilTagFound = None
+
+class GroundStationCommand:
+    def __init__(self):
+        self.maneuverDescription = None
+        self.baseUpVal = None
+        self.duration = None
+    def print(self):
+        print("manuever desc: " + self.maneuverDescription)
+        print("base up: " + str(self.baseUpVal))
+        print("duration: " + str(self.duration))
 
 
+data = ProcessedData()
+rawData = RawData()
+gndStationCmd = GroundStationCommand()
 
-def initialize():
-    global data
-    global rawData
-
-    data = ProcessedData()
-    rawData = RawData()

@@ -5,20 +5,17 @@ import time
 import externalSensors
 
 import processing
-#import actionEngine
+import actionEngine
 import groundStation
 import pixracer
-import dataClasses
-
 
 
 def main() -> None:
     loopPause = 1
-    dataClasses.initialize()
     pixracer.initialize()
     externalSensors.initialize()
     groundStation.initialize()
-    # actionEngine.initialize()
+    actionEngine.initialize()
     
 
     clock = time.clock()
@@ -34,9 +31,9 @@ def main() -> None:
                 
         groundStation.sendStatusMessage()
 
-       # actionEngine.updateState()
+        actionEngine.updateState()
 
-       # actionEngine.getNextStep()
+        actionEngine.getNextStep()
 
         #actionEngine.executeNextStep()               
 

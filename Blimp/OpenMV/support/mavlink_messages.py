@@ -84,7 +84,8 @@ def mvlnk_manual_control(packet_sequence, x=0, #pitch (fwd/bk of right stick)
                                           z=0, #thrust (fwd/bk of left stick)
                                           r=0, #yaw (left/right of left stick)
                                           buttons=0): #8-bit bitfield
-    '''https://github.com/mavlink/c_library_v1/blob/master/common/mavlink_msg_manual_control.h'''
+    '''https://github.com/mavlink/c_library_v1/blob/master/common/mavlink_msg_manual_control.h
+    NOTE: CURRENTLY NOT IMPLEMENTED'''
     target = 0 #target system to be controlled #TODO what does this mean?
     payload = struct.pack("<hhhhHB",x,y,z,r,buttons,target) 
     
@@ -92,7 +93,8 @@ def mvlnk_manual_control(packet_sequence, x=0, #pitch (fwd/bk of right stick)
 
 
 def mvlink_ch_overide(packet_sequence, ch=(0,0,0,0,0,0,0,0)):
-    '''https://github.com/mavlink/c_library_v1/blob/master/common/mavlink_msg_rc_channels_override.h'''
+    '''https://github.com/mavlink/c_library_v1/blob/master/common/mavlink_msg_rc_channels_override.h
+    NOTE: CURRENTLY NOT IMPLEMENTED'''
     target_system = 1
     target_component = 1
     payload = struct.pack("<8HBB",ch[0],ch[1],ch[2],ch[3],ch[4],ch[5],ch[6],ch[7],
@@ -116,7 +118,9 @@ def mvlink_cmd_long(packet_sequence,cmd,params=[float('NaN')]*7):
     return __msg_frame(76,152,payload,packet_sequence)
 
 def mv_set_msg_int(id,inter,target=0):
-    '''Set params for mav_cmd_set_message_interval #511'''
+    '''Set params for mav_cmd_set_message_interval #511
+    id = message number
+    inter = interval in usec'''
     return [id,inter,float('Nan'),float('NaN'),float('NaN'),float('NaN'),target]
 
 def mv_cmd_req_msg(id):

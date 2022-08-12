@@ -1,21 +1,7 @@
 import dataClasses
 import time
+import mavlink
 
-
-
-class Mavlink: # TO BE MOVED TO ANOTHER FILE
-    def __init__(self):
-        self.stuff = None
-    
-    def setControls(self,controls):
-        self.printSetActions(controls)
-
-    def printSetActions(self,controls):
-        print("\tsetting yaw: " + str(controls.yaw))
-        print("\tsetting up: " + str(controls.up))
-        print("\tsetting throttle: " + str(controls.throttle))
-        print("\tsetting servo: " + str(controls.servo))
-###################################################
 
 class ExitCriteria:
     def __init__(self):
@@ -40,7 +26,7 @@ class Maneuver:
         self.exitCriteria = exitCriteria
         self.controls = controls
         self.data = dataClasses.data
-        self.mavlink = Mavlink()
+        self.mavlink = mavlink.MavLink()
 
     def reset(self):
         self.startTime = None
@@ -122,7 +108,9 @@ forwardExitCriteria.add("timeClock",10)
 forwardExitCriteria.add("colorDetected",'green')
 
 forwardControls = Controls()
-forwardControls.throttle = 0.5
+forwardControls.throttle = 1
+forwardControls.up = 1 #test only
+forwardControls.yaw = 1 #test only
 
 forwardOrGreen = Maneuver("Go forward until see green water bottle.",forwardControls,forwardExitCriteria)
 

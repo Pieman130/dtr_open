@@ -95,7 +95,7 @@ def getManeuver(desc):
 def executeNextStep():
     global currentManeuver
     currentManeuver.execute()
-    print("do nothing")
+    
   #  global msgToSend
    # output = 0
   #  print("execute next step")

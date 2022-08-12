@@ -154,6 +154,8 @@ class MavLink():
 
 
     def setControls(self,controls):
+        print("IN MAVLINK SET CONTROLS")
+        controls.printValues()
         '''Aend corresponding mavlink message to set servo values based on current settings of controls object'''
         self.send_set_servo_cmd(YAW_SERVO,self.__cntl_to_pwm(controls.yaw)) #YAW Servo Channel 2
         self.send_set_servo_cmd(THROTTLE_SERVO,self.__cntl_to_pwm(controls.throttle)) #THROTTLE Servo Channel 1

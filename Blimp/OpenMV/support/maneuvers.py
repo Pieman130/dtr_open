@@ -1,6 +1,8 @@
 import dataClasses
 import time
 
+
+
 class Mavlink: # TO BE MOVED TO ANOTHER FILE
     def __init__(self):
         self.stuff = None
@@ -40,6 +42,10 @@ class Maneuver:
         self.data = dataClasses.data
         self.mavlink = Mavlink()
 
+    def reset(self):
+        self.startTime = None
+        self.timeClock = 0
+
     def updateTime(self):
         if self.startTime == None:
             self.startTime = time.time()
@@ -67,6 +73,8 @@ class Maneuver:
                 if item.value == self.getProperty(item.variableName):
                     numCriterionMet = numCriterionMet + 1           
                 else:
+                    print("NO MATCH: " + str(item.value))
+                    print("vs: " + str(self.getProperty(item.variableName)))
                     numCriterionUnmet = numCriterionUnmet + 1               
 
         if numCriterionUnmet == 0 and numCriterionMet > 0:
@@ -107,3 +115,30 @@ class Controls:
         print("\t\tthrottle: " + str(self.throttle))
         print("\t\tservo: " + str(self.servo))
 
+
+## maneuvers
+forwardExitCriteria = ExitCriteria()
+forwardExitCriteria.add("timeClock",10)
+forwardExitCriteria.add("colorDetected",'green')
+
+forwardControls = Controls()
+forwardControls.throttle = 0.5
+
+forwardOrGreen = Maneuver("Go forward until see green water bottle.",forwardControls,forwardExitCriteria)
+
+##
+three60orAprilTagExit = ExitCriteria()
+three60orAprilTagExit.add("timeClock",5) #need to figure out how long it takes to do 360...
+three60orAprilTagExit.add("isAprilTagDetected",True)
+three60orAprilTagCtrls = Controls()
+three60orAprilTagCtrls.yaw = 0.5
+
+three60orAprilTag = Maneuver("360 or until see april tag.",three60orAprilTagCtrls,three60orAprilTagExit)
+
+#
+hoverExit = ExitCriteria()
+hoverExit.add("timeClock",5) #need to figure out how long it takes to do 360...
+hoverCtrls = Controls()
+hoverCtrls.up = 0.5
+
+hover = Maneuver("hover",hoverCtrls,hoverExit)

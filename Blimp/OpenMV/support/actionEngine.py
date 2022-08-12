@@ -1,5 +1,7 @@
 import dataClasses
+import maneuvers
 currentState = None
+currentManeuver = None
 
 ACTION_LOOK = "look"
 ACTION_MOVE = "move"
@@ -46,7 +48,7 @@ def updateState():
     print('update state called')
 
 def getNextStep(): # https://github.com/mavlink/c_library_v1/blob/master/checksum.h 
-
+    global currentManeuver
     dataClasses.gndStationCmd.print()
     #dataClasses.gndStationCmd.maneuverDescription
 
@@ -59,14 +61,40 @@ def getNextStep(): # https://github.com/mavlink/c_library_v1/blob/master/checksu
     print(dataClasses.data.aprilTagFound.foundIt)
     print("rotation: " + str(dataClasses.data.aprilTagFound.rotation))
 
+    print("GROUND STATION MANEUVER: " + dataClasses.gndStationCmd.maneuverDescription)
+
+    if not currentManeuver == None:
+        if currentManeuver.isExitCriteriaMet():
+            currentManeuver = None
+
+    if currentManeuver == None:        
+        currentManeuver = getManeuver(dataClasses.gndStationCmd.maneuverDescription)
+        currentManeuver.reset()
+
+    dataClasses.gndStationCmd.maneuverDescription
+    dataClasses.gndStationCmd.baseUpVal
+    dataClasses.gndStationCmd.duration
 
     #moveForwardFull()
 
-
     return output
 
+def getManeuver(desc):
+    if (desc == 'forward'):
+        print("NEXT MANEUVER - FORWARD")
+        nextManeuver = maneuvers.forwardOrGreen
+    elif (desc == '360'):
+        print("NEXT MANEUVER - 360")
+        nextManeuver = maneuvers.three60orAprilTag
+    else:
+        print("NEXT MANEUVER - HOVER")
+        nextManeuver = maneuvers.hover
+
+    return nextManeuver
 
 def executeNextStep():
+    global currentManeuver
+    currentManeuver.execute()
     print("do nothing")
   #  global msgToSend
    # output = 0

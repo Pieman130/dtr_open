@@ -1,5 +1,3 @@
-import urequests, network, uping
-
 class ConnectionInfo:
     def __init__(self):
         self.ssid = 'DTR_team_a'
@@ -8,6 +6,8 @@ class ConnectionInfo:
 
 wifiInfo = ConnectionInfo()
 
+import urequests
+import network
 import dataClasses 
 
 def initialize():

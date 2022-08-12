@@ -15,7 +15,7 @@ activeManuever = None
 # setup forward motion control.
 forwardExitCriteria = ExitCriteria()
 forwardExitCriteria.add("timeClock",10)
-#forwardExitCriteria.add("colorDetected",True)
+forwardExitCriteria.add("colorDetected",True)
 
 forwardControls = Controls()
 forwardControls.throttle = 0.5
@@ -36,7 +36,7 @@ print('test complete')
 # setup 360 or until see april tag.
 three60orAprilTagExit = ExitCriteria()
 three60orAprilTagExit.add("timeClock",5) #need to figure out how long it takes to do 360...
-three60orAprilTagExit.add("aprilTagDetected",True)
+three60orAprilTagExit.add("isAprilTagDetected",True)
 three60orAprilTagCtrls = Controls()
 three60orAprilTagCtrls.yaw = 0.5
 
@@ -47,12 +47,32 @@ ctr = 0
 while not three60orAprilTag.isExitCriteriaMet():    
     three60orAprilTag.execute()
     if(ctr == 3):
-        dataClasses.data.aprilTagDetected = True
+        dataClasses.data.isAprilTagDetected = True
     ctr = ctr + 1
     time.sleep(0.5)
 
 print('test complete')
 
+
+
+# hover
+hoverExit = ExitCriteria()
+hoverExit.add("timeClock",5) #need to figure out how long it takes to do 360...
+hoverCtrls = Controls()
+hoverCtrls.up = 0.5
+
+hover = Maneuver("hover",hoverCtrls,hoverExit)
+
+
+ctr = 0
+while not hover.isExitCriteriaMet():    
+    hover.execute()
+    if(ctr == 3):
+        dataClasses.data.isAprilTagDetected = True
+    ctr = ctr + 1
+    time.sleep(0.5)
+
+print('test complete')
 
 
 

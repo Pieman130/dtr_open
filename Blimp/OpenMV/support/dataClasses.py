@@ -15,6 +15,7 @@ class ProcessedData:
         self.colorDetected = None
         self.distanceToBall = None
         self.aprilTagFound = None
+        self.isAprilTagDetected = None
 
 class GroundStationCommand:
     def __init__(self):

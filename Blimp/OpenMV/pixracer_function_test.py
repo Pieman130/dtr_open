@@ -11,8 +11,9 @@ class MavLink():
     OpenMV and Pixracer (ardupilot)'''
     def __init__(self,uart=3,baudrate=115200):
         self._uart = pyb.UART(uart,baudrate,timeout_char=1000)
+        #self._uart.init(baudrate=115200)
         self.__ps = -1 #starting packet number
-        self.ser_buf = bytearray()
+        self.ser_buf = bytearray(1000)
 
         time.sleep(0.25) #Allow UART to initialize before sending messages MAYBE NOT NEEDED
 
@@ -161,20 +162,18 @@ class MavLink():
 
     def _read_uart(self):
         '''Read contents of serial buffer and parse messages'''
+        #result = self._uart.readinto(self.ser_buf)
         result = self._uart.read()
         if result == None:
             print("Nothing Read.")
         else:
             print(len(result))
-            msg_list = result.split(b'\xfe') #list of messages, keep what we need, throw the rest away
+            msg_list = result.split(b'\xfe')
             for msg in a:
                 if len(msg) > 0:
                         print(msg[0],msg[1],msg[2],msg[3],msg[4]) #list of messages TODO: Do something with this list!!
 
 
+m = MavLink()
 
-
-
-
-
-
+m._read_uart()

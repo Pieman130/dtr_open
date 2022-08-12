@@ -29,7 +29,7 @@ while not forward.isExitCriteriaMet():
         data.colorDetected = True
     ctr = ctr + 1
 
-print('test')
+print('test complete')
 
 # setup 360 or until see april tag.
 three60orAprilTagExit = ExitCriteria()
@@ -48,7 +48,7 @@ while not three60orAprilTag.isExitCriteriaMet():
         data.aprilTagDetected = True
     ctr = ctr + 1
 
-print('test')
+print('test complete')
 
 
 

@@ -1,5 +1,18 @@
 import dataClasses
 
+class Mavlink: # TO BE MOVED TO ANOTHER FILE
+    def __init__(self):
+        self.stuff = None
+    
+    def setControls(self,controls):
+        self.printSetActions(controls)
+        
+    def printSetActions(self,controls):
+        print("\tsetting yaw: " + str(controls.yaw))
+        print("\tsetting up: " + str(controls.up))
+        print("\tsetting throttle: " + str(controls.throttle))
+        print("\tsetting servo: " + str(controls.servo))
+
 
 TIME_INCREMENT_S = 1
 
@@ -25,12 +38,13 @@ class Maneuver:
         self.exitCriteria = exitCriteria
         self.controls = controls
         self.data = dataClasses.data
+        self.mavlink = Mavlink()
 
     def execute(self):
         print(self.description + " -  Maneuver")
-        print("\t time: " + str(self.timeClock))
-        self.controls.printValues()
+        print("\ttime: " + str(self.timeClock))        
         self.timeClock = self.timeClock + TIME_INCREMENT_S
+        self.mavlink.setControls(self.controls)
 
     def isExitCriteriaMet(self):
         if self.isManeuverTimeoutReached() or self.isSensorExitCriteriaMet():

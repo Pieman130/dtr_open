@@ -1,4 +1,5 @@
 import urequests, network, uping
+
 class ConnectionInfo:
     def __init__(self):
         self.ssid = 'DTR_team_a'
@@ -7,8 +8,7 @@ class ConnectionInfo:
 
 wifiInfo = ConnectionInfo()
 
-from processing import data
-processedData = data
+import dataClasses 
 
 def initialize():
     global wifiInfo
@@ -21,12 +21,11 @@ def getServerAddress(addr: str, api: str) -> str:
     return 'http://{}:1111/{}'.format(addr, api)
 
 def sendStatusMessage():
-    global wifiInfo
-    global processedData
+    global wifiInfo    
     
     print('in print status message')
-    data = '{"cameraDetectionStr":"' + processedData.colorDetected + '"'
-    ir1_0str = str(int(processedData.irData))
+    data = '{"cameraDetectionStr":"' + dataClasses.data.colorDetected + '"'
+    ir1_0str = str(int(dataClasses.data.irData))
     data = data + ',"isIrSensorDetection":"' + ir1_0str + '"}'
     print(data)
     #r = urequests.request('POST',fullAddress,data )
@@ -39,6 +38,8 @@ def sendStatusMessage():
     
     try:
        r = urequests.post(fullAddress,data = data,headers = headers)
-       print('status to server success!')
+       
+       print('status to server success! received:')
+       print(r)
     except:
        print('cannot connect to server')

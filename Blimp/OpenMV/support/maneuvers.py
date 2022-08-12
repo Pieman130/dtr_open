@@ -97,10 +97,10 @@ class Maneuver:
             return getattr(self.data,name)
 class Controls:
     def __init__(self):                
-        self.yaw = 0
-        self.up = 0
-        self.throttle = 0
-        self.servo = 0
+        self.yaw = 0 #-1 to 1
+        self.up = 0 #-1 to 1
+        self.throttle = 0 #-1 to 1
+        self.servo = 0 # 0 for OFF. 1 for ON.
     def printValues(self):            
         print("\t\tyaw: " + str(self.yaw))
         print("\t\tup: " + str(self.up))

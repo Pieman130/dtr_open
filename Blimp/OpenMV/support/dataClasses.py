@@ -9,9 +9,9 @@ class RawData:
         self.motor_up = None #or do we put this somewhere else?
         self.motor_yaw = None #or do we put this somewhere else?
 
-rawData = RawData()
 
-
+data = None
+rawData = None
 
 class ProcessedData:
     def __init__(self):
@@ -20,4 +20,11 @@ class ProcessedData:
         self.distanceToBall = None
         self.aprilTagDetected = None
 
-data = ProcessedData()
+
+
+def initialize():
+    global data
+    global rawData
+
+    data = ProcessedData()
+    rawData = RawData()

@@ -1,44 +1,32 @@
 import imageProcessing
 
-class ProcessedData:
-    def __init__(self):
-        self.irData = None
-        self.colorDetected = None
-        self.distanceToBall = None
-        self.aprilTagDetected = None
-
-data = ProcessedData()
 # Do processing of sensor data
-from externalSensors import rawData
+import dataClasses
 
-def parseSensorData(): # https://github.com/mavlink/c_library_v1/blob/master/checksum.h
-    global data
-    global rawData
+def parseSensorData(): # https://github.com/mavlink/c_library_v1/blob/master/checksum.h    
     output = 0
     print("parsing sensor data")
 
     parseIrSensorData()
-    data.colorDetected = imageProcessing.colorDetectedByCamera(rawData.img)
-    data.aprilTagDetected = imageProcessing.lookForAprilTag(rawData.img)        
+    dataClasses.data.colorDetected = imageProcessing.colorDetectedByCamera(dataClasses.rawData.img)
+    dataClasses.data.aprilTagDetected = imageProcessing.lookForAprilTag(dataClasses.rawData.img)        
 
     return output
 
-def parseIrSensorData():
-    global rawData
-    data.irData = not bool(rawData.irSensor)    
+def parseIrSensorData():    
+    dataClasses.data.irData = not bool(dataClasses.rawData.irSensor)    
     
-    print('ir sensor: ' + str(data.irData))
+    print('ir sensor: ' + str(dataClasses.data.irData))
    
 
-def distanceToBall():
-    global rawData
+#def distanceToBall():    
 
-def distanceToCeiling():
-    global rawData
+#def distanceToCeiling():
+    
 
 
-def distanceToFloor(): #may not actually ever do this one.
-    global rawData 
+#def distanceToFloor(): #may not actually ever do this one.
+ 
 
-def distanceToGoal():
-    global rawData
+#def distanceToGoal():
+ 

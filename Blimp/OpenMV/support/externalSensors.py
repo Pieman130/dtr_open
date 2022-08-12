@@ -47,8 +47,7 @@ def collectData():
     
     dataClasses.rawData.img = sensors.camera.snapshot()     
 
-    dataClasses.rawData.irSensor = sensors.irSensor.value()
-
+    dataClasses.rawData.irSensor = sensors.irSensor.value()    
    # data_dict = mavlink.getDataFromPixRacer
 
   #  mavlink.refreshPixRacerCurrentValues

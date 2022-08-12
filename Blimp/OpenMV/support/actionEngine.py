@@ -14,6 +14,9 @@ TARGET_GOAL = "goal"
 MODE_BLIND = "blind"
 MODE_COARSE = "coarse"
 MODE_FINE = "fine"
+
+STOP_CTR_MAX = 15
+stopCtr = 0
 class StateEngine:
     def __init__(self):
         mode = ''
@@ -49,6 +52,9 @@ def updateState():
 
 def getNextStep(): # https://github.com/mavlink/c_library_v1/blob/master/checksum.h 
     global currentManeuver
+    global stopCtr
+    global STOP_CTR_MAX
+
     dataClasses.gndStationCmd.print()
     #dataClasses.gndStationCmd.maneuverDescription
 
@@ -64,16 +70,17 @@ def getNextStep(): # https://github.com/mavlink/c_library_v1/blob/master/checksu
     print("GROUND STATION MANEUVER: " + dataClasses.gndStationCmd.maneuverDescription)
 
     if not currentManeuver == None:
-        if currentManeuver.isExitCriteriaMet():
+        if stopCtr>STOP_CTR_MAX: 
+            stopCtr = 0
             currentManeuver = None
 
     if currentManeuver == None:        
         currentManeuver = getManeuver(dataClasses.gndStationCmd.maneuverDescription)
         currentManeuver.reset()
 
-    dataClasses.gndStationCmd.maneuverDescription
-    dataClasses.gndStationCmd.baseUpVal
-    dataClasses.gndStationCmd.duration
+   # dataClasses.gndStationCmd.maneuverDescription
+   # dataClasses.gndStationCmd.baseUpVal
+   # dataClasses.gndStationCmd.duration
 
     #moveForwardFull()
 
@@ -93,8 +100,18 @@ def getManeuver(desc):
     return nextManeuver
 
 def executeNextStep():
+    global stopCtr
     global currentManeuver
-    currentManeuver.execute()
+    if currentManeuver.isExitCriteriaMet():
+        print("NO OP")
+        currentManeuver.sendNoop()            
+        stopCtr = stopCtr + 1
+        print("stop ctr: " + str(stopCtr))
+    else:
+        print("EXECUTE")
+        currentManeuver.execute()
+        
+     
     
   #  global msgToSend
    # output = 0

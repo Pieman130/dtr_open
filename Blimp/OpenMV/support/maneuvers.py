@@ -45,6 +45,13 @@ class Maneuver:
         print("\ttime: " + str(self.timeClock))                
         self.mavlink.setControls(self.controls)
 
+        self.mavlink._read_uart()
+        print("AFTER READ UART!!")
+    
+    def sendNoop(self):
+        blankControls = Controls()
+        self.mavlink.setControls(blankControls)
+
     def isExitCriteriaMet(self):
         if self.isManeuverTimeoutReached() or self.isSensorExitCriteriaMet():
             return True
@@ -104,19 +111,19 @@ class Controls:
 
 ## maneuvers
 forwardExitCriteria = ExitCriteria()
-forwardExitCriteria.add("timeClock",10)
+#forwardExitCriteria.add("timeClock",10)
 forwardExitCriteria.add("colorDetected",'green')
 
 forwardControls = Controls()
-forwardControls.throttle = 1
-forwardControls.up = 1 #test only
-forwardControls.yaw = 1 #test only
+forwardControls.throttle = 0.5
+#forwardControls.up = 1 #test only
+#forwardControls.yaw = 1 #test only
 
 forwardOrGreen = Maneuver("Go forward until see green water bottle.",forwardControls,forwardExitCriteria)
 
 ##
 three60orAprilTagExit = ExitCriteria()
-three60orAprilTagExit.add("timeClock",5) #need to figure out how long it takes to do 360...
+#three60orAprilTagExit.add("timeClock",5) #need to figure out how long it takes to do 360...
 three60orAprilTagExit.add("isAprilTagDetected",True)
 three60orAprilTagCtrls = Controls()
 three60orAprilTagCtrls.yaw = 0.5
@@ -125,7 +132,8 @@ three60orAprilTag = Maneuver("360 or until see april tag.",three60orAprilTagCtrl
 
 #
 hoverExit = ExitCriteria()
-hoverExit.add("timeClock",5) #need to figure out how long it takes to do 360...
+#hoverExit.add("timeClock",5) #need to figure out how long it takes to do 360...
+hoverExit.add("irData",True)
 hoverCtrls = Controls()
 hoverCtrls.up = 0.5
 

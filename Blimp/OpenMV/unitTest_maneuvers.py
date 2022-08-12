@@ -1,11 +1,12 @@
 import sys
 sys.path.append('C:\DroneRepos\DTRRepo\Blimp\OpenMV\support')
 
+import time
 import maneuvers
 from maneuvers import ExitCriteria
 from maneuvers import Maneuver
 from maneuvers import Controls
-from dataClasses import data
+import dataClasses
 
 
 
@@ -14,7 +15,7 @@ activeManuever = None
 # setup forward motion control.
 forwardExitCriteria = ExitCriteria()
 forwardExitCriteria.add("timeClock",10)
-forwardExitCriteria.add("colorDetected",True)
+#forwardExitCriteria.add("colorDetected",True)
 
 forwardControls = Controls()
 forwardControls.throttle = 0.5
@@ -26,8 +27,9 @@ ctr = 0
 while not forward.isExitCriteriaMet():    
     forward.execute()
     if(ctr == 3):
-        data.colorDetected = True
+        dataClasses.data.colorDetected = True
     ctr = ctr + 1
+    time.sleep(0.5)
 
 print('test complete')
 
@@ -45,8 +47,9 @@ ctr = 0
 while not three60orAprilTag.isExitCriteriaMet():    
     three60orAprilTag.execute()
     if(ctr == 3):
-        data.aprilTagDetected = True
+        dataClasses.data.aprilTagDetected = True
     ctr = ctr + 1
+    time.sleep(0.5)
 
 print('test complete')
 

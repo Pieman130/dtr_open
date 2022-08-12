@@ -1,4 +1,5 @@
 import dataClasses
+import time
 
 class Mavlink: # TO BE MOVED TO ANOTHER FILE
     def __init__(self):
@@ -6,13 +7,13 @@ class Mavlink: # TO BE MOVED TO ANOTHER FILE
     
     def setControls(self,controls):
         self.printSetActions(controls)
-        
+
     def printSetActions(self,controls):
         print("\tsetting yaw: " + str(controls.yaw))
         print("\tsetting up: " + str(controls.up))
         print("\tsetting throttle: " + str(controls.throttle))
         print("\tsetting servo: " + str(controls.servo))
-
+###################################################
 
 TIME_INCREMENT_S = 1
 
@@ -35,12 +36,21 @@ class Maneuver:
         
         self.description = description
         self.timeClock = 0
+        self.startTime = None
         self.exitCriteria = exitCriteria
         self.controls = controls
         self.data = dataClasses.data
         self.mavlink = Mavlink()
 
+    def updateTime(self):
+        if self.startTime == None:
+            self.startTime = time.time()
+        else:
+            self.timeClock = time.time() - self.startTime
+        
+
     def execute(self):
+        self.updateTime()
         print(self.description + " -  Maneuver")
         print("\ttime: " + str(self.timeClock))        
         self.timeClock = self.timeClock + TIME_INCREMENT_S
@@ -62,7 +72,7 @@ class Maneuver:
                 else:
                     numCriterionUnmet = numCriterionUnmet + 1               
 
-        if numCriterionUnmet == 0:
+        if numCriterionUnmet == 0 and numCriterionMet > 0:
             return True
         else:
             return False        
@@ -71,7 +81,7 @@ class Maneuver:
         returnVal = False
         for item in self.exitCriteria.list:
             if self.isCriteriaTimeClock(item.variableName):
-                if item.value == self.timeClock:
+                if self.timeClock > item.value:
                     returnVal = True
         
         return returnVal

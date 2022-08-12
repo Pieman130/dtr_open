@@ -15,8 +15,6 @@ class Mavlink: # TO BE MOVED TO ANOTHER FILE
         print("\tsetting servo: " + str(controls.servo))
 ###################################################
 
-TIME_INCREMENT_S = 1
-
 class ExitCriteria:
     def __init__(self):
         self.list = []
@@ -52,8 +50,7 @@ class Maneuver:
     def execute(self):
         self.updateTime()
         print(self.description + " -  Maneuver")
-        print("\ttime: " + str(self.timeClock))        
-        self.timeClock = self.timeClock + TIME_INCREMENT_S
+        print("\ttime: " + str(self.timeClock))                
         self.mavlink.setControls(self.controls)
 
     def isExitCriteriaMet(self):

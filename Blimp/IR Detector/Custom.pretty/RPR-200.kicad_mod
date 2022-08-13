@@ -1,0 +1,32 @@
+(footprint "RPR-200" (version 20211014) (generator pcbnew)
+  (layer "F.Cu")
+  (tedit 0)
+  (attr through_hole)
+  (fp_text reference "REF**" (at 2.032 0.762 unlocked) (layer "F.SilkS")
+    (effects (font (size 1 1) (thickness 0.15)))
+    (tstamp 2a120c8d-75e4-4ffb-ad56-05484ef51fee)
+  )
+  (fp_text value "RPR-200" (at 3.429 -5.588 unlocked) (layer "F.Fab")
+    (effects (font (size 1 1) (thickness 0.15)))
+    (tstamp 5ccdfa7e-a0a8-427c-97a1-99c5ba5250c3)
+  )
+  (fp_poly (pts
+      (xy 0 0)
+      (xy 0 -4.9)
+      (xy 5.588 -4.9)
+      (xy 6.4 -4.064)
+      (xy 6.4 0)
+    ) (layer "F.SilkS") (width 0.12) (fill none) (tstamp 1112dda7-f639-4a88-9683-d40c6be54604))
+  (pad "1" thru_hole circle (at 1.8 -1.2) (size 1.524 1.524) (drill 0.762) (layers *.Cu *.Mask) (tstamp 16d180a3-9afb-4c89-a224-99c88acf5f02))
+  (pad "2" thru_hole circle (at 1.8 -3.7) (size 1.524 1.524) (drill 0.762) (layers *.Cu *.Mask) (tstamp af9b403d-ba8c-48b0-b132-baa4d5da5e9d))
+  (pad "3" thru_hole circle (at 4.6 -3.7) (size 1.524 1.524) (drill 0.762) (layers *.Cu *.Mask) (tstamp 06c0f758-c32d-4752-8d20-faa0b70b7a2a))
+  (pad "4" thru_hole circle (at 4.6 -1.2) (size 1.524 1.524) (drill 0.762) (layers *.Cu *.Mask) (tstamp d529f02d-d43c-42b9-abe6-88d1bca12038))
+  (group "" (id 37ed8261-4d85-4a4b-9e6c-b79537c40b5d)
+    (members
+      06c0f758-c32d-4752-8d20-faa0b70b7a2a
+      16d180a3-9afb-4c89-a224-99c88acf5f02
+      af9b403d-ba8c-48b0-b132-baa4d5da5e9d
+      d529f02d-d43c-42b9-abe6-88d1bca12038
+    )
+  )
+)

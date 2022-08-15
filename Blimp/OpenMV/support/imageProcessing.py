@@ -44,7 +44,7 @@ def lookForAprilTag(img):
         print_args = (family_name(tag), tag.id(), (180 * tag.rotation()) / math.pi)
         print("Tag Family %s, Tag ID %d, rotation %f (degrees)" % print_args)
 
-    print("found april tag?: " + str(foundIt))
+    print("found april tag?: " + str(tagsFound.foundIt))
 
     return tagsFound
 

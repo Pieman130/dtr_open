@@ -1,21 +1,12 @@
 import sensor
-import pyb
 from machine import Pin
 
-
-# globals
+import dataClasses
 class Sensors:
     def __init__(self):
         self.irSensor = None
-        self.camera = None
-        self.pixracer = None
+        self.camera = None        
 
-class RawData:
-    def __init__(self):
-        self.img = None
-        self.irSensor = None
-
-rawData = RawData()
 sensors = Sensors()
 
 def initialize(): # https://github.com/mavlink/c_library_v1/blob/master/checksum.h
@@ -24,18 +15,7 @@ def initialize(): # https://github.com/mavlink/c_library_v1/blob/master/checksum
     print("initialize sensors")
     initializeCamera()
     initializeIrSensor()
-    initializePixracerUart()
-    return output
-    
-def initializePixracerUart():
-    global sensors
-    uart_baudrate = 115200
-    sensors.pixracer = pyb.UART(3, uart_baudrate, timeout_char = 1000)    
-
-def pixracerWrite(msg):
-    global sensors
-    print("sending to pixracer: " + str(msg))
-    sensors.pixracer.write(msg)
+    return output 
 
 def initializeIrSensor():
     global sensors
@@ -61,12 +41,16 @@ def initializeCamera():
 
 
 def collectData():
-    global sensors
-    global rawData
+    global sensors    
     output = 0
     print("collecting data")
-    rawData.img = sensors.camera.snapshot()     
+    
+    dataClasses.rawData.img = sensors.camera.snapshot()     
 
-    rawData.irSensor = sensors.irSensor.value()
+    dataClasses.rawData.irSensor = sensors.irSensor.value()    
+   # data_dict = mavlink.getDataFromPixRacer
+
+  #  mavlink.refreshPixRacerCurrentValues
+
 
     return output

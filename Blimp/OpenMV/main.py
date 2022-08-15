@@ -7,14 +7,15 @@ import externalSensors
 import processing
 import actionEngine
 import groundStation
-
-
+#import pixracer
 
 
 def main() -> None:
-    loopPause = 0.25
-    externalSensors.initialize()
-    groundStation.initialize()
+    loopPause = 1
+    #pixracer.initialize()
+    groundStation.initialize() # MUST BE DONE BEFORE EXTERNAL SENSORS.
+    externalSensors.initialize() # MUST BE DONE AFTER WIFI INITIALIZATION
+    actionEngine.initialize()
     
 
     clock = time.clock()
@@ -27,10 +28,10 @@ def main() -> None:
         externalSensors.collectData()
 
         processing.parseSensorData()
+                
+        groundStation.sendStatusMessage()
 
-        #
-
-        #groundStation.sendStatusMessage()
+        actionEngine.updateState()
 
         actionEngine.getNextStep()
 

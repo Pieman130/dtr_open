@@ -153,53 +153,135 @@ class MavLink():
         return(400*value+1500)
 
 
-    def setControls(self,controls):        
-        '''Aend corresponding mavlink message to set servo values based on current settings of controls object'''
+    def setControls(self,controls):
+        '''Send corresponding mavlink message to set servo values based on current settings of controls object'''
         self.send_set_servo_cmd(YAW_SERVO,self.__cntl_to_pwm(controls.yaw)) #YAW Servo Channel 2
         self.send_set_servo_cmd(THROTTLE_SERVO,self.__cntl_to_pwm(controls.throttle)) #THROTTLE Servo Channel 1
         self.send_set_servo_cmd(UP_SERVO,self.__cntl_to_pwm(controls.up)) #UP Servo Channel 3
 
-    def _read_uart(self):
-        '''Read contents of serial buffer and parse messages'''
-        result = self._uart.readline()
+
+    def _read_uart(self): #TODO Run tests to see if buffer is emptying out fast enough
+        '''Read contents of serial buffer and parse messages
+        Parse a message:
+            msg[0] = start byte (254)
+            msg[1] = message payload length (not including header or checksum
+            msg[2] = sequence number (0-255)
+            msg[3] = systems id (should always be 1)
+            msg[4] = component id (usually 1)
+            msg[5] = message type 
+            msg[6:6+n] = payload n = message payload length
+            msg[6+n:6+n+3] = checksum'''
+        result = self._uart.read()
         if result == None:
-            print("Nothing Read.")
-        else:
-            self.parse_mavlink(result)
-
-
-    def parse_mavlink(self,ser_msg):
-        '''
-        0th B = preamble (254)
-        1st B = payload length
-        2nd B = seq #
-        3rd B = sys id
-        4th B = Comp id
-        5th B = Msg id (message type)
-        6th - n B = payload
-        n-2 = 1st byte chksum
-        n-1 = 2nd byte chksum
-        '''
-        header = []
-        try:
-            for i in range(6):
-                header.append(ser_msg[i])
-            if ser_msg[0] != 254: #if inital byte not 254, it is misaligned message, ignore
-                return None
-            else:
-                #print("Payload Length: ", ser_msg[1])
-                #print("Message Type: ", ser_msg[5])
-                msg_type = ser_msg[5]
-            payload = ser_msg[6:-2]
-            if msg_type == 36:
-                print("SERVO 1 VALUE: ", int.from_bytes(payload[4:6], "little"))
-                print("SERVO 2 VALUE: ", int.from_bytes(payload[6:8], "little"))
-                print("SERVO 3 VALUE: ", int.from_bytes(payload[8:10], "little"))
-            else:
-                print("Message Type: ", msg_type)
-            return 1
-        except IndexError:
             return None
+        else:
+            r_pntr = 0 #read_pointer - tracks read position in message buffer
+            msg_list = [] #stores all parsed messages
+            while r_pntr < len(a):
+                if result[r_pntr] == 254:
+                    try: #Message found
+                        msg_type = result[r_pntr+5] #Message Id
+                        payload = a[r_pntr+6:r_pntr+result[r_pntr+1]] #Msg payload in bytes
+                        msg = (result[r_pntr+5],payload)
+                        msg_list.append(msg)
+                        r_pntr += 6+msg_len+2 #advance read pointer to next message
+                    except IndexError:
+                        #Incomplete Message
+                        r_pntr += 1
+                else:
+                    r_pntr += 1
+            return msg_list
+
+
+    def __parse_lidar_msg(self,msg):
+        '''https://github.com/mavlink/c_library_v1/blob/master/common/mavlink_msg_distance_sensor.h
+           https://mavlink.io/en/messages/common.html#DISTANCE_SENSOR
+           Byte order:
+            char buf[MAVLINK_MSG_ID_DISTANCE_SENSOR_LEN];
+            _mav_put_uint32_t(buf, 0, time_boot_ms);
+            _mav_put_uint16_t(buf, 4, min_distance);
+            _mav_put_uint16_t(buf, 6, max_distance);
+            _mav_put_uint16_t(buf, 8, current_distance);
+            _mav_put_uint8_t(buf, 10, type);
+            _mav_put_uint8_t(buf, 11, id);
+            _mav_put_uint8_t(buf, 12, orientation);
+            _mav_put_uint8_t(buf, 13, covariance);
+        '''  
+        pass 
+
+
+    def __parse_attitude_msg(self,msg):
+        '''https://github.com/mavlink/c_library_v1/blob/master/common/mavlink_msg_attitude.h
+           https://mavlink.io/en/messages/common.html#ATTITUDE
+           Byte order: 
+            char buf[MAVLINK_MSG_ID_ATTITUDE_LEN];
+            _mav_put_uint32_t(buf, 0, time_boot_ms);
+            _mav_put_float(buf, 4, roll);
+            _mav_put_float(buf, 8, pitch);
+            _mav_put_float(buf, 12, yaw);
+            _mav_put_float(buf, 16, rollspeed);
+            _mav_put_float(buf, 20, pitchspeed);
+            _mav_put_float(buf, 24, yawspeed);
+        '''
+
+        pass
+
+
+    def __parse_rc_ch_msg(self,msg):
+        '''https://github.com/mavlink/c_library_v1/blob/master/common/mavlink_msg_rc_channels_raw.h
+           https://mavlink.io/en/messages/common.html#RC_CHANNELS_RAW
+           Byte Order:
+            char buf[MAVLINK_MSG_ID_RC_CHANNELS_RAW_LEN];
+            _mav_put_uint32_t(buf, 0, time_boot_ms);
+            _mav_put_uint16_t(buf, 4, chan1_raw);
+            _mav_put_uint16_t(buf, 6, chan2_raw);
+            _mav_put_uint16_t(buf, 8, chan3_raw);
+            _mav_put_uint16_t(buf, 10, chan4_raw);
+            _mav_put_uint16_t(buf, 12, chan5_raw);
+            _mav_put_uint16_t(buf, 14, chan6_raw);
+            _mav_put_uint16_t(buf, 16, chan7_raw);
+            _mav_put_uint16_t(buf, 18, chan8_raw);
+            _mav_put_uint8_t(buf, 20, port);
+            _mav_put_uint8_t(buf, 21, rssi);
+        '''
+        pass
+
+
+    def __parse_servo_output_msg(self,msg):
+    '''https://github.com/mavlink/c_library_v1/blob/master/common/mavlink_msg_servo_output_raw.h
+       https://mavlink.io/en/messages/common.html#SERVO_OUTPUT_RAW
+       Byte order:
+        _mav_put_uint32_t(buf, 0, time_usec);
+        _mav_put_uint16_t(buf, 4, servo1_raw);
+        _mav_put_uint16_t(buf, 6, servo2_raw);
+        _mav_put_uint16_t(buf, 8, servo3_raw);
+        _mav_put_uint16_t(buf, 10, servo4_raw);
+        _mav_put_uint16_t(buf, 12, servo5_raw);
+        _mav_put_uint16_t(buf, 14, servo6_raw);
+        _mav_put_uint16_t(buf, 16, servo7_raw);
+        _mav_put_uint16_t(buf, 18, servo8_raw);
+        _mav_put_uint8_t(buf, 20, port);'''
+        pass
+
+
+    def getSensors(self):
+        '''Returns dict where key = Sensor_type, value = most recent value received via mavlink'''
+        msg_list = self._read_uart()
+        sensors = {'Attitude': None, 'RCCH': None, 'Servo': None, 'Lidar': None}
+
+        for msg in msg_list:
+            if msg[0] == 30:
+                sensors['Attitude'] = self.__parse_attitude(msg[1]) 
+            elif msg[0] == 35:
+                sensors['RCCH'] = self.__parse_rc_ch_msg(msg[1])
+            elif msg[0] == 36:
+                sensors['Servo'] = self.__parse_servo_output_msg(msg[1])
+            elif msg[0] == 132:
+                sensors['Lidar'] = self.__parse_lidar_msg(msg[1])
+
+        return sensors #Any sensor that is not updated will return 'None'
+
+
 
 
 

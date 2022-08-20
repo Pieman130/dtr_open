@@ -8,6 +8,7 @@ class RawData:
         self.motor_throttle = None #or do we put this somewhere else?
         self.motor_up = None #or do we put this somewhere else?
         self.motor_yaw = None #or do we put this somewhere else?
+        self.lidar = None
 
 class ProcessedData:
     def __init__(self):

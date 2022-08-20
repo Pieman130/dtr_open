@@ -31,11 +31,11 @@ def main() -> None:
                 
         groundStation.sendStatusMessage()
 
-        actionEngine.updateState()
+       # actionEngine.updateState()
 
-        actionEngine.getNextStep()
+      #  actionEngine.getNextStep()
 
-        actionEngine.executeNextStep()               
+       # actionEngine.executeNextStep()               
 
         
 main()

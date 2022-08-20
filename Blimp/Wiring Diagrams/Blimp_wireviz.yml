@@ -1,0 +1,210 @@
+connectors:
+  Pixracer-Telem1: &PX_GH6_template
+    pinlabels: [GND,RTS,CTS,RX,TX,5V]
+    type: JST-GH_1.25
+    subtype: female
+  
+  Pixracer-Telem2:
+    <<: *PX_GH6_template
+
+  Pixracer-PWR:
+    <<: *PX_GH6_template
+    pinlabels: [GND,GND,Vsen,Csen,5V,5V]
+
+  Pixracer-RC:
+    <<: *PX_GH6_template
+    pinlabels: [GND,3.3V,RSSI,RCin,5V]
+  
+  Pixracer-Servos:
+    pinlabels: [ch1,ch2,ch3,ch4,ch5,ch6]
+    type: 0.1" header
+    subtype: female
+  
+  RC_Receiver: &DP_SERVO_template
+    pinlabels: [GND,PWM,5V]
+    type: 0.1" header
+    subtype: female
+
+  OpenMV_Hat-Serial:
+    <<: *DP_SERVO_template
+    pinlabels: [5V,TXD,RXD,GND]
+
+  OpenMV_Hat-Detector:
+    <<: *DP_SERVO_template
+    pinlabels: [3.3V,signal,GND]
+  
+  OpenMV_Hat-Servo1:
+    <<: *DP_SERVO_template
+    pinlabels: [5V,PWM,GND]
+  
+  OpenMV_Hat-Servo3:
+    <<: *DP_SERVO_template
+    pinlabels: [5V,PWM,GND]
+
+  LIDAR-Serial:
+    <<: *PX_GH6_template
+    pinlabels: [GND,5V,RXD,TXD]
+  
+  IR-Detector:
+    <<: *DP_SERVO_template
+    pinlabels: [3.3V,signal,GND]
+
+  5VRegulator:
+    pinlabels: [Vin,GND,Vout]
+    type: solder pad
+  
+  Battery:
+    pinlabels: [Vbatt,Return]
+    type: JST-PH
+    subtype: female
+  
+  Lift ESC Signal:
+    <<: *DP_SERVO_template
+
+  Yaw ESC Signal:
+    <<: *DP_SERVO_template
+
+  Thrust ESC Signal:
+    <<: *DP_SERVO_template
+
+  Lift ESC Power:
+    pinlabels: [Vbatt,GND]
+    type: Soldered Wire
+
+  Yaw ESC Power:
+    pinlabels: [Vbatt,GND]
+    type: Soldered Wire
+
+  Thrust ESC Power:
+    pinlabels: [Vbatt,GND]
+    type: Soldered Wire 
+
+  Catch Servo:
+    <<: *DP_SERVO_template
+  
+cables:
+  BatteryCable (short):
+    wirecount: 2
+    length: 6 in
+    gauge: 16 awg
+    colors: [RD, BK]
+  BatteryCable (long):
+    wirecount: 2
+    length: 2 ft
+    gauge: 16 awg
+    colors: [RD, BK]
+  Lift ESC Cable:
+    wirecount: 1
+    gauge: 28 awg
+    colors: [YE]
+  Yaw ESC Cable:
+    wirecount: 1
+    gauge: 28 awg
+    colors: [YE]
+  Thrust ESC Cable:
+    wirecount: 1
+    gauge: 28 awg
+    colors: [YE]
+
+  5VtoPixRacerCable:
+    wirecount: 2
+    gauge: 26 awg
+    colors: [RD,BK]
+
+  RCCable:
+    wirecount: 3
+    gauge: 28 awg
+    colors: [BK,YE,RD]
+
+  LIDARCable:
+    wirecount: 4
+    gauge: 28 awg
+    colors: [BK,WH,BU,RD]
+
+  PixOpenMVCable:
+    wirecount: 4
+    gauge: 22/28 awg
+    colors: [BK,WH,BU,RD]
+
+  DetectorCable:
+    wirecount: 3
+    gauge: 28 awg
+    colors: [RD,GN,BK]
+  
+  CatchServoCable:
+    wirecount: 3
+    gauge: 28 awg
+    colors: [BK,YE,RD]
+  
+
+connections:
+# High power from battery
+  -
+    - Battery: [1,2]
+    - BatteryCable (short): [1,2]
+    - 5VRegulator: [Vin,GND]
+  -
+    - Battery: [1,2]
+    - BatteryCable (short): [1,2]
+    - Lift ESC Power: [Vbatt,GND]
+  -
+    - Battery: [1,2]
+    - BatteryCable (long): [1,2]
+    - Yaw ESC Power: [Vbatt,GND]
+  -
+    - Battery: [1,2]
+    - BatteryCable (long): [1,2]
+    - Thrust ESC Power: [Vbatt,GND]
+  
+#ESC signals - do not connect grounds, can create dangerous ground loop
+  -
+    - Pixracer-Servos: [3]
+    - Lift ESC Cable: [1]
+    - Lift ESC Signal: [PWM]
+  -
+    - Pixracer-Servos: [2]
+    - Yaw ESC Cable: [1]
+    - Yaw ESC Signal: [PWM]
+  - #h
+    - Pixracer-Servos: [1]
+    - Thrust ESC Cable: [1]
+    - Thrust ESC Signal: [PWM]
+
+#5V power to pixracer
+  -
+    - 5VRegulator: [Vout,GND] 
+    - 5VtoPixRacerCable: [1,2]
+    - Pixracer-PWR: [5,1]
+  -
+    - 5VRegulator: [Vout,GND] 
+    - 5VtoPixRacerCable: [1,2]
+    - Pixracer-PWR: [6,2]
+
+#RC receiver
+  -
+    - Pixracer-RC: [GND,RCin,5V]
+    - RCCable: [1-3]
+    - RC_Receiver: [1-3]
+
+#LIDAR
+  -
+    - Pixracer-Telem1: [GND,RX,TX,5V]
+    - LIDARCable: [1-4]
+    - LIDAR-Serial: [GND,TXD,RXD,5V]
+
+#Pixracer-OpenMV Serial
+  -
+    - Pixracer-Telem2: [GND,RX,TX,5V]
+    - PixOpenMVCable: [1-4]
+    - OpenMV_Hat-Serial: [GND,TXD,RXD,5V]
+
+#OpenMV peripherals
+  - 
+    - OpenMV_Hat-Detector: [1-3]
+    - DetectorCable: [1-3]
+    - IR-Detector: [1-3]
+  
+  -
+    - OpenMV_Hat-Servo1: [3-1]
+    - CatchServoCable: [1-3]
+    - Catch Servo: [1-3]

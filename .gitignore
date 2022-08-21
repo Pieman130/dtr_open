@@ -22,9 +22,6 @@ fp-info-cache
 *.dsn
 *.ses
 
-# PCB view preferences?
-*.kicad_prl
-
 
 # Python byte-compiled/optimized from https://github.com/github/gitignore/blob/main/Python.gitignore
 __pycache__/

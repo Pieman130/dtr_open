@@ -2,7 +2,7 @@
 
   (uuid 4302b2ff-f9b1-48cb-a38f-0c9911eaa1dd)
 
-  (paper "A4")
+  (paper "A")
 
   (lib_symbols
     (symbol "74xGxx:74LVC1G17" (pin_names (offset 1.016)) (in_bom yes) (on_board yes)

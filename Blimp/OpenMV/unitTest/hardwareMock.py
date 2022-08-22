@@ -16,7 +16,7 @@ class UartMock:
         print("uart mock")
     
     def write(self,msg):
-        print("uart mock send: " + msg)
+        print("uart mock send: " + str(msg))
 
 class IrSensorMock:
     def __init__(self):
@@ -28,6 +28,8 @@ class IrSensorMock:
 class CameraMock:
     def __init__(self):
         print("camera mock")
+        self.RGB565 = 0 #nonsense
+        self.QQVGA = 0 #nonsense
 
     def reset(self):
         print("mock reset camera")
@@ -39,22 +41,19 @@ class CameraMock:
         print("mock set frame size: " + str(frameSize))
     
     def skip_frames(self, frameTimeSkip):
-        print("mock set skip frame time: " + frameTimeSkip)        
+        print("mock set skip frame time: " + str(frameTimeSkip))
     
     def set_auto_gain(self,isSetAutogain):
-        print("mock set autogain: " + isSetAutogain)
+        print("mock set autogain: " + str(isSetAutogain))
     
     def set_auto_whitebal(self, isSetAutoWhitebalance):
-        print("mock set auto while bal" + isSetAutoWhitebalance)
+        print("mock set auto while bal" + str(isSetAutoWhitebalance))
+
+    def snapshot(self):
+        print("mock snapshot")
 
 class Hardware:
-    def __init__(self):
-        self.uart = None
-        self.wlan = None
-        self.irSensor = None
-        self.camera = None
-
-    def initialize(self):
+    def __init__(self):       
         self.wlan = NetworkMock()
         
         self.uart = UartMock()      

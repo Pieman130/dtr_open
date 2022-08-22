@@ -1,7 +1,6 @@
 import dataClasses
-import maneuvers
-currentState = None
-currentManeuver = None
+import flightManeuvers
+
 
 ACTION_LOOK = "look"
 ACTION_MOVE = "move"
@@ -17,6 +16,7 @@ MODE_FINE = "fine"
 
 STOP_CTR_MAX = 15
 stopCtr = 0
+
 class StateEngine:
     def __init__(self):
         mode = ''
@@ -40,100 +40,79 @@ lookForGoal = SystemState("Search for goal.",TARGET_GOAL,ACTION_LOOK)
 moveToGoal = SystemState("Move to goal.", TARGET_GOAL,ACTION_MOVE)
 scoreGoal = SystemState("Score goal.",TARGET_GOAL,ACTION_RELEASE)
 
+class ActionEngine:
+    def __init__(self,comms):
+        self.currentState = lookForBall
+        self.currentManeuver = None
+        self.blimpManeuvers = flightManeuvers.BlimpManeuvers(comms)
 
-    
-def initialize():
-    global currentState
-    currentState = lookForBall
+    def updateState(self):
+        # do I switch system states?
+        print('update state called')
 
-def updateState():
-    # do I switch system states?
-    print('update state called')
+    def getNextStep(self): # https://github.com/mavlink/c_library_v1/blob/master/checksum.h 
+        global currentManeuver
+        global stopCtr
+        global STOP_CTR_MAX
 
-def getNextStep(): # https://github.com/mavlink/c_library_v1/blob/master/checksum.h 
-    global currentManeuver
-    global stopCtr
-    global STOP_CTR_MAX
+        dataClasses.gndStationCmd.print()
+        #dataClasses.gndStationCmd.maneuverDescription
 
-    dataClasses.gndStationCmd.print()
-    #dataClasses.gndStationCmd.maneuverDescription
+        print(" action engine! ir data: " + str(dataClasses.data.irData))
+        print(" action engine! img: " + str(dataClasses.data.colorDetected))
+        output = 0
+        print("get next step")
 
-    print(" action engine! ir data: " + str(dataClasses.data.irData))
-    print(" action engine! img: " + str(dataClasses.data.colorDetected))
-    output = 0
-    print("get next step")
-
-    
-    print(dataClasses.data.aprilTagFound.foundIt)
-    print("rotation: " + str(dataClasses.data.aprilTagFound.rotation))
-
-    print("GROUND STATION MANEUVER: " + dataClasses.gndStationCmd.maneuverDescription)
-
-    if not currentManeuver == None:
-        if stopCtr>STOP_CTR_MAX: 
-            stopCtr = 0
-            currentManeuver = None
-
-    if currentManeuver == None:        
-        currentManeuver = getManeuver(dataClasses.gndStationCmd.maneuverDescription)
-        currentManeuver.reset()
-
-   # dataClasses.gndStationCmd.maneuverDescription
-   # dataClasses.gndStationCmd.baseUpVal
-   # dataClasses.gndStationCmd.duration
-
-    #moveForwardFull()
-
-    return output
-
-def getManeuver(desc):
-    if (desc == 'forward'):
-        print("NEXT MANEUVER - FORWARD")
-        nextManeuver = maneuvers.forwardOrGreen
-    elif (desc == '360'):
-        print("NEXT MANEUVER - 360")
-        nextManeuver = maneuvers.three60orAprilTag
-    else:
-        print("NEXT MANEUVER - HOVER")
-        nextManeuver = maneuvers.hover
-
-    return nextManeuver
-
-def executeNextStep():
-    global stopCtr
-    global currentManeuver
-    if currentManeuver.isExitCriteriaMet():
-        print("NO OP")
-        currentManeuver.sendNoop()            
-        stopCtr = stopCtr + 1
-        print("stop ctr: " + str(stopCtr))
-    else:
-        print("EXECUTE")
-        currentManeuver.execute()
         
+        print(dataClasses.data.aprilTagFound.foundIt)
+        print("rotation: " + str(dataClasses.data.aprilTagFound.rotation))
+
+        print("GROUND STATION MANEUVER: " + dataClasses.gndStationCmd.maneuverDescription)
+
+        if not self.currentManeuver == None:
+            if stopCtr>STOP_CTR_MAX: 
+                stopCtr = 0
+                currentManeuver = None
+
+        if self.currentManeuver == None:        
+            currentManeuver = self.getManeuver(dataClasses.gndStationCmd.maneuverDescription)
+            currentManeuver.reset()
+
+    # dataClasses.gndStationCmd.maneuverDescription
+    # dataClasses.gndStationCmd.baseUpVal
+    # dataClasses.gndStationCmd.duration
+
+        #moveForwardFull()
+
+        return output
+
+    def getManeuver(self,desc):
+        global blimpManeuvers
+
+        if (desc == 'forward'):
+            print("NEXT MANEUVER - FORWARD")
+            
+
+            nextManeuver = self.blimpManeuvers.forward
+        elif (desc == '360'):
+            print("NEXT MANEUVER - 360")
+            nextManeuver = self.blimpManeuvers.three60
+        else:
+            print("NEXT MANEUVER - HOVER")
+            nextManeuver = self.blimpManeuvers.hover
+
+        return nextManeuver
+
+    def executeNextStep():
+        global stopCtr
+        global currentManeuver
+        if currentManeuver.isExitCriteriaMet():
+            print("NO OP")
+            currentManeuver.sendNoop()            
+            stopCtr = stopCtr + 1
+            print("stop ctr: " + str(stopCtr))
+        else:
+            print("EXECUTE")
+            currentManeuver.execute()
+            
      
-    
-  #  global msgToSend
-   # output = 0
-  #  print("execute next step")
-
-    
-    ## need to put this  somewhere...
-    
-   # minValue = 1100 #backwards
-   # midValue = 1500 #0
-   # fullValue = 1900 #full forward
-
-    # mavlink_messages 
-    # #2 = lift
-    # #3 = throttle
-    # #4 = up
-
-    
-   # ch = (0,fullValue,fullValue,fullValue,0,0,0,0)
-
-    #ctr = ctr + 1
-    #msgToSend = mavlink_messages.mvlink_ch_overide(ctr,ch)
-    
-    
-    #pixracer.write(msgToSend)

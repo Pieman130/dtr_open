@@ -40,9 +40,15 @@ def swInitialization(hw,com): # https://github.com/mavlink/c_library_v1/blob/mas
     global sensors
     output = 0
      
-    swInitializeCamera(hw)    
+    swInitializeCamera(hw)   
+    swInitializeIrSensor(hw)
+
     swInitializeLidar(com)
     return output 
+
+def swInitializeIrSensor(hw):
+    global sensors
+    sensors.irSensor = hw.irSensor
 
 def swInitializeLidar(com):
     global sensors
@@ -59,7 +65,7 @@ def swInitializeCamera(hw):
     sensors.camera.set_pixformat(sensors.camera.RGB565)
     #sensor.set_framesize(sensor.QVGA)
     sensors.camera.set_framesize(sensors.camera.QQVGA) #needed for april tag detections
-    sensors.camera.skip_frames(time = 2000)
+    sensors.camera.skip_frames(2000)
 
     # needed for april tag finder
     sensors.camera.set_auto_gain(False)  # must turn this off to prevent image washout...

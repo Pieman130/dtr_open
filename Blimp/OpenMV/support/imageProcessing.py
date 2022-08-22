@@ -29,16 +29,19 @@ def colorDetectedByCamera(img)-> str:
 
     return colorDetected
 
+
+class TagInfo:
+    def __init__(self):
+        self.foundIt = 0
+        self.tags = None
+        self.rotation = None
+
+tagsFound = TagInfo()
+    
+
 def lookForAprilTag(img):
     print("in look for april tag")
-    class TagInfo:
-        def __init__(self):
-            self.foundIt = 0
-            self.tags = None
-            self.rotation = None
 
-    tagsFound = TagInfo()
-    
     foundIt = 0
     
     for tag in img.find_apriltags(): # defaults to TAG36H11 without "families".        

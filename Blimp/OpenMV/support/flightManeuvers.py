@@ -1,30 +1,44 @@
+import flightActions
+class BlimpManeuvers():
+    #contains all the defined flight actions blimp is setup to do.
 
-## maneuvers
-forwardExitCriteria = ExitCriteria()
-#forwardExitCriteria.add("timeClock",10)
-forwardExitCriteria.add("colorDetected",'green')
+    def __init__(self,comms):
+        print("something here")
+        self.comms = comms
+        self.forward = self.initForward()
+        self.three60 = self.init360()
+        self.hover = self.initHover()
 
-forwardControls = Controls()
-forwardControls.throttle = 0.5
-#forwardControls.up = 1 #test only
-#forwardControls.yaw = 1 #test only
+    def initForward(self,throttle = 0.5):
+        forwardExitCriteria = flightActions.ExitCriteria()
+        #forwardExitCriteria.add("timeClock",10)
+        forwardExitCriteria.add("colorDetected",'green')
 
-forwardOrGreen = Maneuver("Go forward until see green water bottle.",forwardControls,forwardExitCriteria)
+        forwardControls = flightActions.Controls()
+        forwardControls.throttle = throttle
+        #forwardControls.up = 1 #test only
+        #forwardControls.yaw = 1 #test only
 
-##
-three60orAprilTagExit = ExitCriteria()
-#three60orAprilTagExit.add("timeClock",5) #need to figure out how long it takes to do 360...
-three60orAprilTagExit.add("isAprilTagDetected",True)
-three60orAprilTagCtrls = Controls()
-three60orAprilTagCtrls.yaw = 0.5
+        forwardOrGreen = flightActions.FlightAction("Go forward until see green water bottle.",forwardControls,forwardExitCriteria,self.comms)
+        return forwardOrGreen
 
-three60orAprilTag = Maneuver("360 or until see april tag.",three60orAprilTagCtrls,three60orAprilTagExit)
+    def init360(self,yaw = 0.5):
+        three60orAprilTagExit = flightActions.ExitCriteria()
+        #three60orAprilTagExit.add("timeClock",5) #need to figure out how long it takes to do 360...
+        three60orAprilTagExit.add("isAprilTagDetected",True)
+        three60orAprilTagCtrls = flightActions.Controls()
+        three60orAprilTagCtrls.yaw = yaw
 
-#
-hoverExit = ExitCriteria()
-#hoverExit.add("timeClock",5) #need to figure out how long it takes to do 360...
-hoverExit.add("irData",True)
-hoverCtrls = Controls()
-hoverCtrls.up = 0.5
+        three60orAprilTag = flightActions.FlightAction("360 or until see april tag.",three60orAprilTagCtrls,three60orAprilTagExit,self.comms)
+        return three60orAprilTag
 
-hover = Maneuver("hover",hoverCtrls,hoverExit)
+    def initHover(self,up = 0.5):
+        #
+        hoverExit = flightActions.ExitCriteria()
+        #hoverExit.add("timeClock",5) #need to figure out how long it takes to do 360...
+        hoverExit.add("irData",True)
+        hoverCtrls = flightActions.Controls()
+        hoverCtrls.up = up
+
+        hover = flightActions.FlightAction("hover",hoverCtrls,hoverExit,self.comms)
+        return hover

@@ -5,22 +5,29 @@ import time
 try: 
     import hardware
     import comms
+    isMicroPython = True
 
 except:
+    isMicroPython = False
     import sys
-    sys.path.append('C:\DroneRepos\DTRRepo\Blimp\OpenMV\unitTest')
-    
+    sys.path.append('C:\\DroneRepos\\DTRRepo\\Blimp\\OpenMV\\unitTest')
+    #import setupPCtesting
+    #setupPCtesting.setupImportsForNoOpenMVoperations   
+    #     
+    sys.path.append('C:\\DroneRepos\\DTRRepo\\Blimp\\OpenMV\\unitTest')
+    sys.path.append('C:\\DroneRepos\\DTRRepo\\Blimp\\OpenMV\\support')
+
     import hardwareMock
     hardware = hardwareMock
 
     import commsMock
     comms = commsMock
-    sys.path.append('C:\DroneRepos\DTRRepo\Blimp\OpenMV\support')
-                
-   # import setupPCtesting
-    #setupPCtesting.setupImportsForNoOpenMVoperations   
+    
+import dataClasses
+dataClasses.config.isMicroPython = isMicroPython    
 
 
+import sensors
 import processing
 import actionEngine
 import groundStation
@@ -33,32 +40,29 @@ def main() -> None:
 
     com = comms.Comms(hw)    
 
-    externalSensors.swInitialization(hw,com) 
+    sensors.swInitialization(hw,com) 
 
-    groundStation.swInitialization(com) 
+    gndStation = groundStation.GroundStation(com)    
 
 
-    actionEngine.initialize()
-    
+    action = actionEngine.ActionEngine(com)        
+        
 
-    clock = time.clock()
-
-    while(True):
-        clock.tick()        
+    while(True):        
 
         time.sleep(loopPause)
 
-        externalSensors.collectData()
+        sensors.collectData()
 
         processing.parseSensorData()
                 
-        groundStation.sendStatusMessage()
+        gndStation.sendStatusMessage()
 
-       # actionEngine.updateState()
+       # action.updateState()
 
-      #  actionEngine.getNextStep()
+      #  action.getNextStep()
 
-       # actionEngine.executeNextStep()               
+       # action.executeNextStep()               
 
         
 main()

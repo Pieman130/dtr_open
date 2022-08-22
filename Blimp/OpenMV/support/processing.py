@@ -1,7 +1,12 @@
-import imageProcessing
+
 
 # Do processing of sensor data
 import dataClasses
+if dataClasses.config.isMicroPython:
+    import imageProcessing
+else:
+    import imageProcessingMock
+    imageProcessing = imageProcessingMock
 
 def parseSensorData(): # https://github.com/mavlink/c_library_v1/blob/master/checksum.h    
     output = 0

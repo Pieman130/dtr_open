@@ -18,7 +18,7 @@ class ExitCriterion:
 
 
 class FlightAction:
-    def __init__(self,description,controls,exitCriteria):
+    def __init__(self,description,controls,exitCriteria,comms):
         
         self.description = description
         self.timeClock = 0
@@ -26,7 +26,7 @@ class FlightAction:
         self.exitCriteria = exitCriteria
         self.controls = controls
         self.data = dataClasses.data
-        self.mavlink = mavlink.MavLink()
+        self.mavlink = comms.mavlink
 
     def reset(self):
         self.startTime = None

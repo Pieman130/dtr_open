@@ -1,5 +1,6 @@
 import mavlink
-
+import requests
+import json
 class WiFi:
     def __init__(self,hw):
         self.ssid = 'DTR_team_a'
@@ -12,11 +13,14 @@ class WiFi:
         self.wlan.connect(self.ssid,self.key)
 
     def getFullAddress(self,addr: str, api: str) -> str:        
-        return 'http://{}:1111/{}'.format(addr, api)
+        return 'http://localhost:1111/{}'.format(api)
 
     def post(self,fullAddress,data,headers):
-        print("fake post to: " + fullAddress + ", data: " + str(data) + ", headers: " + headers)
-        r = "fake return"
+
+        dataFormatted = json.loads(data)
+
+        r = requests.post(fullAddress,dataFormatted)     
+        test = json.loads(r.text)               
         return r
 
 

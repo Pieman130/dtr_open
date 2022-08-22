@@ -1,4 +1,4 @@
-import pyb, struct, time
+import struct, time
 
 THROTTLE_SERVO = 1
 YAW_SERVO = 2
@@ -9,8 +9,8 @@ MSG_RATE = 200000 #5Hz messaging rate
 class MavLink():
     '''Implements select Mavlink v1 messages to enable bydirectional communication between 
     OpenMV and Pixracer (ardupilot)'''
-    def __init__(self,uart=3,baudrate=115200):
-        self._uart = pyb.UART(uart,baudrate,timeout_char=1000)
+    def __init__(self,hw):
+        self._uart = hw.uart
         self.__ps = -1 #starting packet number
         self.ser_buf = bytearray()
 

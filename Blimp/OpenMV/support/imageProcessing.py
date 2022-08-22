@@ -1,5 +1,9 @@
 
-import sensor, image # for stupid example
+import dataClasses
+
+if dataClasses.config.isMicroPython:
+    import image # for stupid example
+
 import time
 import math
 

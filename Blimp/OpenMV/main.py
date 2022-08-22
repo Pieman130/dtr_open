@@ -2,19 +2,42 @@
 
 import time
 
-import externalSensors
+try: 
+    import hardware
+    import comms
+
+except:
+    import sys
+    sys.path.append('C:\DroneRepos\DTRRepo\Blimp\OpenMV\unitTest')
+    
+    import hardwareMock
+    hardware = hardwareMock
+
+    import commsMock
+    comms = commsMock
+    sys.path.append('C:\DroneRepos\DTRRepo\Blimp\OpenMV\support')
+                
+   # import setupPCtesting
+    #setupPCtesting.setupImportsForNoOpenMVoperations   
+
 
 import processing
 import actionEngine
 import groundStation
-#import pixracer
 
 
 def main() -> None:
     loopPause = 1
-    #pixracer.initialize()
-    groundStation.initialize() # MUST BE DONE BEFORE EXTERNAL SENSORS.
-    externalSensors.initialize() # MUST BE DONE AFTER WIFI INITIALIZATION
+        
+    hw = hardware.Hardware()
+
+    com = comms.Comms(hw)    
+
+    externalSensors.swInitialization(hw,com) 
+
+    groundStation.swInitialization(com) 
+
+
     actionEngine.initialize()
     
 

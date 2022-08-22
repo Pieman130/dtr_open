@@ -14,6 +14,8 @@ def parseSensorData(): # https://github.com/mavlink/c_library_v1/blob/master/che
 
     dataClasses.data.aprilTagFound = imageProcessing.lookForAprilTag(dataClasses.rawData.img)        
     dataClasses.data.isAprilTagDetected = dataClasses.data.aprilTagFound.foundIt
+
+    parseLidarData()
     return output
 
 def parseIrSensorData():    
@@ -21,6 +23,10 @@ def parseIrSensorData():
     
     print('ir sensor: ' + str(dataClasses.data.irData))
    
+
+def parseLidarData():
+    dataClasses.data.lidarDistance_ft = dataClasses.rawData.lidar_cm /30.48
+    print('lidar distance (ft): ' + str(dataClasses.data.lidarDistance_ft))
 
 #def distanceToBall():    
 

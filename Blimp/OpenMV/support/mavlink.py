@@ -177,14 +177,14 @@ class MavLink():
         else:
             r_pntr = 0 #read_pointer - tracks read position in message buffer
             msg_list = [] #stores all parsed messages
-            while r_pntr < len(a):
+            while r_pntr < len(result):
                 if result[r_pntr] == 254:
                     try: #Message found
                         msg_type = result[r_pntr+5] #Message Id
-                        payload = a[r_pntr+6:r_pntr+result[r_pntr+1]] #Msg payload in bytes
+                        payload = result[r_pntr+6:r_pntr+6+result[r_pntr+1]] #Msg payload in bytes
                         msg = (result[r_pntr+5],payload)
                         msg_list.append(msg)
-                        r_pntr += 6+msg_len+2 #advance read pointer to next message
+                        r_pntr += 6+result[r_pntr+1]+2 #advance read pointer to next message
                     except IndexError:
                         #Incomplete Message
                         r_pntr += 1
@@ -207,7 +207,10 @@ class MavLink():
             _mav_put_uint8_t(buf, 12, orientation);
             _mav_put_uint8_t(buf, 13, covariance);
         '''
-        pass 
+        try:
+            return struct.unpack('<H',msg[8:10])[0]
+        except ValueError:
+            return None
 
 
     def __parse_attitude_msg(self,msg):
@@ -223,8 +226,10 @@ class MavLink():
             _mav_put_float(buf, 20, pitchspeed);
             _mav_put_float(buf, 24, yawspeed);
         '''
-
-        pass
+        try:
+            return (struct.unpack('<6f',msg[4:28])) #(roll,pitch,yaw,rollspeed,pitchspeed,yawspeed)
+        except ValueError:
+            return None
 
 
     def __parse_rc_ch_msg(self,msg):
@@ -244,24 +249,32 @@ class MavLink():
             _mav_put_uint8_t(buf, 20, port);
             _mav_put_uint8_t(buf, 21, rssi);
         '''
-        pass
+        try:
+            return (struct.unpack('<8H',msg[4:20]))
+        except ValueError:
+            return None
 
 
     def __parse_servo_output_msg(self,msg):
-    '''https://github.com/mavlink/c_library_v1/blob/master/common/mavlink_msg_servo_output_raw.h
-       https://mavlink.io/en/messages/common.html#SERVO_OUTPUT_RAW
-       Byte order:
-        _mav_put_uint32_t(buf, 0, time_usec);
-        _mav_put_uint16_t(buf, 4, servo1_raw);
-        _mav_put_uint16_t(buf, 6, servo2_raw);
-        _mav_put_uint16_t(buf, 8, servo3_raw);
-        _mav_put_uint16_t(buf, 10, servo4_raw);
-        _mav_put_uint16_t(buf, 12, servo5_raw);
-        _mav_put_uint16_t(buf, 14, servo6_raw);
-        _mav_put_uint16_t(buf, 16, servo7_raw);
-        _mav_put_uint16_t(buf, 18, servo8_raw);
-        _mav_put_uint8_t(buf, 20, port);'''
-        pass
+        '''https://github.com/mavlink/c_library_v1/blob/master/common/mavlink_msg_servo_output_raw.h
+           https://mavlink.io/en/messages/common.html#SERVO_OUTPUT_RAW
+           Byte order:
+            _mav_put_uint32_t(buf, 0, time_usec);
+            _mav_put_uint16_t(buf, 4, servo1_raw);
+            _mav_put_uint16_t(buf, 6, servo2_raw);
+            _mav_put_uint16_t(buf, 8, servo3_raw);
+            _mav_put_uint16_t(buf, 10, servo4_raw);
+            _mav_put_uint16_t(buf, 12, servo5_raw);
+            _mav_put_uint16_t(buf, 14, servo6_raw);
+            _mav_put_uint16_t(buf, 16, servo7_raw);
+            _mav_put_uint16_t(buf, 18, servo8_raw);
+            _mav_put_uint8_t(buf, 20, port);
+            return (struct.unpack('<H',msg[4:6])[0],    #Servo channel 1
+        '''
+        try:
+            return (struct.unpack('<8H',msg[4:20]))    #Servo channel 1
+        except ValueError:
+            return None
 
 
     def getSensors(self):
@@ -271,17 +284,29 @@ class MavLink():
 
         for msg in msg_list:
             if msg[0] == 30:
-                sensors['Attitude'] = self.__parse_attitude(msg[1]) 
+                result = self.__parse_attitude_msg(msg[1])
+                if result != None:
+                    sensors['Attitude'] = result
             elif msg[0] == 35:
-                sensors['RCCH'] = self.__parse_rc_ch_msg(msg[1])
+                result = self.__parse_rc_ch_msg(msg[1])
+                if result != None:
+                    sensors['RCCH'] = result
             elif msg[0] == 36:
-                sensors['Servo'] = self.__parse_servo_output_msg(msg[1])
+                result = self.__parse_servo_output_msg(msg[1])
+                if result != None:
+                    selnsors['Servo'] = result
             elif msg[0] == 132:
-                sensors['Lidar'] = self.__parse_lidar_msg(msg[1])
+                result = self.__parse_lidar_msg(msg[1])
+                if result != None:
+                    sensors['Lidar'] = result
 
         return sensors #Any sensor that is not updated will return 'None'
 
 
+if __name__ == "__main__":
+    mvlink = MavLink()
+    result = mvlink.getSensors()
+    print(result)
 
 
 

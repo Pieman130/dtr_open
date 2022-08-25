@@ -4,6 +4,10 @@ THROTTLE_SERVO = 1
 YAW_SERVO = 2
 UP_SERVO = 3
 MSG_RATE = 200000 #5Hz messaging rate
+RCCH = 35
+ATTITUDE = 30
+SERVO = 36
+LIDAR = 132
 
 
 class MavLink():
@@ -16,10 +20,10 @@ class MavLink():
 
         time.sleep(0.25) #Allow UART to initialize before sending messages MAYBE NOT NEEDED
 
-        self.send_set_msg_interval_cmd(35,MSG_RATE) #RC_Channels_Raw
-        self.send_set_msg_interval_cmd(30,MSG_RATE) #Attitude
-        self.send_set_msg_interval_cmd(36,MSG_RATE) #Servo Channels
-        self.send_set_msg_interval_cmd(132,MSG_RATE) #LIDAR
+        self.send_set_msg_interval_cmd(RCCH,MSG_RATE) #RC_Channels_Raw
+        self.send_set_msg_interval_cmd(ATTITUDE,MSG_RATE) #Attitude
+        self.send_set_msg_interval_cmd(SERVO,MSG_RATE) #Servo Channels
+        self.send_set_msg_interval_cmd(LIDAR,MSG_RATE) #LIDAR
 
 
     def __get_ps(self):
@@ -283,19 +287,19 @@ class MavLink():
         sensors = {'Attitude': None, 'RCCH': None, 'Servo': None, 'Lidar': None}
         if msg_list != None:
             for msg in msg_list:
-                if msg[0] == 30:
+                if msg[0] == ATTIUDE:
                     result = self.__parse_attitude_msg(msg[1])
                     if result != None:
                         sensors['Attitude'] = result
-                elif msg[0] == 35:
+                elif msg[0] == RCCH:
                     result = self.__parse_rc_ch_msg(msg[1])
                     if result != None:
                         sensors['RCCH'] = result
-                elif msg[0] == 36:
+                elif msg[0] == SERVO:
                     result = self.__parse_servo_output_msg(msg[1])
                     if result != None:
                         sensors['Servo'] = result
-                elif msg[0] == 132:
+                elif msg[0] == LIDAR:
                     result = self.__parse_lidar_msg(msg[1])
                     if result != None:
                         sensors['Lidar'] = result

@@ -281,24 +281,24 @@ class MavLink():
         '''Returns dict where key = Sensor_type, value = most recent value received via mavlink'''
         msg_list = self._read_uart()
         sensors = {'Attitude': None, 'RCCH': None, 'Servo': None, 'Lidar': None}
-
-        for msg in msg_list:
-            if msg[0] == 30:
-                result = self.__parse_attitude_msg(msg[1])
-                if result != None:
-                    sensors['Attitude'] = result
-            elif msg[0] == 35:
-                result = self.__parse_rc_ch_msg(msg[1])
-                if result != None:
-                    sensors['RCCH'] = result
-            elif msg[0] == 36:
-                result = self.__parse_servo_output_msg(msg[1])
-                if result != None:
-                    selnsors['Servo'] = result
-            elif msg[0] == 132:
-                result = self.__parse_lidar_msg(msg[1])
-                if result != None:
-                    sensors['Lidar'] = result
+        if msg_list != None:
+            for msg in msg_list:
+                if msg[0] == 30:
+                    result = self.__parse_attitude_msg(msg[1])
+                    if result != None:
+                        sensors['Attitude'] = result
+                elif msg[0] == 35:
+                    result = self.__parse_rc_ch_msg(msg[1])
+                    if result != None:
+                        sensors['RCCH'] = result
+                elif msg[0] == 36:
+                    result = self.__parse_servo_output_msg(msg[1])
+                    if result != None:
+                        sensors['Servo'] = result
+                elif msg[0] == 132:
+                    result = self.__parse_lidar_msg(msg[1])
+                    if result != None:
+                        sensors['Lidar'] = result
 
         return sensors #Any sensor that is not updated will return 'None'
 

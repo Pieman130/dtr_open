@@ -4,10 +4,6 @@ THROTTLE_SERVO = 1
 YAW_SERVO = 2
 UP_SERVO = 3
 MSG_RATE = 200000 #5Hz messaging rate
-RCCH = 35
-ATTITUDE = 30
-SERVO = 36
-LIDAR = 132
 
 
 class MavLink():
@@ -15,15 +11,16 @@ class MavLink():
     OpenMV and Pixracer (ardupilot)'''
     def __init__(self,uart=3,baudrate=115200):
         self._uart = pyb.UART(uart,baudrate,timeout_char=1000)
+        #self._uart.init(baudrate=115200)
         self.__ps = -1 #starting packet number
-        self.ser_buf = bytearray()
+        self.ser_buf = bytearray(1000)
 
         time.sleep(0.25) #Allow UART to initialize before sending messages MAYBE NOT NEEDED
 
-        self.send_set_msg_interval_cmd(RCCH,MSG_RATE) #RC_Channels_Raw
-        self.send_set_msg_interval_cmd(ATTITUDE,MSG_RATE) #Attitude
-        self.send_set_msg_interval_cmd(SERVO,MSG_RATE) #Servo Channels
-        self.send_set_msg_interval_cmd(LIDAR,MSG_RATE) #LIDAR
+        self.send_set_msg_interval_cmd(35,MSG_RATE) #RC_Channels_Raw
+        self.send_set_msg_interval_cmd(30,MSG_RATE) #Attitude
+        self.send_set_msg_interval_cmd(36,MSG_RATE) #Servo Channels
+        self.send_set_msg_interval_cmd(132,MSG_RATE) #LIDAR
 
 
     def __get_ps(self):
@@ -158,150 +155,25 @@ class MavLink():
 
 
     def setControls(self,controls):
-        '''Send corresponding mavlink message to set servo values based on current settings of controls object'''
+        '''Aend corresponding mavlink message to set servo values based on current settings of controls object'''
         self.send_set_servo_cmd(YAW_SERVO,self.__cntl_to_pwm(controls.yaw)) #YAW Servo Channel 2
         self.send_set_servo_cmd(THROTTLE_SERVO,self.__cntl_to_pwm(controls.throttle)) #THROTTLE Servo Channel 1
         self.send_set_servo_cmd(UP_SERVO,self.__cntl_to_pwm(controls.up)) #UP Servo Channel 3
 
-
-    def _read_uart(self): #TODO Run tests to see if buffer is emptying out fast enough
-        '''Read contents of serial buffer and parse messages
-        Parse a message:
-            msg[0] = start byte (254)
-            msg[1] = message payload length (not including header or checksum
-            msg[2] = sequence number (0-255)
-            msg[3] = systems id (should always be 1)
-            msg[4] = component id (usually 1)
-            msg[5] = message type 
-            msg[6:6+n] = payload n = message payload length
-            msg[6+n:6+n+3] = checksum'''
+    def _read_uart(self):
+        '''Read contents of serial buffer and parse messages'''
+        #result = self._uart.readinto(self.ser_buf)
         result = self._uart.read()
         if result == None:
-            return None
+            print("Nothing Read.")
         else:
-            r_pntr = 0 #read_pointer - tracks read position in message buffer
-            msg_list = [] #stores all parsed messages
-            while r_pntr < len(result):
-                if result[r_pntr] == 254:
-                    try: #Message found
-                        msg_type = result[r_pntr+5] #Message Id
-                        payload = result[r_pntr+6:r_pntr+6+result[r_pntr+1]] #Msg payload in bytes
-                        msg = (result[r_pntr+5],payload)
-                        msg_list.append(msg)
-                        r_pntr += 6+result[r_pntr+1]+2 #advance read pointer to next message
-                    except IndexError:
-                        #Incomplete Message
-                        r_pntr += 1
-                else:
-                    r_pntr += 1
-            return msg_list
+            print(len(result))
+            msg_list = result.split(b'\xfe')
+            for msg in a:
+                if len(msg) > 0:
+                        print(msg[0],msg[1],msg[2],msg[3],msg[4]) #list of messages TODO: Do something with this list!!
 
 
-    def __parse_lidar_msg(self,msg):
-        '''https://github.com/mavlink/c_library_v1/blob/master/common/mavlink_msg_distance_sensor.h
-           https://mavlink.io/en/messages/common.html#DISTANCE_SENSOR
-           Byte order:
-            char buf[MAVLINK_MSG_ID_DISTANCE_SENSOR_LEN];
-            _mav_put_uint32_t(buf, 0, time_boot_ms);
-            _mav_put_uint16_t(buf, 4, min_distance);
-            _mav_put_uint16_t(buf, 6, max_distance);
-            _mav_put_uint16_t(buf, 8, current_distance);
-            _mav_put_uint8_t(buf, 10, type);
-            _mav_put_uint8_t(buf, 11, id);
-            _mav_put_uint8_t(buf, 12, orientation);
-            _mav_put_uint8_t(buf, 13, covariance);
-        '''
+m = MavLink()
 
-
-    def __parse_attitude_msg(self,msg):
-        '''https://github.com/mavlink/c_library_v1/blob/master/common/mavlink_msg_attitude.h
-           https://mavlink.io/en/messages/common.html#ATTITUDE
-           Byte order: 
-            char buf[MAVLINK_MSG_ID_ATTITUDE_LEN];
-            _mav_put_uint32_t(buf, 0, time_boot_ms);
-            _mav_put_float(buf, 4, roll);
-            _mav_put_float(buf, 8, pitch);
-            _mav_put_float(buf, 12, yaw);
-            _mav_put_float(buf, 16, rollspeed);
-            _mav_put_float(buf, 20, pitchspeed);
-            _mav_put_float(buf, 24, yawspeed);
-        '''
-        try:
-            return (struct.unpack('<6f',msg[4:28])) #(roll,pitch,yaw,rollspeed,pitchspeed,yawspeed)
-        except ValueError:
-            return None
-
-
-    def __parse_rc_ch_msg(self,msg):
-        '''https://github.com/mavlink/c_library_v1/blob/master/common/mavlink_msg_rc_channels_raw.h
-           https://mavlink.io/en/messages/common.html#RC_CHANNELS_RAW
-           Byte Order:
-            char buf[MAVLINK_MSG_ID_RC_CHANNELS_RAW_LEN];
-            _mav_put_uint32_t(buf, 0, time_boot_ms);
-            _mav_put_uint16_t(buf, 4, chan1_raw);
-            _mav_put_uint16_t(buf, 6, chan2_raw);
-            _mav_put_uint16_t(buf, 8, chan3_raw);
-            _mav_put_uint16_t(buf, 10, chan4_raw);
-            _mav_put_uint16_t(buf, 12, chan5_raw);
-            _mav_put_uint16_t(buf, 14, chan6_raw);
-            _mav_put_uint16_t(buf, 16, chan7_raw);
-            _mav_put_uint16_t(buf, 18, chan8_raw);
-            _mav_put_uint8_t(buf, 20, port);
-            _mav_put_uint8_t(buf, 21, rssi);
-        '''
-        try:
-            return (struct.unpack('<8H',msg[4:20]))
-        except ValueError:
-            return None
-
-
-    def __parse_servo_output_msg(self,msg):
-        '''https://github.com/mavlink/c_library_v1/blob/master/common/mavlink_msg_servo_output_raw.h
-           https://mavlink.io/en/messages/common.html#SERVO_OUTPUT_RAW
-           Byte order:
-            _mav_put_uint32_t(buf, 0, time_usec);
-            _mav_put_uint16_t(buf, 4, servo1_raw);
-            _mav_put_uint16_t(buf, 6, servo2_raw);
-            _mav_put_uint16_t(buf, 8, servo3_raw);
-            _mav_put_uint16_t(buf, 10, servo4_raw);
-            _mav_put_uint16_t(buf, 12, servo5_raw);
-            _mav_put_uint16_t(buf, 14, servo6_raw);
-            _mav_put_uint16_t(buf, 16, servo7_raw);
-            _mav_put_uint16_t(buf, 18, servo8_raw);
-            _mav_put_uint8_t(buf, 20, port);'''
-        try:
-            return (struct.unpack('<8H',msg[4:20]))
-        except ValueError:
-            return None
-
-
-    def getSensors(self):
-        '''Returns dict where key = Sensor_type, value = most recent value received via mavlink'''
-        msg_list = self._read_uart()
-        sensors = {'Attitude': None, 'RCCH': None, 'Servo': None, 'Lidar': None}
-        if msg_list != None:
-            for msg in msg_list:
-                if msg[0] == ATTITUDE:
-                    result = self.__parse_attitude_msg(msg[1])
-                    if result != None:
-                        sensors['Attitude'] = result
-                elif msg[0] == RCCH:
-                    result = self.__parse_rc_ch_msg(msg[1])
-                    if result != None:
-                        sensors['RCCH'] = result
-                elif msg[0] == SERVO:
-                    result = self.__parse_servo_output_msg(msg[1])
-                    if result != None:
-                        sensors['Servo'] = result
-                elif msg[0] == LIDAR:
-                    result = self.__parse_lidar_msg(msg[1])
-                    if result != None:
-                        sensors['Lidar'] = result
-
-        return sensors #Any sensor that is not updated will return 'None'
-
-
-if __name__ == "__main__":
-    mvlink = MavLink()
-    result = mvlink.getSensors()
-    print(result)
+m._read_uart()

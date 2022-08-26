@@ -1,0 +1,17 @@
+Id	Description	Qty	Unit	Designators
+1	Cable, 1 x 28 AWG	0	m	Lift ESC Cable, Thrust ESC Cable, Yaw ESC Cable
+2	Cable, 2 x 16 AWG	2.0	ft	BatteryCable (long)
+3	Cable, 2 x 16 AWG	6.0	in	BatteryCable (short)
+4	Cable, 2 x 26 AWG	0	m	5VtoPixRacerCable
+5	Cable, 3 x 28 AWG	0	m	CatchServoCable, DetectorCable, RCCable
+6	Cable, 4 x 22/28 AWG	0	m	PixOpenMVCable
+7	Cable, 4 x 28 AWG	0	m	LIDARCable
+8	Connector, 0.1" header, female, 3 pins	9		Catch Servo, IR-Detector, Lift ESC Signal, OpenMV_Hat-Detector, OpenMV_Hat-Servo1, OpenMV_Hat-Servo3, RC_Receiver, Thrust ESC Signal, Yaw ESC Signal
+9	Connector, 0.1" header, female, 4 pins	1		OpenMV_Hat-Serial
+10	Connector, 0.1" header, female, 6 pins	1		Pixracer-Servos
+11	Connector, JST-GH_1.25, female, 4 pins	1		LIDAR-Serial
+12	Connector, JST-GH_1.25, female, 5 pins	1		Pixracer-RC
+13	Connector, JST-GH_1.25, female, 6 pins	3		Pixracer-PWR, Pixracer-Telem1, Pixracer-Telem2
+14	Connector, JST-PH, female, 2 pins	1		Battery
+15	Connector, Soldered Wire, 2 pins	3		Lift ESC Power, Thrust ESC Power, Yaw ESC Power
+16	Connector, solder pad, 3 pins	1		5VRegulator

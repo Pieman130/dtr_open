@@ -39,14 +39,14 @@ def main() -> None:
         
     hw = hardware.Hardware()
 
-    com = comms.Comms(hw)    
+    comm = comms.Comms(hw)    
 
-    sensors.swInitialization(hw,com) 
+    sensors.swInitialization(hw,comm) 
 
-    gndStation = groundStation.GroundStation(com)    
+    gndStation = groundStation.GroundStation(comm)    
 
 
-    action = actionEngine.ActionEngine(com)        
+    action = actionEngine.ActionEngine(comm)        
         
 
     while(True):        

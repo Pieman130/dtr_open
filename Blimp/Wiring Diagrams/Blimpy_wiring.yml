@@ -64,6 +64,8 @@ connectors:
     type: Soldered Wire 
   Catch Servo:
     <<: *DP_SERVO_template
+    type: JST 1.25
+    subtype: male
   
 cables:
 # Power distribution cables

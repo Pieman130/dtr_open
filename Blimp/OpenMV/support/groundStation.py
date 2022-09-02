@@ -3,8 +3,9 @@
 import dataClasses 
 
 class GroundStation:
-    def __init__(self,comms):
+    def __init__(self,comms,hw):
         self.wifi = comms.wifi
+        self.hw = hw
 
     def sendStatusMessage(self):
         global wifiInfo    
@@ -30,9 +31,13 @@ class GroundStation:
             jsonList = r.json()
             jsonDict = jsonList[0]                    
                     
-            dataClasses.gndStationCmd.maneuverDescription = jsonDict['maneuverDescription']
+
+            self.hw.turnOnConnectedToGndStationLight()
+            dataClasses.gndStationCmd.firstManeuver = jsonDict['firstManeuver']
+            dataClasses.gndStationCmd.secondManeuver = jsonDict['secondManeuver']
             dataClasses.gndStationCmd.baseUpVal = jsonDict['baseUpVal']
             dataClasses.gndStationCmd.duration = jsonDict['duration']
 
         except:
+            self.hw.turnOnNotConnectedToGndStationLight()
             print('cannot connect to server')

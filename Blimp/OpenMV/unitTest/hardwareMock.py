@@ -18,6 +18,9 @@ class UartMock:
     def write(self,msg):
         print("uart mock send: " + str(msg))
 
+    def read(self):
+        print("uart read")
+
 class IrSensorMock:
     def __init__(self):
         print("ir sensor mock")
@@ -60,4 +63,16 @@ class Hardware:
 
         self.irSensor = IrSensorMock()
 
-        self.camera = CameraMock()                                                   
+        self.camera = CameraMock()     
+
+
+        
+    def turnOnPoweredOnLight(self):
+       print("LED GREEN")
+
+    def turnOnConnectedToGndStationLight(self):
+        print("LED BLUE")        
+
+    def turnOnNotConnectedToGndStationLight(self):
+        print("LED LIGHT GREEN")
+                                              

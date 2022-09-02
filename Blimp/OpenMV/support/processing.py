@@ -21,6 +21,15 @@ def parseSensorData(): # https://github.com/mavlink/c_library_v1/blob/master/che
     dataClasses.data.isAprilTagDetected = dataClasses.data.aprilTagFound.foundIt
 
     parseLidarData()
+
+
+    #overwrite for testing purposes the processed info, to test state machine 
+    # for running on pc.
+    if(dataClasses.config.isMicroPython == False): 
+        dataClasses.data.colorDetected = dataClasses.gndStationCmd.mockSensor_greenDetected
+        dataClasses.data.isAprilTagDetected = dataClasses.gndStationCmd.mockSensor_aprilTagDetected
+
+
     return output
 
 def parseIrSensorData():    

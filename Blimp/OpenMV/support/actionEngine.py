@@ -44,14 +44,27 @@ class ActionEngine:
     def __init__(self,comms):
         self.currentState = lookForBall
         self.currentManeuver = None
+
+        self.requestedFirstManeuver = None
+        self.requestedSecondManeuver = None
+
         self.blimpManeuvers = flightManeuvers.BlimpManeuvers(comms)
 
     def updateState(self):
-        # do I switch system states?
-        print('update state called')
+        if(dataClasses.gndStationCmd.firstManeuver != self.requestedFirstManeuver):
+            self.requestedFirstManeuver = dataClasses.gndStationCmd.firstManeuver
+            self.requestedSecondManeuver = dataClasses.gndStationCmd.secondManeuver
+            print("changing state to: " + str(self.requestedFirstManeuver ))
+            self.currentManeuver = self.getManeuver(self.requestedFirstManeuver )
+                
+    def getNextStep(self):
+        if(self.currentManeuver == self.requestedFirstManeuver):
+            self.currentManeuver = self.requestedSecondManeuver
+        elif(self.currentManeuver == self.requestedSecondManeuver):
+            self.currentManeuver = self.requestedSecondManeuver
+        
 
-    def getNextStep(self): # https://github.com/mavlink/c_library_v1/blob/master/checksum.h 
-        global currentManeuver
+    def getNextStep_notusing(self): # https://github.com/mavlink/c_library_v1/blob/master/checksum.h         
         global stopCtr
         global STOP_CTR_MAX
 
@@ -103,16 +116,18 @@ class ActionEngine:
 
         return nextManeuver
 
-    def executeNextStep():
+    def executeNextStep(self):
         global stopCtr
         global currentManeuver
-        if currentManeuver.isExitCriteriaMet():
+        if self.currentManeuver == None:
+            print("no current maneuver")
+        elif self.currentManeuver.isExitCriteriaMet():
             print("NO OP")
-            currentManeuver.sendNoop()            
+            self.currentManeuver.sendNoop()            
             stopCtr = stopCtr + 1
             print("stop ctr: " + str(stopCtr))
         else:
             print("EXECUTE")
-            currentManeuver.execute()
+            self.currentManeuver.execute()
             
      

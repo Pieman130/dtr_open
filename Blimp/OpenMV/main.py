@@ -2,30 +2,33 @@
 
 import time
 
-try: 
+try:
     import hardware
     import comms
     isMicroPython = True
 
-except:
+except Exception as e:
+    print(str(e))
     isMicroPython = False
     import sys
-    sys.path.append('C:\\DroneRepos\\DTRRepo\\Blimp\\OpenMV\\unitTest')
-    #import setupPCtesting
-    #setupPCtesting.setupImportsForNoOpenMVoperations   
-    #     
-    sys.path.append('C:\\DroneRepos\\DTRRepo\\Blimp\\OpenMV\\unitTest')
-    sys.path.append('C:\\DroneRepos\\DTRRepo\\Blimp\\OpenMV\\support')
 
-    import hardwareMock
-    hardware = hardwareMock
+    try:
+        sys.path.append('C:\\DroneRepos\\DTRRepo\\Blimp\\OpenMV\\unitTest')
+        sys.path.append('C:\\DroneRepos\\DTRRepo\\Blimp\\OpenMV\\support')
 
-    import commsMock
-    comms = commsMock
-    
-    
+        import hardwareMock
+        hardware = hardwareMock
+
+        import commsMock
+        comms = commsMock
+    except:
+        #this is for upython.
+        print(".")
+
+
 import dataClasses
-dataClasses.config.isMicroPython = isMicroPython    
+print('is micropython: ' + str(isMicroPython))
+dataClasses.config.isMicroPython = isMicroPython
 
 
 import sensors
@@ -36,34 +39,34 @@ import groundStation
 
 def main() -> None:
     loopPause = 1
-        
+
     hw = hardware.Hardware()
 
-    comm = comms.Comms(hw)    
+    comm = comms.Comms(hw)
 
-    sensors.swInitialization(hw,comm) 
+    sensors.swInitialization(hw,comm)
 
-    gndStation = groundStation.GroundStation(comm)    
+    gndStation = groundStation.GroundStation(comm,hw)
 
 
-    action = actionEngine.ActionEngine(comm)        
-        
+    action = actionEngine.ActionEngine(comm)
 
-    while(True):        
+
+    while(True):
 
         time.sleep(loopPause)
 
         sensors.collectData()
 
         processing.parseSensorData()
-                
+
         gndStation.sendStatusMessage()
 
-       # action.updateState()
+        action.updateState()
 
       #  action.getNextStep()
 
-       # action.executeNextStep()               
+        action.executeNextStep()
 
-        
+
 main()

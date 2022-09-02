@@ -66,8 +66,7 @@ class FlightAction:
                 if item.value == self.getProperty(item.variableName):
                     numCriterionMet = numCriterionMet + 1           
                 else:
-                    print("NO MATCH: " + str(item.value))
-                    print("vs: " + str(self.getProperty(item.variableName)))
+                    print("NO MATCH (" + item.variableName + ") = " + str(item.value) + " != " + str(self.getProperty(item.variableName)) )                    
                     numCriterionUnmet = numCriterionUnmet + 1               
 
         if numCriterionUnmet == 0 and numCriterionMet > 0:

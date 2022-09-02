@@ -21,13 +21,16 @@ class ProcessedData:
         self.distanceToBall = None
         self.aprilTagFound = None
         self.isAprilTagDetected = None
-        self.lidarDistance_ft = None
+        self.lidarDistance_ft = None        
 
 class GroundStationCommand:
     def __init__(self):
-        self.maneuverDescription = None
+        self.firstManeuver = None
+        self.secondManeuver = None
         self.baseUpVal = None
         self.duration = None
+        self.mockSensor_greenDetected = ''
+        self.mockSensor_aprilTagDetected = ''        
     def print(self):
         print("manuever desc: " + self.maneuverDescription)
         print("base up: " + str(self.baseUpVal))

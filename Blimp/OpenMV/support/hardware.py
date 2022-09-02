@@ -12,12 +12,58 @@ SERVO_PWM_ID = 3 #1-3, corresponding to P7-P9. P7-P8 used by wifi
 
 
 #led = pyb.LED(3) # Red LED = 1, Green LED = 2, Blue LED = 3, IR LEDs = 4.
-LED_GREEN_FOR_ON = 1
-LED_BLUE_FOR_GND_STATION_CONNECTED = 3
-LED_RED_FOR_GND_STATION_FAIL_CONNECT = 1
+LED_RED = 1
+LED_GREEN = 2
+LED_BLUE = 3
+
+
+class Led:
+    def __init__(self):
+        self.blueLed = pyb.LED(LED_BLUE)
+        self.greenLed = pyb.LED(LED_GREEN)
+        self.redLed = pyb.LED(LED_RED)
+        self.turnOff()
+
+    def turnOn(self,color):
+
+        if(color == 'blue'):
+            self.redLed.off()
+            self.greenLed.off()
+            self.blueLed.on()
+                        
+        elif(color == 'red'):
+            self.redLed.on()
+            self.greenLed.off()
+            self.blueLed.off()                        
+
+        elif(color == 'green'):
+            self.redLed.off()
+            self.greenLed.on()
+            self.blueLed.off()                        
+
+        elif(color == 'cyan'):
+            self.redLed.off()
+            self.greenLed.on()
+            self.blueLed.on()                        
+
+        elif(color == 'lightGreen'):
+            self.redLed.on()
+            self.greenLed.on()
+            self.blueLed.off()
+                                   
+        elif(color == 'purple'):
+            self.redLed.on()
+            self.greenLed.off()
+            self.blueLed.on()                                    
+     
+    def turnOff(self):
+        self.blueLed.off()
+        self.greenLed.off()
+        self.redLed.off()
 
 class Hardware:
-    def __init__(self):        
+    def __init__(self):       
+        self.led = Led() 
         self.wlan = network.WINC() # must go first. on initialize, shares a pin needed only on startup by wifi module
                                    # with ir sensor.
         self.uart = pyb.UART(HW_UART)
@@ -26,17 +72,17 @@ class Hardware:
         # The following must be initialized after wlan as they overload pin assignments in WINC class
         self.irSensor = Pin(IR_DETECT_PIN,Pin.IN,Pin.PULL_NONE)
         self.servo = pyb.Servo(SERVO_PWM_ID)
+
         self.turnOnPoweredOnLight()
-        
+
     def turnOnPoweredOnLight(self):
-        print("TURNING ON GREEN LED!")
-        self.led = pyb.LED(LED_GREEN_FOR_ON)
-        self.led.on() #
+       self.led.turnOn('purple')
 
     def turnOnConnectedToGndStationLight(self):
-        self.led = pyb.LED(LED_BLUE_FOR_GND_STATION_CONNECTED)
-        self.led.on()
+        self.led.turnOn('green')
 
     def turnOnNotConnectedToGndStationLight(self):
-            self.led = pyb.LED(LED_RED_FOR_GND_STATION_FAIL_CONNECT)
-            self.led.on()
+         self.led.turnOn('lightGreen')
+
+    def systemFail(self):
+         self.led.turnOn('red')

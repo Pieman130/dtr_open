@@ -63,4 +63,16 @@ class Hardware:
 
         self.irSensor = IrSensorMock()
 
-        self.camera = CameraMock()                                                   
+        self.camera = CameraMock()     
+
+
+        
+    def turnOnPoweredOnLight(self):
+       print("LED GREEN")
+
+    def turnOnConnectedToGndStationLight(self):
+        print("LED BLUE")        
+
+    def turnOnNotConnectedToGndStationLight(self):
+        print("LED LIGHT GREEN")
+                                              

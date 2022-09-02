@@ -2,15 +2,16 @@
 
 import time
 
-try: 
+try:
     import hardware
     import comms
     isMicroPython = True
 
-except:
+except Exception as e:
+    print(str(e))
     isMicroPython = False
-    import sys    
-    
+    import sys
+
     try:
         sys.path.append('C:\\DroneRepos\\DTRRepo\\Blimp\\OpenMV\\unitTest')
         sys.path.append('C:\\DroneRepos\\DTRRepo\\Blimp\\OpenMV\\support')
@@ -23,10 +24,11 @@ except:
     except:
         #this is for upython.
         print(".")
-    
-    
+
+
 import dataClasses
-dataClasses.config.isMicroPython = isMicroPython    
+print('is micropython: ' + str(isMicroPython))
+dataClasses.config.isMicroPython = isMicroPython
 
 
 import sensors
@@ -37,34 +39,34 @@ import groundStation
 
 def main() -> None:
     loopPause = 1
-        
+
     hw = hardware.Hardware()
 
-    comm = comms.Comms(hw)    
+    comm = comms.Comms(hw)
 
-    sensors.swInitialization(hw,comm) 
+    sensors.swInitialization(hw,comm)
 
-    gndStation = groundStation.GroundStation(comm,hw)    
+    gndStation = groundStation.GroundStation(comm,hw)
 
 
-    action = actionEngine.ActionEngine(comm)        
-        
+    action = actionEngine.ActionEngine(comm)
 
-    while(True):        
+
+    while(True):
 
         time.sleep(loopPause)
 
-        sensors.collectData()       
+        sensors.collectData()
 
         processing.parseSensorData()
-                
+
         gndStation.sendStatusMessage()
 
         action.updateState()
 
       #  action.getNextStep()
 
-        action.executeNextStep()               
+        action.executeNextStep()
 
-        
+
 main()

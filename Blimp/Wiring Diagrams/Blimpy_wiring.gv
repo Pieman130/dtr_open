@@ -109,28 +109,28 @@ graph {
  <tr><td>
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1">
    <tr>
-    <td port="p1l">1</td>
     <td>GND</td>
+    <td port="p1r">1</td>
    </tr>
    <tr>
-    <td port="p2l">2</td>
     <td>GND</td>
+    <td port="p2r">2</td>
    </tr>
    <tr>
-    <td port="p3l">3</td>
     <td>Vsen</td>
+    <td port="p3r">3</td>
    </tr>
    <tr>
-    <td port="p4l">4</td>
     <td>Csen</td>
+    <td port="p4r">4</td>
    </tr>
    <tr>
-    <td port="p5l">5</td>
     <td>5V</td>
+    <td port="p5r">5</td>
    </tr>
    <tr>
-    <td port="p6l">6</td>
     <td>5V</td>
+    <td port="p6r">6</td>
    </tr>
   </table>
  </td></tr>
@@ -337,16 +337,16 @@ graph {
  <tr><td>
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1">
    <tr>
+    <td port="p1l">1</td>
     <td>5V</td>
-    <td port="p1r">1</td>
    </tr>
    <tr>
+    <td port="p2l">2</td>
     <td>PWM</td>
-    <td port="p2r">2</td>
    </tr>
    <tr>
+    <td port="p3l">3</td>
     <td>GND</td>
-    <td port="p3r">3</td>
    </tr>
   </table>
  </td></tr>
@@ -369,16 +369,16 @@ graph {
  <tr><td>
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1">
    <tr>
-    <td port="p1l">1</td>
     <td>5V</td>
+    <td port="p1r">1</td>
    </tr>
    <tr>
-    <td port="p2l">2</td>
     <td>PWM</td>
+    <td port="p2r">2</td>
    </tr>
    <tr>
-    <td port="p3l">3</td>
     <td>GND</td>
+    <td port="p3r">3</td>
    </tr>
   </table>
  </td></tr>
@@ -470,17 +470,14 @@ graph {
    <tr>
     <td port="p1l">1</td>
     <td>Vin</td>
-    <td port="p1r">1</td>
    </tr>
    <tr>
     <td port="p2l">2</td>
     <td>GND</td>
-    <td port="p2r">2</td>
    </tr>
    <tr>
     <td port="p3l">3</td>
     <td>Vout</td>
-    <td port="p3r">3</td>
    </tr>
   </table>
  </td></tr>
@@ -495,8 +492,8 @@ graph {
  </td></tr>
  <tr><td>
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
-   <td balign="left">JST-PH</td>
-   <td balign="left">female</td>
+   <td balign="left">JST-PH 2.0</td>
+   <td balign="left">male</td>
    <td balign="left">2-pin</td>
   </tr></table>
  </td></tr>
@@ -700,8 +697,8 @@ graph {
  </td></tr>
  <tr><td>
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
-   <td balign="left">0.1" header</td>
-   <td balign="left">female</td>
+   <td balign="left">JST 1.25</td>
+   <td balign="left">male</td>
    <td balign="left">3-pin</td>
   </tr></table>
  </td></tr>
@@ -745,7 +742,7 @@ graph {
  <tr><td>
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
    <td balign="left">2x</td>
-   <td balign="left">16 AWG</td>
+   <td balign="left">22 AWG</td>
    <td balign="left">6.0 in</td>
   </tr></table>
  </td></tr>
@@ -811,8 +808,8 @@ graph {
  <tr><td>
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
    <td balign="left">2x</td>
-   <td balign="left">16 AWG</td>
-   <td balign="left">2.0 ft</td>
+   <td balign="left">22 AWG</td>
+   <td balign="left">18.0 in</td>
   </tr></table>
  </td></tr>
  <tr><td>
@@ -855,6 +852,72 @@ graph {
  </td></tr>
 </table>
 > fillcolor="#FFFFFF" shape=box style=filled]
+	edge [color="#000000:#ff0000:#000000"]
+	"Pixracer-PWR":p5r:e -- "5VtoPixRacerCable":w1:w
+	"5VtoPixRacerCable":w1:e -- "5VRegulator":p3l:w
+	edge [color="#000000:#000000:#000000"]
+	"Pixracer-PWR":p1r:e -- "5VtoPixRacerCable":w2:w
+	"5VtoPixRacerCable":w2:e -- "5VRegulator":p2l:w
+	edge [color="#000000:#ff0000:#000000"]
+	"Pixracer-PWR":p6r:e -- "5VtoPixRacerCable":w1:w
+	"5VtoPixRacerCable":w1:e -- "5VRegulator":p3l:w
+	edge [color="#000000:#000000:#000000"]
+	"Pixracer-PWR":p2r:e -- "5VtoPixRacerCable":w2:w
+	"5VtoPixRacerCable":w2:e -- "5VRegulator":p2l:w
+	"5VtoPixRacerCable" [label=<
+<table border="0" cellspacing="0" cellpadding="0">
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">5VtoPixRacerCable</td>
+  </tr></table>
+ </td></tr>
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">2x</td>
+   <td balign="left">22 AWG</td>
+   <td balign="left">8.0 in</td>
+  </tr></table>
+ </td></tr>
+ <tr><td>
+  <table border="0" cellspacing="0" cellborder="0">
+   <tr><td>&nbsp;</td></tr>
+   <tr>
+    <td>Pixracer-PWR:5:5V</td>
+    <td>
+     1:RD
+    </td>
+    <td>5VRegulator:3:Vout</td>
+   </tr>
+   <tr>
+    <td colspan="3" border="0" cellspacing="0" cellpadding="0" port="w1" height="6">
+     <table cellspacing="0" cellborder="0" border="0">
+      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
+      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#ff0000" border="0"></td></tr>
+      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
+     </table>
+    </td>
+   </tr>
+   <tr>
+    <td>Pixracer-PWR:1:GND</td>
+    <td>
+     2:BK
+    </td>
+    <td>5VRegulator:2:GND</td>
+   </tr>
+   <tr>
+    <td colspan="3" border="0" cellspacing="0" cellpadding="0" port="w2" height="6">
+     <table cellspacing="0" cellborder="0" border="0">
+      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
+      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
+      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
+     </table>
+    </td>
+   </tr>
+   <tr><td>&nbsp;</td></tr>
+  </table>
+ </td></tr>
+</table>
+> fillcolor="#FFFFFF" shape=box style=filled]
 	edge [color="#000000:#ffff00:#000000"]
 	"Pixracer-Servos":p3r:e -- "Lift ESC Cable":w1:w
 	"Lift ESC Cable":w1:e -- "Lift ESC Signal":p2l:w
@@ -869,6 +932,7 @@ graph {
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
    <td balign="left">1x</td>
    <td balign="left">28 AWG</td>
+   <td balign="left">2.0 in</td>
   </tr></table>
  </td></tr>
  <tr><td>
@@ -909,6 +973,7 @@ graph {
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
    <td balign="left">1x</td>
    <td balign="left">28 AWG</td>
+   <td balign="left">21.0 in</td>
   </tr></table>
  </td></tr>
  <tr><td>
@@ -949,6 +1014,7 @@ graph {
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
    <td balign="left">1x</td>
    <td balign="left">28 AWG</td>
+   <td balign="left">21.0 in</td>
   </tr></table>
  </td></tr>
  <tr><td>
@@ -975,62 +1041,75 @@ graph {
  </td></tr>
 </table>
 > fillcolor="#FFFFFF" shape=box style=filled]
-	edge [color="#000000:#ff0000:#000000"]
-	"5VRegulator":p3r:e -- "5VtoPixRacerCable":w1:w
-	"5VtoPixRacerCable":w1:e -- "Pixracer-PWR":p5l:w
 	edge [color="#000000:#000000:#000000"]
-	"5VRegulator":p2r:e -- "5VtoPixRacerCable":w2:w
-	"5VtoPixRacerCable":w2:e -- "Pixracer-PWR":p1l:w
+	"OpenMV_Hat-Servo3":p3r:e -- CatchServoCable:w1:w
+	CatchServoCable:w1:e -- "Catch Servo":p1l:w
+	edge [color="#000000:#ffff00:#000000"]
+	"OpenMV_Hat-Servo3":p2r:e -- CatchServoCable:w2:w
+	CatchServoCable:w2:e -- "Catch Servo":p2l:w
 	edge [color="#000000:#ff0000:#000000"]
-	"5VRegulator":p3r:e -- "5VtoPixRacerCable":w1:w
-	"5VtoPixRacerCable":w1:e -- "Pixracer-PWR":p6l:w
-	edge [color="#000000:#000000:#000000"]
-	"5VRegulator":p2r:e -- "5VtoPixRacerCable":w2:w
-	"5VtoPixRacerCable":w2:e -- "Pixracer-PWR":p2l:w
-	"5VtoPixRacerCable" [label=<
+	"OpenMV_Hat-Servo3":p1r:e -- CatchServoCable:w3:w
+	CatchServoCable:w3:e -- "Catch Servo":p3l:w
+	CatchServoCable [label=<
 <table border="0" cellspacing="0" cellpadding="0">
  <tr><td>
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
-   <td balign="left">5VtoPixRacerCable</td>
+   <td balign="left">CatchServoCable</td>
   </tr></table>
  </td></tr>
  <tr><td>
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
-   <td balign="left">2x</td>
-   <td balign="left">26 AWG</td>
+   <td balign="left">3x</td>
+   <td balign="left">28 AWG</td>
   </tr></table>
  </td></tr>
  <tr><td>
   <table border="0" cellspacing="0" cellborder="0">
    <tr><td>&nbsp;</td></tr>
    <tr>
-    <td>5VRegulator:3:Vout</td>
+    <td>OpenMV_Hat-Servo3:3:GND</td>
     <td>
-     1:RD
+     1:BK
     </td>
-    <td>Pixracer-PWR:5:5V</td>
+    <td>Catch Servo:1:GND</td>
    </tr>
    <tr>
     <td colspan="3" border="0" cellspacing="0" cellpadding="0" port="w1" height="6">
      <table cellspacing="0" cellborder="0" border="0">
       <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
-      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#ff0000" border="0"></td></tr>
+      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
       <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
      </table>
     </td>
    </tr>
    <tr>
-    <td>5VRegulator:2:GND</td>
+    <td>OpenMV_Hat-Servo3:2:PWM</td>
     <td>
-     2:BK
+     2:YE
     </td>
-    <td>Pixracer-PWR:1:GND</td>
+    <td>Catch Servo:2:PWM</td>
    </tr>
    <tr>
     <td colspan="3" border="0" cellspacing="0" cellpadding="0" port="w2" height="6">
      <table cellspacing="0" cellborder="0" border="0">
       <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
+      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#ffff00" border="0"></td></tr>
       <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
+     </table>
+    </td>
+   </tr>
+   <tr>
+    <td>OpenMV_Hat-Servo3:1:5V</td>
+    <td>
+     3:RD
+    </td>
+    <td>Catch Servo:3:5V</td>
+   </tr>
+   <tr>
+    <td colspan="3" border="0" cellspacing="0" cellpadding="0" port="w3" height="6">
+     <table cellspacing="0" cellborder="0" border="0">
+      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
+      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#ff0000" border="0"></td></tr>
       <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
      </table>
     </td>
@@ -1060,6 +1139,7 @@ graph {
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
    <td balign="left">3x</td>
    <td balign="left">28 AWG</td>
+   <td balign="left">10.0 in</td>
   </tr></table>
  </td></tr>
  <tr><td>
@@ -1141,6 +1221,7 @@ graph {
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
    <td balign="left">4x</td>
    <td balign="left">28 AWG</td>
+   <td balign="left">10.0 in</td>
   </tr></table>
  </td></tr>
  <tr><td>
@@ -1238,6 +1319,7 @@ graph {
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
    <td balign="left">4x</td>
    <td balign="left">22/28 AWG</td>
+   <td balign="left">28.0 in</td>
   </tr></table>
  </td></tr>
  <tr><td>
@@ -1332,6 +1414,7 @@ graph {
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
    <td balign="left">3x</td>
    <td balign="left">28 AWG</td>
+   <td balign="left">24.0 in</td>
   </tr></table>
  </td></tr>
  <tr><td>
@@ -1381,84 +1464,6 @@ graph {
      <table cellspacing="0" cellborder="0" border="0">
       <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
       <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
-      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
-     </table>
-    </td>
-   </tr>
-   <tr><td>&nbsp;</td></tr>
-  </table>
- </td></tr>
-</table>
-> fillcolor="#FFFFFF" shape=box style=filled]
-	edge [color="#000000:#000000:#000000"]
-	"OpenMV_Hat-Servo1":p3r:e -- CatchServoCable:w1:w
-	CatchServoCable:w1:e -- "Catch Servo":p1l:w
-	edge [color="#000000:#ffff00:#000000"]
-	"OpenMV_Hat-Servo1":p2r:e -- CatchServoCable:w2:w
-	CatchServoCable:w2:e -- "Catch Servo":p2l:w
-	edge [color="#000000:#ff0000:#000000"]
-	"OpenMV_Hat-Servo1":p1r:e -- CatchServoCable:w3:w
-	CatchServoCable:w3:e -- "Catch Servo":p3l:w
-	CatchServoCable [label=<
-<table border="0" cellspacing="0" cellpadding="0">
- <tr><td>
-  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
-   <td balign="left">CatchServoCable</td>
-  </tr></table>
- </td></tr>
- <tr><td>
-  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
-   <td balign="left">3x</td>
-   <td balign="left">28 AWG</td>
-  </tr></table>
- </td></tr>
- <tr><td>
-  <table border="0" cellspacing="0" cellborder="0">
-   <tr><td>&nbsp;</td></tr>
-   <tr>
-    <td>OpenMV_Hat-Servo1:3:GND</td>
-    <td>
-     1:BK
-    </td>
-    <td>Catch Servo:1:GND</td>
-   </tr>
-   <tr>
-    <td colspan="3" border="0" cellspacing="0" cellpadding="0" port="w1" height="6">
-     <table cellspacing="0" cellborder="0" border="0">
-      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
-      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
-      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
-     </table>
-    </td>
-   </tr>
-   <tr>
-    <td>OpenMV_Hat-Servo1:2:PWM</td>
-    <td>
-     2:YE
-    </td>
-    <td>Catch Servo:2:PWM</td>
-   </tr>
-   <tr>
-    <td colspan="3" border="0" cellspacing="0" cellpadding="0" port="w2" height="6">
-     <table cellspacing="0" cellborder="0" border="0">
-      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
-      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#ffff00" border="0"></td></tr>
-      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
-     </table>
-    </td>
-   </tr>
-   <tr>
-    <td>OpenMV_Hat-Servo1:1:5V</td>
-    <td>
-     3:RD
-    </td>
-    <td>Catch Servo:3:5V</td>
-   </tr>
-   <tr>
-    <td colspan="3" border="0" cellspacing="0" cellpadding="0" port="w3" height="6">
-     <table cellspacing="0" cellborder="0" border="0">
-      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
-      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#ff0000" border="0"></td></tr>
       <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
      </table>
     </td>

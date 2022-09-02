@@ -23,4 +23,4 @@ class WiFi:
 class Comms:
     def __init__(self,hw):
         self.mavlink = mavlink.MavLink(hw)
-        self.wifi = WiFi()              
+        self.wifi = WiFi(hw)              

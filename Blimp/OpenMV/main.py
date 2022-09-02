@@ -9,19 +9,20 @@ try:
 
 except:
     isMicroPython = False
-    import sys
-    sys.path.append('C:\\DroneRepos\\DTRRepo\\Blimp\\OpenMV\\unitTest')
-    #import setupPCtesting
-    #setupPCtesting.setupImportsForNoOpenMVoperations   
-    #     
-    sys.path.append('C:\\DroneRepos\\DTRRepo\\Blimp\\OpenMV\\unitTest')
-    sys.path.append('C:\\DroneRepos\\DTRRepo\\Blimp\\OpenMV\\support')
+    import sys    
+    
+    try:
+        sys.path.append('C:\\DroneRepos\\DTRRepo\\Blimp\\OpenMV\\unitTest')
+        sys.path.append('C:\\DroneRepos\\DTRRepo\\Blimp\\OpenMV\\support')
 
-    import hardwareMock
-    hardware = hardwareMock
+        import hardwareMock
+        hardware = hardwareMock
 
-    import commsMock
-    comms = commsMock
+        import commsMock
+        comms = commsMock
+    except:
+        #this is for upython.
+        print(".")
     
     
 import dataClasses
@@ -43,7 +44,7 @@ def main() -> None:
 
     sensors.swInitialization(hw,comm) 
 
-    gndStation = groundStation.GroundStation(comm)    
+    gndStation = groundStation.GroundStation(comm,hw)    
 
 
     action = actionEngine.ActionEngine(comm)        
@@ -53,17 +54,17 @@ def main() -> None:
 
         time.sleep(loopPause)
 
-        sensors.collectData()
+        sensors.collectData()       
 
         processing.parseSensorData()
                 
         gndStation.sendStatusMessage()
 
-       # action.updateState()
+        action.updateState()
 
       #  action.getNextStep()
 
-       # action.executeNextStep()               
+        action.executeNextStep()               
 
         
 main()

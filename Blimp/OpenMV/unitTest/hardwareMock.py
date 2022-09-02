@@ -18,6 +18,9 @@ class UartMock:
     def write(self,msg):
         print("uart mock send: " + str(msg))
 
+    def read(self):
+        print("uart read")
+
 class IrSensorMock:
     def __init__(self):
         print("ir sensor mock")

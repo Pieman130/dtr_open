@@ -3,23 +3,26 @@
 
 connectors:
   Pixracer-Telem1: &PX_GH6_template
-    pinlabels: [GND,RTS,CTS,RX,TX,5V]
+    pinlabels: [5V,TX,RX,CTS,RTS,GND]
     type: JST-GH_1.25
     subtype: female
+    image:
+      src: JST-GH Pin ID.png
+      width: 200
   Pixracer-Telem2:
     <<: *PX_GH6_template
   Pixracer-PWR:
     <<: *PX_GH6_template
-    pinlabels: [GND,GND,Vsen,Csen,5V,5V]
+    pinlabels: [5V,5V,Csen,Vsen,GND,GND]
   Pixracer-RC:
     <<: *PX_GH6_template
-    pinlabels: [GND,3.3V,RSSI,RCin,5V]
+    pinlabels: [5V,RCin,RSSI,3.3V,GND]
   Pixracer-Servos:
     pinlabels: [ch1,ch2,ch3,ch4,ch5,ch6]
     type: 0.1" header
     subtype: female
   RC_Receiver: &DP_SERVO_template
-    pinlabels: [GND,PWM,5V]
+    pinlabels: [PWM,5V,GND]
     type: 0.1" header
     subtype: female
   OpenMV_Hat-Serial:
@@ -47,6 +50,9 @@ connectors:
     pinlabels: [Vbatt,Return]
     type: JST-PH 2.0
     subtype: male
+    image:
+      src: JST-PH 2.0 Pin ID.png
+      width: 200
   Lift ESC Signal:
     <<: *DP_SERVO_template
   Yaw ESC Signal:
@@ -66,6 +72,9 @@ connectors:
     <<: *DP_SERVO_template
     type: JST 1.25
     subtype: male
+    image:
+      src: JST 1.25 3 Pos Pin ID.png
+      width: 200
   
 cables:
 # Power distribution cables
@@ -103,7 +112,7 @@ cables:
   CatchServoCable:
     wirecount: 3
     gauge: 28 awg
-    colors: [BK,YE,RD]
+    colors: [RD,YE,BK]
 # Sensor/Peripheral cables
   RCCable:
     wirecount: 3
@@ -114,12 +123,12 @@ cables:
     wirecount: 4
     gauge: 28 awg
     length: 10 in
-    colors: [BK,WH,BU,RD]
+    colors: [RD,WH,BU,BK]
   PixOpenMVCable:
     wirecount: 4
     gauge: 22/28 awg
     length: 28 in
-    colors: [BK,WH,BU,RD]
+    colors: [RD,WH,BU,BK]
   DetectorCable:
     wirecount: 3
     gauge: 28 awg
@@ -162,31 +171,31 @@ connections:
 
 #5V power to pixracer
   -
-    - Pixracer-PWR: [5,1]
+    - Pixracer-PWR: [1,5]
     - 5VtoPixRacerCable: [1,2]
     - 5VRegulator: [Vout,GND] 
   -
-    - Pixracer-PWR: [6,2]
+    - Pixracer-PWR: [2,6]
     - 5VtoPixRacerCable: [1,2]
     - 5VRegulator: [Vout,GND]
 
 #RC receiver
   -
     - Pixracer-RC: [GND,RCin,5V]
-    - RCCable: [1-3]
-    - RC_Receiver: [1-3]
+    - RCCable: [BK,YE,RD]
+    - RC_Receiver: [GND,PWM,5V]
 
 #LIDAR
   -
-    - Pixracer-Telem1: [GND,RX,TX,5V]
+    - Pixracer-Telem1: [5V,TX,RX,GND]
     - LIDARCable: [1-4]
-    - LIDAR-Serial: [GND,TXD,RXD,5V]
+    - LIDAR-Serial: [5V,RXD,TXD,GND]
 
 #Pixracer-OpenMV Serial
   -
-    - Pixracer-Telem2: [GND,RX,TX,5V]
+    - Pixracer-Telem2: [5V,TX,RX,GND]
     - PixOpenMVCable: [1-4]
-    - OpenMV_Hat-Serial: [GND,TXD,RXD,5V]
+    - OpenMV_Hat-Serial: [5V,RXD,TXD,GND]
 
 #OpenMV peripherals
   - 
@@ -194,6 +203,6 @@ connections:
     - DetectorCable: [1-3]
     - IR-Detector: [1-3]
   -
-    - OpenMV_Hat-Servo3: [3-1]
-    - CatchServoCable: [1-3]
-    - Catch Servo: [1-3]
+    - OpenMV_Hat-Servo3: [5V,PWM,GND]
+    - CatchServoCable: [RD,YE,BK]
+    - Catch Servo: [5V,PWM,GND]

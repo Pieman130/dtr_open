@@ -2,6 +2,7 @@
 
 # Do processing of sensor data
 import dataClasses
+import math
 if dataClasses.config.isMicroPython:
     import imageProcessing
 else:
@@ -39,8 +40,16 @@ def parseIrSensorData():
    
 
 def parseLidarData():
-    dataClasses.data.lidarDistance_ft = dataClasses.rawData.lidar_cm /30.48
-    print('lidar distance (ft): ' + str(dataClasses.data.lidarDistance_ft))
+    rawDist_ft = dataClasses.rawData.lidar_cm /30.48
+    correctedDist_ft = attitudeCorrectDistance(rawDist_ft, dataClasses.rawData.imu_roll, dataClasses.rawData.imu_pitch)
+    dataClasses.data.lidarDistance_ft = correctedDist_ft
+    print('lidar distance (ft): ' + str(correctedDist_ft))
+
+
+def attitudeCorrectDistance(measDist=0.0,roll_rad=0.0,pitch_rad=0.0):
+    # correctedDist = math.cos(math.sqrt(roll_rad**2 + pitch_rad**2)) * measDist # Not sure which of these methods will be faster on the uC
+    correctedDist = math.cos(roll_rad) * math.cos(pitch_rad) * measDist
+    return correctedDist
 
 #def distanceToBall():    
 

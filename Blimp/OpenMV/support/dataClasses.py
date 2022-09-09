@@ -13,6 +13,10 @@ class RawData:
         self.motor_up = None 
         self.motor_yaw = None 
         self.lidar_cm = None
+        self.rc_sw_door = None
+        self.rc_sw_flt_mode = None
+        self.rc_sw_st_cntl = None
+
 
 class ProcessedData:
     def __init__(self):
@@ -22,6 +26,7 @@ class ProcessedData:
         self.aprilTagFound = None
         self.isAprilTagDetected = None
         self.lidarDistance_ft = None        
+
 
 class GroundStationCommand:
     def __init__(self):

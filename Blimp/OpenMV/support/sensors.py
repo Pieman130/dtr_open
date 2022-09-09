@@ -53,16 +53,17 @@ class Sensors:
 
         current_raw_sensor_data = self.mavlink.getSensors()
 
-        dataClasses.rawData.imu_yaw = current_raw_sensor_data['attitude']['yaw']
-        dataClasses.rawData.imu_pitch = current_raw_sensor_data['attitude']['pitch']
-        dataClasses.rawData.imu_roll = current_raw_sensor_data['attitude']['roll']
+        dataClasses.rawData.imu_yaw = current_raw_sensor_data['Attitude']['yaw']
+        dataClasses.rawData.imu_pitch = current_raw_sensor_data['Attitude']['pitch']
+        dataClasses.rawData.imu_roll = current_raw_sensor_data['Attitude']['roll']
 
-        dataClasses.rawData.rc_sw_door = current_raw_sensor_data['RCCH']['ch7'] #TODO Change to correct channel
-        dataClasses.rawData.rc_sw_flt_mode = current_raw_sensor_data['RCCH']['ch6'] #TODO Change to correct channel
-        dataClasses.rawData.rc_sw_st_cntl = current_raw_sensor_data['RCCH']['ch5'] #TODO Change to correct channel
+        dataClasses.rawData.rc_sw_door = current_raw_sensor_data['RCCH']['ch7'] 
+        dataClasses.rawData.rc_sw_flt_mode = current_raw_sensor_data['RCCH']['ch6'] 
+        dataClasses.rawData.rc_sw_st_cntl = current_raw_sensor_data['RCCH']['ch5'] 
 
-        dataClasses.rawData.motor_throttle = current_raw_sensor_data['Servo']['servo1'] #TODO Change to correct channel
-        dataClasses.rawData.motor_yaw = current_raw_sensor_data['Servo']['servo2'] #TODO Change to correct channel
-        dataClasses.rawData.motor_up = current_raw_sensor_data['Servo']['servo3'] #TODO Change to correct channel
+        dataClasses.rawData.motor_throttle = current_raw_sensor_data['Servo']['servo1'] 
+        dataClasses.rawData.motor_yaw = current_raw_sensor_data['Servo']['servo2'] 
+        dataClasses.rawData.motor_up = current_raw_sensor_data['Servo']['servo3'] 
+        dataClasses.rawData.lidar_cm = current_raw_sensor_data['Lidar']
 
       

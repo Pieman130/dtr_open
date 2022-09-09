@@ -11,16 +11,23 @@ except Exception as e:
     print(str(e))
     isMicroPython = False
     import sys
+    import pathlib
 
     try:
-        sys.path.append('C:\\DroneRepos\\DTRRepo\\Blimp\\OpenMV\\unitTest')
-        sys.path.append('C:\\DroneRepos\\DTRRepo\\Blimp\\OpenMV\\support')
+        baseDir = str(pathlib.Path(__file__).parent.resolve()) # Get directory of main
+        if (sys.platform == "Windows"):
+            sys.path.append(baseDir + '\\unitTest')
+            sys.path.append(baseDir + '\\support')
+        else:   
+            sys.path.append(baseDir + "/unitTest")
+            sys.path.append(baseDir + "/support")
 
         import hardwareMock
         hardware = hardwareMock
 
         import commsMock
         comms = commsMock
+
     except:
         #this is for upython.
         print(".")

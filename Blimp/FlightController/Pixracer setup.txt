@@ -1,14 +1,16 @@
 Pixracer FC Setup
-In MissionPlanner
-Disconnect, load Arduplane V4.2.0 OFFICIAL, select platform Pixracer-bdshot
-Load ArudPlaneConfiguredParams.param file
+Install Mission planner
+Connect pixracer to computer over USB
+In MissionPlanner, to Setup, Install Firmware
+Load Arduplane V4.2.3 OFFICIAL, select platform Pixracer-bdshot
 
-
+Click connect (may have to change COM Ports)
+Go to Config, Full Param Tree.
+Load from File (on right) and select ArudPlaneConfiguredParams.param file
 
 
 ESC Flashing
-Configure Pixracer with ArduCopter OFFICIAL, select platform Pixracer-bdshot
-Load ArduCopterConfiguredParams_forESCFlashing.param file
+Use the standard arduplane configured parameters
 Disconnect mission planner, arm safety button
 Ensure ESCs have power
 go to https://esc-configurator.com/ and connect to com port
@@ -19,7 +21,7 @@ Configure ESCs as:
 Motor Direction: Bidirectional
 PPM Min Throttle: 1100us
 PPM Max Throttle: 1900us
-escPPMCenterThrottle: 1504us
+escPPMCenterThrottle: 1500us
 
 Click Write Settings
 Click Read Settings and ensure that settings stuck for all ESCs

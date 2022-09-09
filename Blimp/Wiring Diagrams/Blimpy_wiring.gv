@@ -48,7 +48,11 @@ graph {
  </td></tr>
  <tr><td>
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
-   <td balign="left"><img scale="false" src="JST-GH Pin ID.png"/></td>
+   <td balign="left">
+    <table border="0" cellspacing="0" cellborder="0"><tr>
+     <td width="200" height="141.8181818181818" fixedsize="true"><img scale="true" src="JST-GH Pin ID.png"/></td>
+    </tr></table>
+   </td>
   </tr></table>
  </td></tr>
 </table>
@@ -97,7 +101,11 @@ graph {
  </td></tr>
  <tr><td>
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
-   <td balign="left"><img scale="false" src="JST-GH Pin ID.png"/></td>
+   <td balign="left">
+    <table border="0" cellspacing="0" cellborder="0"><tr>
+     <td width="200" height="141.8181818181818" fixedsize="true"><img scale="true" src="JST-GH Pin ID.png"/></td>
+    </tr></table>
+   </td>
   </tr></table>
  </td></tr>
 </table>
@@ -146,7 +154,11 @@ graph {
  </td></tr>
  <tr><td>
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
-   <td balign="left"><img scale="false" src="JST-GH Pin ID.png"/></td>
+   <td balign="left">
+    <table border="0" cellspacing="0" cellborder="0"><tr>
+     <td width="200" height="141.8181818181818" fixedsize="true"><img scale="true" src="JST-GH Pin ID.png"/></td>
+    </tr></table>
+   </td>
   </tr></table>
  </td></tr>
 </table>
@@ -191,7 +203,11 @@ graph {
  </td></tr>
  <tr><td>
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
-   <td balign="left"><img scale="false" src="JST-GH Pin ID.png"/></td>
+   <td balign="left">
+    <table border="0" cellspacing="0" cellborder="0"><tr>
+     <td width="200" height="141.8181818181818" fixedsize="true"><img scale="true" src="JST-GH Pin ID.png"/></td>
+    </tr></table>
+   </td>
   </tr></table>
  </td></tr>
 </table>
@@ -340,11 +356,11 @@ graph {
  </td></tr>
 </table>
 > fillcolor="#FFFFFF" shape=box style=filled]
-	"OpenMV_Hat-Servo1" [label=<
+	"OpenMV_Hat-Servo1 - Top" [label=<
 <table border="0" cellspacing="0" cellpadding="0">
  <tr><td>
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
-   <td balign="left">OpenMV_Hat-Servo1</td>
+   <td balign="left">OpenMV_Hat-Servo1 - Top</td>
   </tr></table>
  </td></tr>
  <tr><td>
@@ -372,11 +388,11 @@ graph {
  </td></tr>
 </table>
 > fillcolor="#FFFFFF" shape=box style=filled]
-	"OpenMV_Hat-Servo3" [label=<
+	"OpenMV_Hat-Servo3 - Bottom" [label=<
 <table border="0" cellspacing="0" cellpadding="0">
  <tr><td>
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
-   <td balign="left">OpenMV_Hat-Servo3</td>
+   <td balign="left">OpenMV_Hat-Servo3 - Bottom</td>
   </tr></table>
  </td></tr>
  <tr><td>
@@ -422,25 +438,34 @@ graph {
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1">
    <tr>
     <td port="p1l">1</td>
-    <td>GND</td>
+    <td>TXD</td>
    </tr>
    <tr>
     <td port="p2l">2</td>
-    <td>5V</td>
-   </tr>
-   <tr>
-    <td port="p3l">3</td>
     <td>RXD</td>
    </tr>
    <tr>
+    <td port="p3l">3</td>
+    <td>5V</td>
+   </tr>
+   <tr>
     <td port="p4l">4</td>
-    <td>TXD</td>
+    <td>GND</td>
    </tr>
   </table>
  </td></tr>
  <tr><td>
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
-   <td balign="left"><img scale="false" src="JST-GH Pin ID.png"/></td>
+   <td balign="left">
+    <table border="0" cellspacing="0" cellborder="0"><tr>
+     <td width="200" height="141.8181818181818" fixedsize="true"><img scale="true" src="JST-GH Pin ID.png"/></td>
+    </tr></table>
+   </td>
+  </tr></table>
+ </td></tr>
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">Manufacturer documentation<br />pin numbers are reversed.<br />Pin #s here are correct.<br /></td>
   </tr></table>
  </td></tr>
 </table>
@@ -538,7 +563,7 @@ graph {
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
    <td balign="left">
     <table border="0" cellspacing="0" cellborder="0"><tr>
-     <td width="180" height="117.26541554959786" fixedsize="true"><img scale="true" src="JST-PH 2.0 Pin ID.png"/></td>
+     <td width="200" height="130.29490616621985" fixedsize="true"><img scale="true" src="JST-PH 2.0 Pin ID.png"/></td>
     </tr></table>
    </td>
   </tr></table>
@@ -754,7 +779,11 @@ graph {
  </td></tr>
  <tr><td>
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
-   <td balign="left"><img scale="false" src="JST 1.25 3 Pos Pin ID.png"/></td>
+   <td balign="left">
+    <table border="0" cellspacing="0" cellborder="0"><tr>
+     <td width="200" height="119.67871485943776" fixedsize="true"><img scale="true" src="JST 1.25 3 Pos Pin ID.png"/></td>
+    </tr></table>
+   </td>
   </tr></table>
  </td></tr>
 </table>
@@ -914,7 +943,7 @@ graph {
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
    <td balign="left">2x</td>
    <td balign="left">22 AWG</td>
-   <td balign="left">8.0 in</td>
+   <td balign="left">6.0 in</td>
   </tr></table>
  </td></tr>
  <tr><td>
@@ -971,7 +1000,7 @@ graph {
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
    <td balign="left">1x</td>
    <td balign="left">28 AWG</td>
-   <td balign="left">2.0 in</td>
+   <td balign="left">6.0 in</td>
   </tr></table>
  </td></tr>
  <tr><td>
@@ -1053,7 +1082,7 @@ graph {
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
    <td balign="left">1x</td>
    <td balign="left">28 AWG</td>
-   <td balign="left">21.0 in</td>
+   <td balign="left">22.0 in</td>
   </tr></table>
  </td></tr>
  <tr><td>
@@ -1081,13 +1110,13 @@ graph {
 </table>
 > fillcolor="#FFFFFF" shape=box style=filled]
 	edge [color="#000000:#ff0000:#000000"]
-	"OpenMV_Hat-Servo3":p1r:e -- CatchServoCable:w1:w
+	"OpenMV_Hat-Servo3 - Bottom":p1r:e -- CatchServoCable:w1:w
 	CatchServoCable:w1:e -- "Catch Servo":p2l:w
 	edge [color="#000000:#ffff00:#000000"]
-	"OpenMV_Hat-Servo3":p2r:e -- CatchServoCable:w2:w
+	"OpenMV_Hat-Servo3 - Bottom":p2r:e -- CatchServoCable:w2:w
 	CatchServoCable:w2:e -- "Catch Servo":p1l:w
 	edge [color="#000000:#000000:#000000"]
-	"OpenMV_Hat-Servo3":p3r:e -- CatchServoCable:w3:w
+	"OpenMV_Hat-Servo3 - Bottom":p3r:e -- CatchServoCable:w3:w
 	CatchServoCable:w3:e -- "Catch Servo":p3l:w
 	CatchServoCable [label=<
 <table border="0" cellspacing="0" cellpadding="0">
@@ -1100,13 +1129,14 @@ graph {
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
    <td balign="left">3x</td>
    <td balign="left">28 AWG</td>
+   <td balign="left">50.0 in</td>
   </tr></table>
  </td></tr>
  <tr><td>
   <table border="0" cellspacing="0" cellborder="0">
    <tr><td>&nbsp;</td></tr>
    <tr>
-    <td>OpenMV_Hat-Servo3:1:5V</td>
+    <td>OpenMV_Hat-Servo3 - Bottom:1:5V</td>
     <td>
      1:RD
     </td>
@@ -1122,7 +1152,7 @@ graph {
     </td>
    </tr>
    <tr>
-    <td>OpenMV_Hat-Servo3:2:PWM</td>
+    <td>OpenMV_Hat-Servo3 - Bottom:2:PWM</td>
     <td>
      2:YE
     </td>
@@ -1138,7 +1168,7 @@ graph {
     </td>
    </tr>
    <tr>
-    <td>OpenMV_Hat-Servo3:3:GND</td>
+    <td>OpenMV_Hat-Servo3 - Bottom:3:GND</td>
     <td>
      3:BK
     </td>
@@ -1178,7 +1208,7 @@ graph {
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
    <td balign="left">3x</td>
    <td balign="left">28 AWG</td>
-   <td balign="left">10.0 in</td>
+   <td balign="left">6.0 in</td>
   </tr></table>
  </td></tr>
  <tr><td>
@@ -1239,16 +1269,16 @@ graph {
 > fillcolor="#FFFFFF" shape=box style=filled]
 	edge [color="#000000:#ff0000:#000000"]
 	"Pixracer-Telem1":p1r:e -- LIDARCable:w1:w
-	LIDARCable:w1:e -- "LIDAR-Serial":p2l:w
+	LIDARCable:w1:e -- "LIDAR-Serial":p3l:w
 	edge [color="#000000:#ffffff:#000000"]
 	"Pixracer-Telem1":p2r:e -- LIDARCable:w2:w
-	LIDARCable:w2:e -- "LIDAR-Serial":p3l:w
+	LIDARCable:w2:e -- "LIDAR-Serial":p2l:w
 	edge [color="#000000:#0066ff:#000000"]
 	"Pixracer-Telem1":p3r:e -- LIDARCable:w3:w
-	LIDARCable:w3:e -- "LIDAR-Serial":p4l:w
+	LIDARCable:w3:e -- "LIDAR-Serial":p1l:w
 	edge [color="#000000:#000000:#000000"]
 	"Pixracer-Telem1":p6r:e -- LIDARCable:w4:w
-	LIDARCable:w4:e -- "LIDAR-Serial":p1l:w
+	LIDARCable:w4:e -- "LIDAR-Serial":p4l:w
 	LIDARCable [label=<
 <table border="0" cellspacing="0" cellpadding="0">
  <tr><td>
@@ -1260,7 +1290,7 @@ graph {
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
    <td balign="left">4x</td>
    <td balign="left">28 AWG</td>
-   <td balign="left">10.0 in</td>
+   <td balign="left">6.0 in</td>
   </tr></table>
  </td></tr>
  <tr><td>
@@ -1271,7 +1301,7 @@ graph {
     <td>
      1:RD
     </td>
-    <td>LIDAR-Serial:2:5V</td>
+    <td>LIDAR-Serial:3:5V</td>
    </tr>
    <tr>
     <td colspan="3" border="0" cellspacing="0" cellpadding="0" port="w1" height="6">
@@ -1287,7 +1317,7 @@ graph {
     <td>
      2:WH
     </td>
-    <td>LIDAR-Serial:3:RXD</td>
+    <td>LIDAR-Serial:2:RXD</td>
    </tr>
    <tr>
     <td colspan="3" border="0" cellspacing="0" cellpadding="0" port="w2" height="6">
@@ -1303,7 +1333,7 @@ graph {
     <td>
      3:BU
     </td>
-    <td>LIDAR-Serial:4:TXD</td>
+    <td>LIDAR-Serial:1:TXD</td>
    </tr>
    <tr>
     <td colspan="3" border="0" cellspacing="0" cellpadding="0" port="w3" height="6">
@@ -1319,7 +1349,7 @@ graph {
     <td>
      4:BK
     </td>
-    <td>LIDAR-Serial:1:GND</td>
+    <td>LIDAR-Serial:4:GND</td>
    </tr>
    <tr>
     <td colspan="3" border="0" cellspacing="0" cellpadding="0" port="w4" height="6">

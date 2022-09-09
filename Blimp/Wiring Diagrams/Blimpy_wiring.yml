@@ -31,15 +31,19 @@ connectors:
   OpenMV_Hat-Detector:
     <<: *DP_SERVO_template
     pinlabels: [3.3V,signal,GND]
-  OpenMV_Hat-Servo1:
+  OpenMV_Hat-Servo1 - Top:
     <<: *DP_SERVO_template
     pinlabels: [5V,PWM,GND]
-  OpenMV_Hat-Servo3:
+  OpenMV_Hat-Servo3 - Bottom:
     <<: *DP_SERVO_template
     pinlabels: [5V,PWM,GND]
   LIDAR-Serial:
     <<: *PX_GH6_template
-    pinlabels: [GND,5V,RXD,TXD]
+    pinlabels: [TXD,RXD,5V,GND]
+    notes: |
+      Manufacturer documentation
+      pin numbers are reversed.
+      Pin #s here are correct.
   IR-Detector:
     <<: *DP_SERVO_template
     pinlabels: [3.3V,signal,GND]
@@ -91,13 +95,13 @@ cables:
   5VtoPixRacerCable:
     wirecount: 2
     gauge: 22 awg
-    length: 8 in
+    length: 6 in
     colors: [RD,BK]
 # Servo cables
   Lift ESC Cable:
     wirecount: 1
     gauge: 28 awg
-    length: 2 in
+    length: 6 in
     colors: [YE]
   Yaw ESC Cable:
     wirecount: 1
@@ -107,22 +111,23 @@ cables:
   Thrust ESC Cable:
     wirecount: 1
     gauge: 28 awg
-    length: 21 in
+    length: 22 in
     colors: [YE]
   CatchServoCable:
     wirecount: 3
     gauge: 28 awg
+    length: 50 in
     colors: [RD,YE,BK]
 # Sensor/Peripheral cables
   RCCable:
     wirecount: 3
     gauge: 28 awg
-    length: 10 in
+    length: 6 in
     colors: [BK,YE,RD]
   LIDARCable:
     wirecount: 4
     gauge: 28 awg
-    length: 10 in
+    length: 6 in
     colors: [RD,WH,BU,BK]
   PixOpenMVCable:
     wirecount: 4
@@ -203,6 +208,6 @@ connections:
     - DetectorCable: [1-3]
     - IR-Detector: [1-3]
   -
-    - OpenMV_Hat-Servo3: [5V,PWM,GND]
+    - OpenMV_Hat-Servo3 - Bottom: [5V,PWM,GND]
     - CatchServoCable: [RD,YE,BK]
     - Catch Servo: [5V,PWM,GND]

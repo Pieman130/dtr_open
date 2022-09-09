@@ -64,7 +64,7 @@ def main() -> None:
 
         action.updateState()
 
-      #  action.getNextStep()
+        action.getNextStep()
 
         action.executeNextStep()
 

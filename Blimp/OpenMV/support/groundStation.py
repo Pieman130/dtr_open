@@ -1,5 +1,3 @@
-
-
 import dataClasses 
 
 class GroundStation:
@@ -37,6 +35,16 @@ class GroundStation:
             dataClasses.gndStationCmd.secondManeuver = jsonDict['secondManeuver']
             dataClasses.gndStationCmd.baseUpVal = jsonDict['baseUpVal']
             dataClasses.gndStationCmd.duration = jsonDict['duration']
+
+            dataClasses.gndStationCmd.p_up = jsonDict['p_up']
+            dataClasses.gndStationCmd.i_up = jsonDict['i_up']
+            dataClasses.gndStationCmd.d_up = jsonDict['d_up']
+            dataClasses.gndStationCmd.p_throttle = jsonDict['p_throttle']
+            dataClasses.gndStationCmd.i_throttle = jsonDict['i_throttle']
+            dataClasses.gndStationCmd.d_throttle = jsonDict['d_throttle']
+            dataClasses.gndStationCmd.p_yaw = jsonDict['p_yaw']
+            dataClasses.gndStationCmd.i_yaw = jsonDict['i_yaw']
+            dataClasses.gndStationCmd.d_yaw = jsonDict['d_yaw']            
 
         except:
             self.hw.turnOnNotConnectedToGndStationLight()

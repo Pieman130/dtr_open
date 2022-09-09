@@ -30,7 +30,11 @@ class GroundStationCommand:
         self.baseUpVal = None
         self.duration = None
         self.mockSensor_greenDetected = ''
-        self.mockSensor_aprilTagDetected = ''        
+        self.mockSensor_aprilTagDetected = ''   
+        self.p_up = None
+        self.i_up = None
+        self.d_up = None
+        
     def print(self):
         print("manuever desc: " + self.maneuverDescription)
         print("base up: " + str(self.baseUpVal))

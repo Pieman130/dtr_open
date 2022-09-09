@@ -10,6 +10,7 @@ class Sensors:
         self.irSensor = None
         self.camera = None        
         self.lidar = None
+        self.imuSensor = None
 
 sensors = Sensors()
 
@@ -42,13 +43,17 @@ def swInitialization(hw,com): # https://github.com/mavlink/c_library_v1/blob/mas
      
     swInitializeCamera(hw)   
     swInitializeIrSensor(hw)
-
+    swInitializeIMUSensor(hw)
     swInitializeLidar(com)
     return output 
 
 def swInitializeIrSensor(hw):
     global sensors
     sensors.irSensor = hw.irSensor
+
+def swInitializeIMUSensor(hw):
+    global sensors
+    sensors.imuSensor = hw.imuSensor
 
 def swInitializeLidar(com):
     global sensors
@@ -80,6 +85,10 @@ def collectData():
     dataClasses.rawData.img = sensors.camera.snapshot()     
 
     dataClasses.rawData.irSensor = sensors.irSensor.value()    
+
+    dataClasses.rawData.imu_pitch = sensors.imuSensor.getRoll()
+    dataClasses.rawData.imu_yaw = sensors.imuSensor.getPitch()
+    dataClasses.rawData.imu_roll = sensors.imuSensor.getYaw()
 
     dataClasses.rawData.lidar_cm = sensors.lidar.getDataFake()
 

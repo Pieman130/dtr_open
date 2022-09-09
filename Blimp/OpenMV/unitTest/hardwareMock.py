@@ -11,6 +11,19 @@ class NetworkMock:
     def ifconfig(self):
         print("mock if config")
 
+class IMUMock:
+    def __init__(self):
+        print("imu mock")
+
+    def getRoll(self):
+        return 0
+
+    def getYaw(self):
+        return 0
+
+    def getPitch(self):
+        return 0
+
 class UartMock:
     def __init__(self):
         print("uart mock")
@@ -62,6 +75,8 @@ class Hardware:
         self.uart = UartMock()      
 
         self.irSensor = IrSensorMock()
+        
+        self.imuSensor = IMUMock()
 
         self.camera = CameraMock()     
 

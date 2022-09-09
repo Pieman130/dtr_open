@@ -64,6 +64,7 @@ class Sensors:
         dataClasses.rawData.motor_throttle = current_raw_sensor_data['Servo']['servo1'] 
         dataClasses.rawData.motor_yaw = current_raw_sensor_data['Servo']['servo2'] 
         dataClasses.rawData.motor_up = current_raw_sensor_data['Servo']['servo3'] 
+        
         dataClasses.rawData.lidar_cm = current_raw_sensor_data['Lidar']
 
       

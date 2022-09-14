@@ -2,6 +2,7 @@
 #Wirviz 0.3.2 Specification https://github.com/formatc1702/WireViz
 
 connectors:
+#Pixracer
   Pixracer-Telem1: &PX_GH6_template
     pinlabels: [5V,TX,RX,CTS,RTS,GND]
     type: JST-GH_1.25
@@ -21,10 +22,12 @@ connectors:
     pinlabels: [ch1,ch2,ch3,ch4,ch5,ch6]
     type: 0.1" header
     subtype: female
+#RC Receiver
   RC_Receiver: &DP_SERVO_template
     pinlabels: [PWM,5V,GND]
     type: 0.1" header
     subtype: female
+#OpenMV Hat
   OpenMV_Hat-Serial:
     <<: *DP_SERVO_template
     pinlabels: [5V,TXD,RXD,GND]
@@ -37,6 +40,7 @@ connectors:
   OpenMV_Hat-Servo3 - Bottom:
     <<: *DP_SERVO_template
     pinlabels: [5V,PWM,GND]
+#Sensors
   LIDAR-Serial:
     <<: *PX_GH6_template
     pinlabels: [TXD,RXD,5V,GND]
@@ -47,16 +51,26 @@ connectors:
   IR-Detector:
     <<: *DP_SERVO_template
     pinlabels: [3.3V,signal,GND]
+#Battery and regulator
   5VRegulator:
     pinlabels: [Vin,GND,Vout]
     type: solder pad
-  Battery:
-    pinlabels: [Vbatt,Return]
+  Battery: &Batt_PH_M_template
+    pinlabels: [Vbatt,GND]
     type: JST-PH 2.0
     subtype: male
     image:
       src: JST-PH 2.0 Pin ID.png
       width: 200
+  Battery-Reg: &Batt_PH_F_template
+    <<: *Batt_PH_M_template
+    subtype: female
+    image:
+      src: JST-PH 2.0 Female Pin ID.png
+      width: 200
+    notes: connects to soldered on JST-PH lead
+
+#ESCs and servos
   Lift ESC Signal:
     <<: *DP_SERVO_template
   Yaw ESC Signal:
@@ -64,14 +78,11 @@ connectors:
   Thrust ESC Signal:
     <<: *DP_SERVO_template
   Lift ESC Power:
-    pinlabels: [Vbatt,GND]
-    type: Soldered Wire
+    <<: *Batt_PH_F_template
   Yaw ESC Power:
-    pinlabels: [Vbatt,GND]
-    type: Soldered Wire
+    <<: *Batt_PH_F_template
   Thrust ESC Power:
-    pinlabels: [Vbatt,GND]
-    type: Soldered Wire 
+    <<: *Batt_PH_F_template 
   Catch Servo:
     <<: *DP_SERVO_template
     type: JST 1.25
@@ -82,33 +93,33 @@ connectors:
   
 cables:
 # Power distribution cables
-  BatteryCable (short):
+  # Regulator Battery Cable:
+  #   wirecount: 2
+  #   length: 6 in
+  #   gauge: 22 awg
+  #   colors: [RD, BK]
+  Battery Distribution Cable:
     wirecount: 2
-    length: 6 in
     gauge: 22 awg
+    length: 8 in
     colors: [RD, BK]
-  BatteryCable (long):
-    wirecount: 2
-    gauge: 22 awg
-    length: 18 in
-    colors: [RD, BK]
-  5VtoPixRacerCable:
+  Regulator 5V to Pixracer Cable:
     wirecount: 2
     gauge: 22 awg
     length: 6 in
     colors: [RD,BK]
 # Servo cables
-  Lift ESC Cable:
+  Lift ESC Signal Cable:
     wirecount: 1
     gauge: 28 awg
     length: 6 in
-    colors: [YE]
-  Yaw ESC Cable:
+    colors: [BU]
+  Yaw ESC Signal Cable:
     wirecount: 1
     gauge: 28 awg
     length: 21 in
-    colors: [YE]
-  Thrust ESC Cable:
+    colors: [GN]
+  Thrust ESC Signal Cable:
     wirecount: 1
     gauge: 28 awg
     length: 22 in
@@ -116,7 +127,7 @@ cables:
   CatchServoCable:
     wirecount: 3
     gauge: 28 awg
-    length: 50 in
+    length: 36 in
     colors: [RD,YE,BK]
 # Sensor/Peripheral cables
   RCCable:
@@ -139,49 +150,59 @@ cables:
     gauge: 28 awg
     length: 24 in
     colors: [RD,GN,BK]
+# #ESC/Reg power cables
+#   Lift ESC Power Cable: &ESC_cable_template
+#     wirecount: 2
+#     gauge: 22 awg
+#     length: 6 in
+#     colors: [RD, BK]
+#   Yaw ESC Power Cable:
+#     <<: *ESC_cable_template
+#   Thrust ESC Power Cable:
+#     <<: *ESC_cable_template
 
 
 connections:
 # High power from battery
   -
     - Battery: [1,2]
-    - BatteryCable (short): [1,2]
+    - Battery Distribution Cable: [1,2]
     - 5VRegulator: [Vin,GND]
   -
     - Battery: [1,2]
-    - BatteryCable (short): [1,2]
+    - Battery Distribution Cable: [1,2]
     - Lift ESC Power: [Vbatt,GND]
   -
     - Battery: [1,2]
-    - BatteryCable (long): [1,2]
+    - Battery Distribution Cable: [1,2]
     - Yaw ESC Power: [Vbatt,GND]
   -
     - Battery: [1,2]
-    - BatteryCable (long): [1,2]
+    - Battery Distribution Cable: [1,2]
     - Thrust ESC Power: [Vbatt,GND]
   
 #ESC signals - do not connect grounds, can create dangerous ground loop
   -
     - Pixracer-Servos: [3]
-    - Lift ESC Cable: [1]
+    - Lift ESC Signal Cable: [1]
     - Lift ESC Signal: [PWM]
   -
     - Pixracer-Servos: [2]
-    - Yaw ESC Cable: [1]
+    - Yaw ESC Signal Cable: [1]
     - Yaw ESC Signal: [PWM]
   - #h
     - Pixracer-Servos: [1]
-    - Thrust ESC Cable: [1]
+    - Thrust ESC Signal Cable: [1]
     - Thrust ESC Signal: [PWM]
 
 #5V power to pixracer
   -
     - Pixracer-PWR: [1,5]
-    - 5VtoPixRacerCable: [1,2]
+    - Regulator 5V to Pixracer Cable: [1,2]
     - 5VRegulator: [Vout,GND] 
   -
     - Pixracer-PWR: [2,6]
-    - 5VtoPixRacerCable: [1,2]
+    - Regulator 5V to Pixracer Cable: [1,2]
     - 5VRegulator: [Vout,GND]
 
 #RC receiver

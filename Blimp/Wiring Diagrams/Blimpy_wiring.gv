@@ -554,7 +554,7 @@ graph {
     <td port="p1r">1</td>
    </tr>
    <tr>
-    <td>Return</td>
+    <td>GND</td>
     <td port="p2r">2</td>
    </tr>
   </table>
@@ -566,6 +566,48 @@ graph {
      <td width="200" height="130.29490616621985" fixedsize="true"><img scale="true" src="JST-PH 2.0 Pin ID.png"/></td>
     </tr></table>
    </td>
+  </tr></table>
+ </td></tr>
+</table>
+> fillcolor="#FFFFFF" shape=box style=filled]
+	"Battery-Reg" [label=<
+<table border="0" cellspacing="0" cellpadding="0">
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">Battery-Reg</td>
+  </tr></table>
+ </td></tr>
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">JST-PH 2.0</td>
+   <td balign="left">female</td>
+   <td balign="left">2-pin</td>
+  </tr></table>
+ </td></tr>
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1">
+   <tr>
+    <td port="p1l">1</td>
+    <td>Vbatt</td>
+   </tr>
+   <tr>
+    <td port="p2l">2</td>
+    <td>GND</td>
+   </tr>
+  </table>
+ </td></tr>
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">
+    <table border="0" cellspacing="0" cellborder="0"><tr>
+     <td width="200" height="113.22505800464037" fixedsize="true"><img scale="true" src="JST-PH 2.0 Female Pin ID.png"/></td>
+    </tr></table>
+   </td>
+  </tr></table>
+ </td></tr>
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">connects to soldered on JST-PH lead</td>
   </tr></table>
  </td></tr>
 </table>
@@ -675,7 +717,8 @@ graph {
  </td></tr>
  <tr><td>
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
-   <td balign="left">Soldered Wire</td>
+   <td balign="left">JST-PH 2.0</td>
+   <td balign="left">female</td>
    <td balign="left">2-pin</td>
   </tr></table>
  </td></tr>
@@ -690,6 +733,20 @@ graph {
     <td>GND</td>
    </tr>
   </table>
+ </td></tr>
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">
+    <table border="0" cellspacing="0" cellborder="0"><tr>
+     <td width="200" height="113.22505800464037" fixedsize="true"><img scale="true" src="JST-PH 2.0 Female Pin ID.png"/></td>
+    </tr></table>
+   </td>
+  </tr></table>
+ </td></tr>
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">connects to soldered on JST-PH lead</td>
+  </tr></table>
  </td></tr>
 </table>
 > fillcolor="#FFFFFF" shape=box style=filled]
@@ -702,7 +759,8 @@ graph {
  </td></tr>
  <tr><td>
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
-   <td balign="left">Soldered Wire</td>
+   <td balign="left">JST-PH 2.0</td>
+   <td balign="left">female</td>
    <td balign="left">2-pin</td>
   </tr></table>
  </td></tr>
@@ -717,6 +775,20 @@ graph {
     <td>GND</td>
    </tr>
   </table>
+ </td></tr>
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">
+    <table border="0" cellspacing="0" cellborder="0"><tr>
+     <td width="200" height="113.22505800464037" fixedsize="true"><img scale="true" src="JST-PH 2.0 Female Pin ID.png"/></td>
+    </tr></table>
+   </td>
+  </tr></table>
+ </td></tr>
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">connects to soldered on JST-PH lead</td>
+  </tr></table>
  </td></tr>
 </table>
 > fillcolor="#FFFFFF" shape=box style=filled]
@@ -729,7 +801,8 @@ graph {
  </td></tr>
  <tr><td>
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
-   <td balign="left">Soldered Wire</td>
+   <td balign="left">JST-PH 2.0</td>
+   <td balign="left">female</td>
    <td balign="left">2-pin</td>
   </tr></table>
  </td></tr>
@@ -744,6 +817,20 @@ graph {
     <td>GND</td>
    </tr>
   </table>
+ </td></tr>
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">
+    <table border="0" cellspacing="0" cellborder="0"><tr>
+     <td width="200" height="113.22505800464037" fixedsize="true"><img scale="true" src="JST-PH 2.0 Female Pin ID.png"/></td>
+    </tr></table>
+   </td>
+  </tr></table>
+ </td></tr>
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">connects to soldered on JST-PH lead</td>
+  </tr></table>
  </td></tr>
 </table>
 > fillcolor="#FFFFFF" shape=box style=filled]
@@ -789,29 +876,41 @@ graph {
 </table>
 > fillcolor="#FFFFFF" shape=box style=filled]
 	edge [color="#000000:#ff0000:#000000"]
-	Battery:p1r:e -- "BatteryCable (short)":w1:w
-	"BatteryCable (short)":w1:e -- "5VRegulator":p1l:w
+	Battery:p1r:e -- "Battery Distribution Cable":w1:w
+	"Battery Distribution Cable":w1:e -- "5VRegulator":p1l:w
 	edge [color="#000000:#000000:#000000"]
-	Battery:p2r:e -- "BatteryCable (short)":w2:w
-	"BatteryCable (short)":w2:e -- "5VRegulator":p2l:w
+	Battery:p2r:e -- "Battery Distribution Cable":w2:w
+	"Battery Distribution Cable":w2:e -- "5VRegulator":p2l:w
 	edge [color="#000000:#ff0000:#000000"]
-	Battery:p1r:e -- "BatteryCable (short)":w1:w
-	"BatteryCable (short)":w1:e -- "Lift ESC Power":p1l:w
+	Battery:p1r:e -- "Battery Distribution Cable":w1:w
+	"Battery Distribution Cable":w1:e -- "Lift ESC Power":p1l:w
 	edge [color="#000000:#000000:#000000"]
-	Battery:p2r:e -- "BatteryCable (short)":w2:w
-	"BatteryCable (short)":w2:e -- "Lift ESC Power":p2l:w
-	"BatteryCable (short)" [label=<
+	Battery:p2r:e -- "Battery Distribution Cable":w2:w
+	"Battery Distribution Cable":w2:e -- "Lift ESC Power":p2l:w
+	edge [color="#000000:#ff0000:#000000"]
+	Battery:p1r:e -- "Battery Distribution Cable":w1:w
+	"Battery Distribution Cable":w1:e -- "Yaw ESC Power":p1l:w
+	edge [color="#000000:#000000:#000000"]
+	Battery:p2r:e -- "Battery Distribution Cable":w2:w
+	"Battery Distribution Cable":w2:e -- "Yaw ESC Power":p2l:w
+	edge [color="#000000:#ff0000:#000000"]
+	Battery:p1r:e -- "Battery Distribution Cable":w1:w
+	"Battery Distribution Cable":w1:e -- "Thrust ESC Power":p1l:w
+	edge [color="#000000:#000000:#000000"]
+	Battery:p2r:e -- "Battery Distribution Cable":w2:w
+	"Battery Distribution Cable":w2:e -- "Thrust ESC Power":p2l:w
+	"Battery Distribution Cable" [label=<
 <table border="0" cellspacing="0" cellpadding="0">
  <tr><td>
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
-   <td balign="left">BatteryCable (short)</td>
+   <td balign="left">Battery Distribution Cable</td>
   </tr></table>
  </td></tr>
  <tr><td>
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
    <td balign="left">2x</td>
    <td balign="left">22 AWG</td>
-   <td balign="left">6.0 in</td>
+   <td balign="left">8.0 in</td>
   </tr></table>
  </td></tr>
  <tr><td>
@@ -834,7 +933,7 @@ graph {
     </td>
    </tr>
    <tr>
-    <td>Battery:2:Return</td>
+    <td>Battery:2:GND</td>
     <td>
      2:BK
     </td>
@@ -855,88 +954,22 @@ graph {
 </table>
 > fillcolor="#FFFFFF" shape=box style=filled]
 	edge [color="#000000:#ff0000:#000000"]
-	Battery:p1r:e -- "BatteryCable (long)":w1:w
-	"BatteryCable (long)":w1:e -- "Yaw ESC Power":p1l:w
+	"Pixracer-PWR":p1r:e -- "Regulator 5V to Pixracer Cable":w1:w
+	"Regulator 5V to Pixracer Cable":w1:e -- "5VRegulator":p3l:w
 	edge [color="#000000:#000000:#000000"]
-	Battery:p2r:e -- "BatteryCable (long)":w2:w
-	"BatteryCable (long)":w2:e -- "Yaw ESC Power":p2l:w
+	"Pixracer-PWR":p5r:e -- "Regulator 5V to Pixracer Cable":w2:w
+	"Regulator 5V to Pixracer Cable":w2:e -- "5VRegulator":p2l:w
 	edge [color="#000000:#ff0000:#000000"]
-	Battery:p1r:e -- "BatteryCable (long)":w1:w
-	"BatteryCable (long)":w1:e -- "Thrust ESC Power":p1l:w
+	"Pixracer-PWR":p2r:e -- "Regulator 5V to Pixracer Cable":w1:w
+	"Regulator 5V to Pixracer Cable":w1:e -- "5VRegulator":p3l:w
 	edge [color="#000000:#000000:#000000"]
-	Battery:p2r:e -- "BatteryCable (long)":w2:w
-	"BatteryCable (long)":w2:e -- "Thrust ESC Power":p2l:w
-	"BatteryCable (long)" [label=<
+	"Pixracer-PWR":p6r:e -- "Regulator 5V to Pixracer Cable":w2:w
+	"Regulator 5V to Pixracer Cable":w2:e -- "5VRegulator":p2l:w
+	"Regulator 5V to Pixracer Cable" [label=<
 <table border="0" cellspacing="0" cellpadding="0">
  <tr><td>
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
-   <td balign="left">BatteryCable (long)</td>
-  </tr></table>
- </td></tr>
- <tr><td>
-  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
-   <td balign="left">2x</td>
-   <td balign="left">22 AWG</td>
-   <td balign="left">18.0 in</td>
-  </tr></table>
- </td></tr>
- <tr><td>
-  <table border="0" cellspacing="0" cellborder="0">
-   <tr><td>&nbsp;</td></tr>
-   <tr>
-    <td>Battery:1:Vbatt</td>
-    <td>
-     1:RD
-    </td>
-    <td>Yaw ESC Power:1:Vbatt</td>
-   </tr>
-   <tr>
-    <td colspan="3" border="0" cellspacing="0" cellpadding="0" port="w1" height="6">
-     <table cellspacing="0" cellborder="0" border="0">
-      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
-      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#ff0000" border="0"></td></tr>
-      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
-     </table>
-    </td>
-   </tr>
-   <tr>
-    <td>Battery:2:Return</td>
-    <td>
-     2:BK
-    </td>
-    <td>Yaw ESC Power:2:GND</td>
-   </tr>
-   <tr>
-    <td colspan="3" border="0" cellspacing="0" cellpadding="0" port="w2" height="6">
-     <table cellspacing="0" cellborder="0" border="0">
-      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
-      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
-      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
-     </table>
-    </td>
-   </tr>
-   <tr><td>&nbsp;</td></tr>
-  </table>
- </td></tr>
-</table>
-> fillcolor="#FFFFFF" shape=box style=filled]
-	edge [color="#000000:#ff0000:#000000"]
-	"Pixracer-PWR":p1r:e -- "5VtoPixRacerCable":w1:w
-	"5VtoPixRacerCable":w1:e -- "5VRegulator":p3l:w
-	edge [color="#000000:#000000:#000000"]
-	"Pixracer-PWR":p5r:e -- "5VtoPixRacerCable":w2:w
-	"5VtoPixRacerCable":w2:e -- "5VRegulator":p2l:w
-	edge [color="#000000:#ff0000:#000000"]
-	"Pixracer-PWR":p2r:e -- "5VtoPixRacerCable":w1:w
-	"5VtoPixRacerCable":w1:e -- "5VRegulator":p3l:w
-	edge [color="#000000:#000000:#000000"]
-	"Pixracer-PWR":p6r:e -- "5VtoPixRacerCable":w2:w
-	"5VtoPixRacerCable":w2:e -- "5VRegulator":p2l:w
-	"5VtoPixRacerCable" [label=<
-<table border="0" cellspacing="0" cellpadding="0">
- <tr><td>
-  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
-   <td balign="left">5VtoPixRacerCable</td>
+   <td balign="left">Regulator 5V to Pixracer Cable</td>
   </tr></table>
  </td></tr>
  <tr><td>
@@ -986,14 +1019,14 @@ graph {
  </td></tr>
 </table>
 > fillcolor="#FFFFFF" shape=box style=filled]
-	edge [color="#000000:#ffff00:#000000"]
-	"Pixracer-Servos":p3r:e -- "Lift ESC Cable":w1:w
-	"Lift ESC Cable":w1:e -- "Lift ESC Signal":p1l:w
-	"Lift ESC Cable" [label=<
+	edge [color="#000000:#0066ff:#000000"]
+	"Pixracer-Servos":p3r:e -- "Lift ESC Signal Cable":w1:w
+	"Lift ESC Signal Cable":w1:e -- "Lift ESC Signal":p1l:w
+	"Lift ESC Signal Cable" [label=<
 <table border="0" cellspacing="0" cellpadding="0">
  <tr><td>
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
-   <td balign="left">Lift ESC Cable</td>
+   <td balign="left">Lift ESC Signal Cable</td>
   </tr></table>
  </td></tr>
  <tr><td>
@@ -1009,7 +1042,7 @@ graph {
    <tr>
     <td>Pixracer-Servos:3:ch3</td>
     <td>
-     1:YE
+     1:BU
     </td>
     <td>Lift ESC Signal:1:PWM</td>
    </tr>
@@ -1017,7 +1050,7 @@ graph {
     <td colspan="3" border="0" cellspacing="0" cellpadding="0" port="w1" height="6">
      <table cellspacing="0" cellborder="0" border="0">
       <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
-      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#ffff00" border="0"></td></tr>
+      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#0066ff" border="0"></td></tr>
       <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
      </table>
     </td>
@@ -1027,14 +1060,14 @@ graph {
  </td></tr>
 </table>
 > fillcolor="#FFFFFF" shape=box style=filled]
-	edge [color="#000000:#ffff00:#000000"]
-	"Pixracer-Servos":p2r:e -- "Yaw ESC Cable":w1:w
-	"Yaw ESC Cable":w1:e -- "Yaw ESC Signal":p1l:w
-	"Yaw ESC Cable" [label=<
+	edge [color="#000000:#00ff00:#000000"]
+	"Pixracer-Servos":p2r:e -- "Yaw ESC Signal Cable":w1:w
+	"Yaw ESC Signal Cable":w1:e -- "Yaw ESC Signal":p1l:w
+	"Yaw ESC Signal Cable" [label=<
 <table border="0" cellspacing="0" cellpadding="0">
  <tr><td>
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
-   <td balign="left">Yaw ESC Cable</td>
+   <td balign="left">Yaw ESC Signal Cable</td>
   </tr></table>
  </td></tr>
  <tr><td>
@@ -1050,7 +1083,7 @@ graph {
    <tr>
     <td>Pixracer-Servos:2:ch2</td>
     <td>
-     1:YE
+     1:GN
     </td>
     <td>Yaw ESC Signal:1:PWM</td>
    </tr>
@@ -1058,7 +1091,7 @@ graph {
     <td colspan="3" border="0" cellspacing="0" cellpadding="0" port="w1" height="6">
      <table cellspacing="0" cellborder="0" border="0">
       <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
-      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#ffff00" border="0"></td></tr>
+      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#00ff00" border="0"></td></tr>
       <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
      </table>
     </td>
@@ -1069,13 +1102,13 @@ graph {
 </table>
 > fillcolor="#FFFFFF" shape=box style=filled]
 	edge [color="#000000:#ffff00:#000000"]
-	"Pixracer-Servos":p1r:e -- "Thrust ESC Cable":w1:w
-	"Thrust ESC Cable":w1:e -- "Thrust ESC Signal":p1l:w
-	"Thrust ESC Cable" [label=<
+	"Pixracer-Servos":p1r:e -- "Thrust ESC Signal Cable":w1:w
+	"Thrust ESC Signal Cable":w1:e -- "Thrust ESC Signal":p1l:w
+	"Thrust ESC Signal Cable" [label=<
 <table border="0" cellspacing="0" cellpadding="0">
  <tr><td>
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
-   <td balign="left">Thrust ESC Cable</td>
+   <td balign="left">Thrust ESC Signal Cable</td>
   </tr></table>
  </td></tr>
  <tr><td>
@@ -1129,7 +1162,7 @@ graph {
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
    <td balign="left">3x</td>
    <td balign="left">28 AWG</td>
-   <td balign="left">50.0 in</td>
+   <td balign="left">36.0 in</td>
   </tr></table>
  </td></tr>
  <tr><td>

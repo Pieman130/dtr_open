@@ -55,7 +55,7 @@ class GroundStation:
             dataClasses.gndStationCmd.p_yaw = jsonDict['p_yaw']
             dataClasses.gndStationCmd.i_yaw = jsonDict['i_yaw']
             dataClasses.gndStationCmd.d_yaw = jsonDict['d_yaw']            
-            dataClasses.gndStationCmd.d_yaw = jsonDict['requestedMode']        
+            dataClasses.gndStationCmd.requestedState = jsonDict['requestedState']        
 
         except:
             self.hw.turnOnNotConnectedToGndStationLight()

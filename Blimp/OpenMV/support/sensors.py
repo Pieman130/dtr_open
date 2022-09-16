@@ -74,10 +74,7 @@ class Sensors:
         if current_raw_sensor_data['Lidar'] != None:
             dataClasses.rawData.lidar_cm = current_raw_sensor_data['Lidar']
 
-        door_position = self.hw.servo.angle()
-        if door_position == self.hw.servo_value_closed:
-            dataClasses.rawData.door_position = 'closed'
-        elif door_position == self.hw.servo_value_open:
-            dataClasses.rawData.door_position = 'open'
+        dataClasses.rawData.door_position = self.hw.servo.angle()
+
 
       

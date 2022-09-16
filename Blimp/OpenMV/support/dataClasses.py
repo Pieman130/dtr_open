@@ -26,7 +26,10 @@ class ProcessedData:
         self.distanceToBall = None
         self.aprilTagFound = None
         self.isAprilTagDetected = None
-        self.lidarDistance_ft = None        
+        self.lidarDistance_ft = None 
+        self.door_state = None
+        self.sw_door_control = 'open' #
+        self.sw_flight_mode = 'manual'     
 
 
 class GroundStationCommand:

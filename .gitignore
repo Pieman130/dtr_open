@@ -34,4 +34,5 @@ __pycache__/
 *.DS_Store
 #Sublime autosave files
 *.autosave
-
+#Mac OS crap
+*.icloud

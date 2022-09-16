@@ -1,5 +1,7 @@
+import dataClasses
 
-class FlightDirector:    
+
+class FlightDirector():    
     ''' 
         Goal of the flight director:
             -read processed sensor data
@@ -24,4 +26,10 @@ class FlightDirector:
 
     def executeNextStep(self):
         pass
+
+
+    def operateDoor(self):
+        '''TODO incorporate AUTONOMOUS door closing'''
+        pass
+
 

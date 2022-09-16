@@ -5,13 +5,23 @@ class GroundStation:
         self.wifi = comms.wifi
         self.hw = hw
 
-    def sendStatusMessage(self):
+    def sendStatusMessage(self,missionCommander,flightDirector):
         global wifiInfo    
         
         print('in print status message')
         data = '{"cameraDetectionStr":"' + dataClasses.data.colorDetected + '"'
         ir1_0str = str(int(dataClasses.data.irData))
-        data = data + ',"isIrSensorDetection":"' + ir1_0str + '"}'
+
+        data = data + ',"isIrSensorDetection":"' + ir1_0str + '"'
+
+        data = data + ',"state_description":"' + missionCommander.currentState.description + '"'
+        data = data + ',"state_target":"' + missionCommander.currentState.target + '"'
+        data = data + ',"state_action":"' + missionCommander.currentState.action + '"'
+
+        data = data + ',"currentManeuver":"' + flightDirector.currentManeuver + '"'
+
+        data = data +  '}'
+
         print(data)
         #r = urequests.request('POST',fullAddress,data )
         headers = {'Content-Type': 'application/json'}

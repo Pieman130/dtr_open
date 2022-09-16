@@ -1,12 +1,31 @@
 <h2>Last Blimp Heartbeat:</h2>
 <h4>{{m.status.blimpLastHeartbeat}}</h4> 
 <p></p>
-<p></p>
-<p></p>
-
-<h3>Camera detection string:</h3>
-<h4>{{m.status.cameraDetectionStr}}</h4>
 
 
-<h3>Ir Sensor Detection:</h3>
-<h4>{{m.status.isIrSensorDetection}}</h4>
+
+<div class="card"> 
+    <h5 class="card-header">Autonomous Information:</h5>
+    <div class="card-body">  
+        <h4>Mode: {{m.status.state_description}}</h4>
+        <h4>Target: {{m.status.state_target}}</h4>
+        <h4>Action: {{m.status.state_action}}</h4>
+        <h4>Maneuever: {{m.status.currentManeuver}}</h4>
+    </div>
+</div>
+
+
+
+
+<div class="card"> 
+    <h5 class="card-header">Sensor Information:</h5>
+    
+    <h4>{{m.status.cameraDetectionStr}}</h4>
+    <h3>Camera detection string:</h3>
+
+    <h3>Ir Sensor Detection:</h3>
+    <h4>{{m.status.isIrSensorDetection}}</h4>
+
+</div>
+
+

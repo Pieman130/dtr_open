@@ -72,6 +72,7 @@ class Hardware:
         # The following must be initialized after wlan as they overload pin assignments in WINC class
         self.irSensor = Pin(IR_DETECT_PIN,Pin.IN,Pin.PULL_NONE)
         self.servo = pyb.Servo(SERVO_PWM_ID)
+        self.imuSensor = None
 
         self.turnOnPoweredOnLight()
 

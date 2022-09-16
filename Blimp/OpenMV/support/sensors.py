@@ -86,9 +86,10 @@ def collectData():
 
     dataClasses.rawData.irSensor = sensors.irSensor.value()    
 
-    dataClasses.rawData.imu_pitch = sensors.imuSensor.getRoll()
-    dataClasses.rawData.imu_yaw = sensors.imuSensor.getPitch()
-    dataClasses.rawData.imu_roll = sensors.imuSensor.getYaw()
+    
+    #dataClasses.rawData.imu_pitch = sensors.imuSensor.getRoll()
+    #dataClasses.rawData.imu_yaw = sensors.imuSensor.getPitch()
+    #dataClasses.rawData.imu_roll = sensors.imuSensor.getYaw()
 
     dataClasses.rawData.lidar_cm = sensors.lidar.getDataFake()
 

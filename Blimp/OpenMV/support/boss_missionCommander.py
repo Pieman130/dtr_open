@@ -41,7 +41,14 @@ class MissionCommander:
     def __init__(self):
         self.currentState = lookForBall # default startup state
 
-    def updateState(self):
-        self.currentState = dataClasses.gndStationCmd.requestedMode        
+    def updateState(self):  
+        pass     
+       # requestedState = dataClasses.gndStationCmd.requestedMode        
+       # if(requestedState == lookForBall.description):
+      #      self.currentState = lookForBall
+
+      #  elif(requestedState == moveToBall.description):
+
+       # elif(requestedState == moveToBall.description):
 
     

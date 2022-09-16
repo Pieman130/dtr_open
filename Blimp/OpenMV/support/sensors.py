@@ -48,7 +48,11 @@ class Sensors:
         
         dataClasses.rawData.img = self.camera.snapshot()     
 
-        dataClasses.rawData.irSensor = self.irSensor.value()    
+    
+    #dataClasses.rawData.imu_pitch = sensors.imuSensor.getRoll()
+    #dataClasses.rawData.imu_yaw = sensors.imuSensor.getPitch()
+    #dataClasses.rawData.imu_roll = sensors.imuSensor.getYaw()
+        #dataClasses.rawData.irSensor = self.irSensor.value()    
 
         current_raw_sensor_data = self.mavlink.getSensors()
 

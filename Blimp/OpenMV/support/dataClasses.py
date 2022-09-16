@@ -6,9 +6,9 @@ class RawData:
     def __init__(self):
         self.img = None
         self.irSensor = None
-        self.imu_yaw = None
-        self.imu_pitch = None
-        self.imu_roll = None
+        self.imu_yaw = 0
+        self.imu_pitch = 0
+        self.imu_roll = 0
         self.motor_throttle = None 
         self.motor_up = None 
         self.motor_yaw = None 

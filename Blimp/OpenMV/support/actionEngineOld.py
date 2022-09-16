@@ -31,8 +31,6 @@ class SystemState:
         self.target = target
         self.action = action    
 
-
-
 lookForBall = SystemState("Search for ball.",TARGET_BALL,ACTION_LOOK)
 moveToBall = SystemState("Move to ball.",TARGET_BALL,ACTION_MOVE)
 captureBall = SystemState("Capture the ball.", TARGET_BALL,ACTION_CAPTURE)
@@ -42,16 +40,23 @@ scoreGoal = SystemState("Score goal.",TARGET_GOAL,ACTION_RELEASE)
 
 class ActionEngine:
     def __init__(self,comms):
+        self.allowGroundStationCommands = True
         self.currentState = lookForBall
-        self.currentManeuver = None
+        self.currentManeuver = ''
 
         self.requestedFirstManeuver = None
         self.requestedSecondManeuver = None
 
         self.blimpManeuvers = flightManeuvers.BlimpManeuvers(comms)
 
-    def updateState(self):
+    def isNewGndStationCommand(self):
         if(dataClasses.gndStationCmd.firstManeuver != self.requestedFirstManeuver):
+            return True
+        else:
+            return False
+
+    def updateState(self):
+        if(self.isNewGndStationCommand()):        
             self.requestedFirstManeuver = dataClasses.gndStationCmd.firstManeuver
             self.requestedSecondManeuver = dataClasses.gndStationCmd.secondManeuver
             print("changing state to: " + str(self.requestedFirstManeuver ))
@@ -62,6 +67,9 @@ class ActionEngine:
         print(str(dataClasses.gndStationCmd.p_up))
         print(str(dataClasses.gndStationCmd.i_up))
         print(str(dataClasses.gndStationCmd.d_up))
+
+        if(self.isNewGndStationCommand()):
+            print("new command")
 
         #if(self.currentManeuver == self.requestedFirstManeuver):
         #    self.currentManeuver = self.requestedSecondManeuver
@@ -112,8 +120,8 @@ class ActionEngine:
         if (desc == 'forward'):
             print("NEXT MANEUVER - FORWARD")
             
-
             nextManeuver = self.blimpManeuvers.forward
+
         elif (desc == '360'):
             print("NEXT MANEUVER - 360")
             nextManeuver = self.blimpManeuvers.three60
@@ -126,7 +134,7 @@ class ActionEngine:
     def executeNextStep(self):
         global stopCtr
         global currentManeuver
-        if self.currentManeuver == None:
+        if self.currentManeuver == '':
             print("no current maneuver")
         elif self.currentManeuver.isExitCriteriaMet():
             print("NO OP")

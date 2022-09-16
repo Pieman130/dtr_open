@@ -40,7 +40,8 @@ dataClasses.config.isMicroPython = isMicroPython
 
 import sensors
 import processing
-import actionEngine
+import boss_missionCommander
+import boss_flightDirector
 import groundStation
 
 
@@ -56,7 +57,8 @@ def main() -> None:
     gndStation = groundStation.GroundStation(comm,hw)
 
 
-    action = actionEngine.ActionEngine(comm)
+    missionCommander = boss_missionCommander.MissionCommander()
+    flightDirector = boss_flightDirector.FlightDirector(comms)
 
 
     while(True):
@@ -66,14 +68,14 @@ def main() -> None:
         sensors.collectData()
 
         processing.parseSensorData()
+        
+        missionCommander.updateState()
 
-        gndStation.sendStatusMessage()
+        flightDirector.getNextStep()
 
-        action.updateState()
+        flightDirector.executeNextStep()
 
-        action.getNextStep()
-
-        action.executeNextStep()
+        gndStation.sendStatusMessage(missionCommander,flightDirector)
 
 
 main()

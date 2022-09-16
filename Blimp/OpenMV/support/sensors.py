@@ -49,25 +49,29 @@ class Sensors:
         dataClasses.rawData.img = self.camera.snapshot()     
 
     
-    #dataClasses.rawData.imu_pitch = sensors.imuSensor.getRoll()
-    #dataClasses.rawData.imu_yaw = sensors.imuSensor.getPitch()
-    #dataClasses.rawData.imu_roll = sensors.imuSensor.getYaw()
+        #dataClasses.rawData.imu_pitch = sensors.imuSensor.getRoll()
+        #dataClasses.rawData.imu_yaw = sensors.imuSensor.getPitch()
+        #dataClasses.rawData.imu_roll = sensors.imuSensor.getYaw()
         #dataClasses.rawData.irSensor = self.irSensor.value()    
 
         current_raw_sensor_data = self.mavlink.getSensors()
 
-        dataClasses.rawData.imu_yaw = current_raw_sensor_data['Attitude']['yaw']
-        dataClasses.rawData.imu_pitch = current_raw_sensor_data['Attitude']['pitch']
-        dataClasses.rawData.imu_roll = current_raw_sensor_data['Attitude']['roll']
+        if current_raw_sensor_data['Attitude'] != None:
+            dataClasses.rawData.imu_yaw = current_raw_sensor_data['Attitude']['yaw']
+            dataClasses.rawData.imu_pitch = current_raw_sensor_data['Attitude']['pitch']
+            dataClasses.rawData.imu_roll = current_raw_sensor_data['Attitude']['roll']
 
-        dataClasses.rawData.rc_sw_door = current_raw_sensor_data['RCCH']['ch7'] 
-        dataClasses.rawData.rc_sw_flt_mode = current_raw_sensor_data['RCCH']['ch6'] 
-        dataClasses.rawData.rc_sw_st_cntl = current_raw_sensor_data['RCCH']['ch5'] 
+        if current_raw_sensor_data['RCCH'] != None:
+            dataClasses.rawData.rc_sw_door = current_raw_sensor_data['RCCH']['ch7'] 
+            dataClasses.rawData.rc_sw_flt_mode = current_raw_sensor_data['RCCH']['ch6'] 
+            dataClasses.rawData.rc_sw_st_cntl = current_raw_sensor_data['RCCH']['ch5'] 
 
-        dataClasses.rawData.motor_throttle = current_raw_sensor_data['Servo']['servo1'] 
-        dataClasses.rawData.motor_yaw = current_raw_sensor_data['Servo']['servo2'] 
-        dataClasses.rawData.motor_up = current_raw_sensor_data['Servo']['servo3'] 
-        
-        dataClasses.rawData.lidar_cm = current_raw_sensor_data['Lidar']
+        if current_raw_sensor_data['Servo'] != None:
+            dataClasses.rawData.motor_throttle = current_raw_sensor_data['Servo']['servo1'] 
+            dataClasses.rawData.motor_yaw = current_raw_sensor_data['Servo']['servo2'] 
+            dataClasses.rawData.motor_up = current_raw_sensor_data['Servo']['servo3'] 
+
+        if current_raw_sensor_data['Lidar'] != None:
+            dataClasses.rawData.lidar_cm = current_raw_sensor_data['Lidar']
 
       

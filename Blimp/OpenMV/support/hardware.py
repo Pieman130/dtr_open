@@ -16,6 +16,9 @@ LED_RED = 1
 LED_GREEN = 2
 LED_BLUE = 3
 
+SERVO_OPEN = 0
+SERVO_CLOSED = 45
+
 
 class Led:
     def __init__(self):
@@ -86,3 +89,20 @@ class Hardware:
 
     def systemFail(self):
          self.led.turnOn('red')
+
+
+    def openDoor(self):
+        self.servo.angle(SERVO_OPEN)
+    
+    def closeDoor(self):
+        self.servo.angle(SERVO_CLOSED)
+
+    def statusDoor(self):
+        angle = self.servo()
+
+        if angle == SERVO_OPEN:
+            return 'open'
+        elif angle == SERVO_CLOSED:
+            return 'closed'
+        else:
+            return str(angle) #if stuck between states return the actual angle

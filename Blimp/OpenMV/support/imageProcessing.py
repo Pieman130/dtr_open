@@ -1,4 +1,5 @@
 
+from Blimp.OpenMV.support.dataClasses import ProcessedData
 import dataClasses
 
 if dataClasses.config.isMicroPython:
@@ -7,28 +8,62 @@ if dataClasses.config.isMicroPython:
 import time
 import math
 
-threshold_index = 1 # 0 for red, 1 for green, 2 for blue
+class EMA:
+    def __init__(self, value, alpha = 0.5):
+        self.value = value
+        self.alpha = alpha
+        self.alpha_compl = 1 - alpha
+    def update(self, value):
+        self.value = self.alpha * self.value + self.alpha_compl * value
+    def get_value(self):
+        return self.value
 
 # Color Tracking Thresholds (L Min, L Max, A Min, A Max, B Min, B Max)
 # The below thresholds track in general red/green/blue things. You may wish to tune them...
-thresholds = [(30, 100, 15, 127, 15, 127), # generic_red_thresholds
-              (30, 100, -64, -8, -32, 32), # generic_green_thresholds
-              (0, 30, 0, 64, -128, 0),
-              (50, 100,-20,20, 30, 100)] # generic_yellow_thresholds] # generic_blue_thresholds
-
-
-def colorDetectedByCamera(img)-> str:
-    colorDetected = 'other'
-    for blob in img.find_blobs([thresholds[threshold_index]], pixels_threshold=200, area_threshold=200, merge=True):
-        # These values depend on the blob not being circular - otherwise they will be shaky.
-        if blob.elongation() > 0.5:
-            img.draw_edges(blob.min_corners(), color=(255,0,0))
-            img.draw_line(blob.major_axis_line(), color=(0,255,0))
-            img.draw_line(blob.minor_axis_line(), color=(0,0,255))
-            colorDetected = 'green'
-
-    return colorDetected
-
+color_thresholds = [(30, 100, 15, 127, 15, 127), # ball
+              (30, 100, -64, -8, -32, 32), # yellow goal
+              (0, 30, 0, 64, -128, 0)]  # orange goal
+pixels_threshold=50
+area_threshold=50
+margin = 10
+x_ema = None
+y_ema = None
+def colorDetectedByCamera(img):
+    width = 0
+    #search for ball in img
+    biggestball = [0,0,0,0] #[x, y, width, height]
+    closest = [0,0,0,0]
+    for blob in img.find_blobs([color_thresholds[0]], pixels_threshold, area_threshold, merge=True, margin = margin):
+        currentball = [blob.cx(), blob.cy(), blob.rect()[2], blob.rect()[3]]
+        if currentball[2] > biggestball[2]:
+            biggestball = currentball
+    if blob != 0:
+        if x_ema == None:
+            x_ema = EMA(current[0], 1 - 0.7)
+        else:
+            x_ema.update(current[0])
+        if y_ema == None:
+            y_ema = EMA(current[1], 1 - 0.7)
+        else:
+            y_ema.update(current[1])
+        dataClasses.ProcessedData.ballx = x_ema
+        dataClasses.ProcessedData.bally = y_ema
+        width = biggestball[2]
+    if dataClasses.ProcessedData.goalColorChoice == "yellow":
+        threshold = 1
+    elif dataClasses.ProcessedData.goalColorChoice == "orange":
+        threshold = 2
+    #search for yellow goal
+    for blob in img.find_blobs([color_thresholds[threshold]], pixels_threshold, area_threshold, merge=True, margin = margin):
+        current = [blob.cx(), blob.cy(), blob.rect()[2], blob.rect()[3]]
+        if abs(160 - (current[0])) < abs(160 - (closest[0])): #instead of current[0], use pythagorean theorem to find closest ball
+            closest = current
+    if blob != 0:
+        dataClasses.ProcessedData.goalColorDetected = True
+        dataClasses.ProcessedData.goalx = closest[0]
+        dataClasses.ProcessedData.goaly = closest[1]
+        dataClasses.ProcessedData.goalskew = closest[3]/closest[4]
+    return
 
 class TagInfo:
     def __init__(self):

@@ -17,7 +17,14 @@ class RawData:
 class ProcessedData:
     def __init__(self):
         self.irData = None
-        self.colorDetected = None
+        self.goalColorChoice = None
+        self.goalColorDetected = None
+        self.isBallDetected = None
+        self.ballx = None
+        self.bally = None
+        self.goalx = None
+        self.goaly = None
+        self.goalskew = None
         self.distanceToBall = None
         self.aprilTagFound = None
         self.isAprilTagDetected = None
@@ -35,7 +42,6 @@ class GroundStationCommand:
         print("manuever desc: " + self.maneuverDescription)
         print("base up: " + str(self.baseUpVal))
         print("duration: " + str(self.duration))
-
 
 data = ProcessedData()
 rawData = RawData()

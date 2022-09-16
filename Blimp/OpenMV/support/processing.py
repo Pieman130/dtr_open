@@ -66,7 +66,17 @@ def parseDoorPosition():
 
 
 def parseRCSwitchPositions():
-    pass
+    currentValue = dataClasses.rawData.rc_sw_door
+
+    # Iterate over states, setting state appropriately 
+    currentDelta = 500 / (len(dataClasses.DoorControlState) - 1) # Split up range evenly
+    for state in dataClasses.DoorControlState:
+        if state[0] + currentDelta >= currentValue and state[0] - currentDelta <= currentValue:
+            dataClasses.ProcessedData.sw_door_control = state[1]
+            break
+    else:
+        dataClasses.ProcessedData.sw_door_control = None
+
 
 #def distanceToBall():    
 

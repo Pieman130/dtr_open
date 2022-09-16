@@ -54,24 +54,21 @@ class GroundStationCommand:
 # These values are based off of RC servo pulse widths. Makes comparing easier.
 
 
-class AutonomousModeState():
-    def __init__(self):
-        self.startInBalloonSeek = 1000
-        self.startInGoalSeek = 2000
+class AutonomousModeState:
+    startInBalloonSeek = [1000, 'balloonSeek']
+    startInGoalSeek = [2000, 'goalSeek']
 
 
-class FlightModeState():
-    def __init__(self):
-        self.Manual = 2000
-        self.Assisted = 1500
-        self.Auto = 1000
+class FlightModeState:
+    Manual = [2000, 'manual']
+    Assisted = [1500, 'assisted']
+    Auto = [1000, 'auto']
 
 
-class DoorControlState():
-    def __init__(self):
-        self.Closed = 2000
-        self.Open = 1500
-        self.Auto = 1000
+class DoorControlState:
+    Closed = [2000, 'closed']
+    Open = [1500, 'open']
+    Auto = [1000, 'auto']
 
 
 data = ProcessedData()

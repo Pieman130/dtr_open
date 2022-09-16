@@ -28,8 +28,9 @@ except Exception as e:
         import commsMock
         comms = commsMock
 
-    except:
+    except Exception as e:
         #this is for upython.
+        print(e)
         print(".")
 
 
@@ -52,7 +53,7 @@ def main() -> None:
 
     comm = comms.Comms(hw)
 
-    sensors.swInitialization(hw,comm)
+    sensorsObj = sensors.Sensors(hw,comm)    
 
     gndStation = groundStation.GroundStation(comm,hw)
 
@@ -65,7 +66,7 @@ def main() -> None:
 
         time.sleep(loopPause)
 
-        sensors.collectData()
+        sensorsObj.collectData()
 
         processing.parseSensorData()
         

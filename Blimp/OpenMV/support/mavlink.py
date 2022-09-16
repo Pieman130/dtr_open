@@ -282,8 +282,8 @@ class MavLink():
             _mav_put_uint16_t(buf, 18, servo8_raw);
             _mav_put_uint8_t(buf, 20, port);'''
         try:
-            sv_tup struct.unpack('<8H',msg[4:20])
-             return {'servo1': git ssv_tup[0],'servo2':sv_tup[1],'servo3':sv_tup[2],
+            sv_tup = struct.unpack('<8H',msg[4:20])
+            return {'servo1': ssv_tup[0],'servo2':sv_tup[1],'servo3':sv_tup[2],
                     'servo4':sv_tup[3],'servo5':sv_tup[4],'servo6':sv_tup[5],
                     'servo7':sv_tup[6],'servo8':sv_tup[7]}
         except ValueError:

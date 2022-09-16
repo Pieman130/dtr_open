@@ -1,4 +1,6 @@
 
+import dataClasses 
+
 ACTION_LOOK = "look"
 ACTION_MOVE = "move"
 ACTION_RELEASE = "release"
@@ -40,6 +42,6 @@ class MissionCommander:
         self.currentState = lookForBall # default startup state
 
     def updateState(self):
-        pass
+        self.currentState = dataClasses.gndStationCmd.requestedMode        
 
     

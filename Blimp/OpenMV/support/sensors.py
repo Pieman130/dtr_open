@@ -32,9 +32,9 @@ class Sensors:
         self.camera = self.hw.camera
 
         self.camera.reset()
-        self.camera.set_pixformat(sensors.camera.RGB565)
+        self.camera.set_pixformat(self.camera.RGB565)
         #sensor.set_framesize(sensor.QVGA)
-        self.camera.set_framesize(sensors.camera.QQVGA) #needed for april tag detections
+        self.camera.set_framesize(self.camera.QQVGA) #needed for april tag detections
         self.camera.skip_frames(2000)
 
         # needed for april tag finder

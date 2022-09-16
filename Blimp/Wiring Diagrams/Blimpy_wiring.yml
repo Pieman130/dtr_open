@@ -2,51 +2,75 @@
 #Wirviz 0.3.2 Specification https://github.com/formatc1702/WireViz
 
 connectors:
+#Pixracer
   Pixracer-Telem1: &PX_GH6_template
-    pinlabels: [GND,RTS,CTS,RX,TX,5V]
+    pinlabels: [5V,TX,RX,CTS,RTS,GND]
     type: JST-GH_1.25
     subtype: female
+    image:
+      src: JST-GH Pin ID.png
+      width: 200
   Pixracer-Telem2:
     <<: *PX_GH6_template
   Pixracer-PWR:
     <<: *PX_GH6_template
-    pinlabels: [GND,GND,Vsen,Csen,5V,5V]
+    pinlabels: [5V,5V,Csen,Vsen,GND,GND]
   Pixracer-RC:
     <<: *PX_GH6_template
-    pinlabels: [GND,3.3V,RSSI,RCin,5V]
+    pinlabels: [5V,RCin,RSSI,3.3V,GND]
   Pixracer-Servos:
     pinlabels: [ch1,ch2,ch3,ch4,ch5,ch6]
     type: 0.1" header
     subtype: female
+#RC Receiver
   RC_Receiver: &DP_SERVO_template
-    pinlabels: [GND,PWM,5V]
+    pinlabels: [PWM,5V,GND]
     type: 0.1" header
     subtype: female
+#OpenMV Hat
   OpenMV_Hat-Serial:
     <<: *DP_SERVO_template
     pinlabels: [5V,TXD,RXD,GND]
   OpenMV_Hat-Detector:
     <<: *DP_SERVO_template
     pinlabels: [3.3V,signal,GND]
-  OpenMV_Hat-Servo1:
+  OpenMV_Hat-Servo1 - Top:
     <<: *DP_SERVO_template
     pinlabels: [5V,PWM,GND]
-  OpenMV_Hat-Servo3:
+  OpenMV_Hat-Servo3 - Bottom:
     <<: *DP_SERVO_template
     pinlabels: [5V,PWM,GND]
+#Sensors
   LIDAR-Serial:
     <<: *PX_GH6_template
-    pinlabels: [GND,5V,RXD,TXD]
+    pinlabels: [TXD,RXD,5V,GND]
+    notes: |
+      Manufacturer documentation
+      pin numbers are reversed.
+      Pin #s here are correct.
   IR-Detector:
     <<: *DP_SERVO_template
     pinlabels: [3.3V,signal,GND]
+#Battery and regulator
   5VRegulator:
     pinlabels: [Vin,GND,Vout]
     type: solder pad
-  Battery:
-    pinlabels: [Vbatt,Return]
+  Battery: &Batt_PH_M_template
+    pinlabels: [Vbatt,GND]
     type: JST-PH 2.0
     subtype: male
+    image:
+      src: JST-PH 2.0 Pin ID.png
+      width: 200
+  Battery-Reg: &Batt_PH_F_template
+    <<: *Batt_PH_M_template
+    subtype: female
+    image:
+      src: JST-PH 2.0 Female Pin ID.png
+      width: 200
+    notes: connects to soldered on JST-PH lead
+
+#ESCs and servos
   Lift ESC Signal:
     <<: *DP_SERVO_template
   Yaw ESC Signal:
@@ -54,139 +78,150 @@ connectors:
   Thrust ESC Signal:
     <<: *DP_SERVO_template
   Lift ESC Power:
-    pinlabels: [Vbatt,GND]
-    type: Soldered Wire
+    <<: *Batt_PH_F_template
   Yaw ESC Power:
-    pinlabels: [Vbatt,GND]
-    type: Soldered Wire
+    <<: *Batt_PH_F_template
   Thrust ESC Power:
-    pinlabels: [Vbatt,GND]
-    type: Soldered Wire 
+    <<: *Batt_PH_F_template 
   Catch Servo:
     <<: *DP_SERVO_template
     type: JST 1.25
     subtype: male
+    image:
+      src: JST 1.25 3 Pos Pin ID.png
+      width: 200
   
 cables:
 # Power distribution cables
-  BatteryCable (short):
-    wirecount: 2
-    length: 6 in
-    gauge: 22 awg
-    colors: [RD, BK]
-  BatteryCable (long):
-    wirecount: 2
-    gauge: 22 awg
-    length: 18 in
-    colors: [RD, BK]
-  5VtoPixRacerCable:
+  # Regulator Battery Cable:
+  #   wirecount: 2
+  #   length: 6 in
+  #   gauge: 22 awg
+  #   colors: [RD, BK]
+  Battery Distribution Cable:
     wirecount: 2
     gauge: 22 awg
     length: 8 in
+    colors: [RD, BK]
+  Regulator 5V to Pixracer Cable:
+    wirecount: 2
+    gauge: 22 awg
+    length: 6 in
     colors: [RD,BK]
 # Servo cables
-  Lift ESC Cable:
+  Lift ESC Signal Cable:
     wirecount: 1
     gauge: 28 awg
-    length: 2 in
-    colors: [YE]
-  Yaw ESC Cable:
-    wirecount: 1
-    gauge: 28 awg
-    length: 21 in
-    colors: [YE]
-  Thrust ESC Cable:
+    length: 6 in
+    colors: [BU]
+  Yaw ESC Signal Cable:
     wirecount: 1
     gauge: 28 awg
     length: 21 in
+    colors: [GN]
+  Thrust ESC Signal Cable:
+    wirecount: 1
+    gauge: 28 awg
+    length: 22 in
     colors: [YE]
   CatchServoCable:
     wirecount: 3
     gauge: 28 awg
-    colors: [BK,YE,RD]
+    length: 36 in
+    colors: [RD,YE,BK]
 # Sensor/Peripheral cables
   RCCable:
     wirecount: 3
     gauge: 28 awg
-    length: 10 in
+    length: 6 in
     colors: [BK,YE,RD]
   LIDARCable:
     wirecount: 4
     gauge: 28 awg
-    length: 10 in
-    colors: [BK,WH,BU,RD]
+    length: 6 in
+    colors: [RD,WH,BU,BK]
   PixOpenMVCable:
     wirecount: 4
     gauge: 22/28 awg
     length: 28 in
-    colors: [BK,WH,BU,RD]
+    colors: [RD,WH,BU,BK]
   DetectorCable:
     wirecount: 3
     gauge: 28 awg
     length: 24 in
     colors: [RD,GN,BK]
+# #ESC/Reg power cables
+#   Lift ESC Power Cable: &ESC_cable_template
+#     wirecount: 2
+#     gauge: 22 awg
+#     length: 6 in
+#     colors: [RD, BK]
+#   Yaw ESC Power Cable:
+#     <<: *ESC_cable_template
+#   Thrust ESC Power Cable:
+#     <<: *ESC_cable_template
 
 
 connections:
 # High power from battery
   -
     - Battery: [1,2]
-    - BatteryCable (short): [1,2]
+    - Battery Distribution Cable: [1,2]
     - 5VRegulator: [Vin,GND]
   -
     - Battery: [1,2]
-    - BatteryCable (short): [1,2]
+    - Battery Distribution Cable: [1,2]
     - Lift ESC Power: [Vbatt,GND]
   -
     - Battery: [1,2]
-    - BatteryCable (long): [1,2]
+    - Battery Distribution Cable: [1,2]
     - Yaw ESC Power: [Vbatt,GND]
   -
     - Battery: [1,2]
-    - BatteryCable (long): [1,2]
+    - Battery Distribution Cable: [1,2]
     - Thrust ESC Power: [Vbatt,GND]
   
 #ESC signals - do not connect grounds, can create dangerous ground loop
   -
     - Pixracer-Servos: [3]
-    - Lift ESC Cable: [1]
+    - Lift ESC Signal Cable: [1]
     - Lift ESC Signal: [PWM]
   -
     - Pixracer-Servos: [2]
-    - Yaw ESC Cable: [1]
+    - Yaw ESC Signal Cable: [1]
     - Yaw ESC Signal: [PWM]
   - #h
     - Pixracer-Servos: [1]
-    - Thrust ESC Cable: [1]
+    - Thrust ESC Signal Cable: [1]
     - Thrust ESC Signal: [PWM]
 
 #5V power to pixracer
   -
-    - Pixracer-PWR: [5,1]
-    - 5VtoPixRacerCable: [1,2]
+    - Pixracer-PWR: [1,5]
+    - Regulator 5V to Pixracer Cable: [1,2]
     - 5VRegulator: [Vout,GND] 
   -
-    - Pixracer-PWR: [6,2]
-    - 5VtoPixRacerCable: [1,2]
+    - Pixracer-PWR: [2,6]
+    - Regulator 5V to Pixracer Cable: [1,2]
     - 5VRegulator: [Vout,GND]
 
 #RC receiver
   -
     - Pixracer-RC: [GND,RCin,5V]
-    - RCCable: [1-3]
-    - RC_Receiver: [1-3]
+    - RCCable: [BK,YE,RD]
+    - RC_Receiver: [GND,PWM,5V]
 
 #LIDAR
   -
-    - Pixracer-Telem1: [GND,RX,TX,5V]
+    - Pixracer-Telem1: [5V,TX,RX,GND]
     - LIDARCable: [1-4]
-    - LIDAR-Serial: [GND,TXD,RXD,5V]
+    - LIDAR-Serial: [5V,RXD,TXD,GND]
 
 #Pixracer-OpenMV Serial
   -
-    - Pixracer-Telem2: [GND,RX,TX,5V]
+    - Pixracer-Telem2: [5V,TX,RX,GND]
     - PixOpenMVCable: [1-4]
-    - OpenMV_Hat-Serial: [GND,TXD,RXD,5V]
+    - OpenMV_Hat-Serial: [5V,RXD,TXD,GND]
 
 #OpenMV peripherals
   - 
@@ -194,6 +229,6 @@ connections:
     - DetectorCable: [1-3]
     - IR-Detector: [1-3]
   -
-    - OpenMV_Hat-Servo3: [3-1]
-    - CatchServoCable: [1-3]
-    - Catch Servo: [1-3]
+    - OpenMV_Hat-Servo3 - Bottom: [5V,PWM,GND]
+    - CatchServoCable: [RD,YE,BK]
+    - Catch Servo: [5V,PWM,GND]

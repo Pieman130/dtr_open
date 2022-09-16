@@ -1,0 +1,9 @@
+RC Transmitter        ,RC Ch Num ,Function      ,Processing device ,Output Ch
+Throttle (LS up/down) ,        3 ,Thrust        ,Pixracer          ,Servo 1
+Yaw (LS left/right)   ,        4 ,Yaw           ,Pixracer          ,Servo 2
+Roll (RS left/right)  ,        1 ,Not Used      ,Pixracer          ,N/C
+Pitch (RS up/down)    ,        2 ,Lift          ,Pixracer          ,Servo 3
+Switch A (2 pos)      ,        5 ,State Ctrl    ,OpenMV            ,N/A
+Switch B (3 pos)      ,        6 ,Flight Mode   ,OpenMV            ,N/A
+Switch C (3 pos)      ,        7 ,Capture Servo ,OpenMV            ,Servo3 (P9)
+Switch D (2 pos)      ,        8 ,Not Used      ,TBD               ,TBD

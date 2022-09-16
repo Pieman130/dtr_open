@@ -16,6 +16,9 @@ LED_RED = 1
 LED_GREEN = 2
 LED_BLUE = 3
 
+SERVO_OPEN = 0
+SERVO_CLOSED = 45
+
 
 class Led:
     def __init__(self):
@@ -72,6 +75,10 @@ class Hardware:
         # The following must be initialized after wlan as they overload pin assignments in WINC class
         self.irSensor = Pin(IR_DETECT_PIN,Pin.IN,Pin.PULL_NONE)
         self.servo = pyb.Servo(SERVO_PWM_ID)
+        self.servo_value_closed = SERVO_CLOSED
+        self.servo_value_open = SERVO_OPEN
+        
+        self.imuSensor = None
 
         self.turnOnPoweredOnLight()
 
@@ -86,3 +93,12 @@ class Hardware:
 
     def systemFail(self):
          self.led.turnOn('red')
+
+
+    def openDoor(self):
+        self.servo.angle(SERVO_OPEN)
+    
+    def closeDoor(self):
+        self.servo.angle(SERVO_CLOSED)
+
+ 

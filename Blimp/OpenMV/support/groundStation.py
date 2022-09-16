@@ -1,5 +1,3 @@
-
-
 import dataClasses 
 
 class GroundStation:
@@ -7,13 +5,23 @@ class GroundStation:
         self.wifi = comms.wifi
         self.hw = hw
 
-    def sendStatusMessage(self):
+    def sendStatusMessage(self,missionCommander,flightDirector):
         global wifiInfo    
         
         print('in print status message')
         data = '{"cameraDetectionStr":"' + dataClasses.data.colorDetected + '"'
         ir1_0str = str(int(dataClasses.data.irData))
-        data = data + ',"isIrSensorDetection":"' + ir1_0str + '"}'
+
+        data = data + ',"isIrSensorDetection":"' + ir1_0str + '"'
+
+        data = data + ',"state_description":"' + missionCommander.currentState.description + '"'
+        data = data + ',"state_target":"' + missionCommander.currentState.target + '"'
+        data = data + ',"state_action":"' + missionCommander.currentState.action + '"'
+
+        data = data + ',"currentManeuver":"' + flightDirector.currentManeuver + '"'
+
+        data = data +  '}'
+
         print(data)
         #r = urequests.request('POST',fullAddress,data )
         headers = {'Content-Type': 'application/json'}
@@ -37,6 +45,17 @@ class GroundStation:
             dataClasses.gndStationCmd.secondManeuver = jsonDict['secondManeuver']
             dataClasses.gndStationCmd.baseUpVal = jsonDict['baseUpVal']
             dataClasses.gndStationCmd.duration = jsonDict['duration']
+
+            dataClasses.gndStationCmd.p_up = jsonDict['p_up']
+            dataClasses.gndStationCmd.i_up = jsonDict['i_up']
+            dataClasses.gndStationCmd.d_up = jsonDict['d_up']
+            dataClasses.gndStationCmd.p_throttle = jsonDict['p_throttle']
+            dataClasses.gndStationCmd.i_throttle = jsonDict['i_throttle']
+            dataClasses.gndStationCmd.d_throttle = jsonDict['d_throttle']
+            dataClasses.gndStationCmd.p_yaw = jsonDict['p_yaw']
+            dataClasses.gndStationCmd.i_yaw = jsonDict['i_yaw']
+            dataClasses.gndStationCmd.d_yaw = jsonDict['d_yaw']            
+            dataClasses.gndStationCmd.requestedState = jsonDict['requestedState']        
 
         except:
             self.hw.turnOnNotConnectedToGndStationLight()

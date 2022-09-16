@@ -11,18 +11,26 @@ except Exception as e:
     print(str(e))
     isMicroPython = False
     import sys
+    import pathlib
 
     try:
-        sys.path.append('C:\\DroneRepos\\DTRRepo\\Blimp\\OpenMV\\unitTest')
-        sys.path.append('C:\\DroneRepos\\DTRRepo\\Blimp\\OpenMV\\support')
+        baseDir = str(pathlib.Path(__file__).parent.resolve()) # Get directory of main
+        if (sys.platform == "Windows"):
+            sys.path.append(baseDir + '\\unitTest')
+            sys.path.append(baseDir + '\\support')
+        else:   
+            sys.path.append(baseDir + "/unitTest")
+            sys.path.append(baseDir + "/support")
 
         import hardwareMock
         hardware = hardwareMock
 
         import commsMock
         comms = commsMock
-    except:
+
+    except Exception as e:
         #this is for upython.
+        print(e)
         print(".")
 
 
@@ -33,7 +41,8 @@ dataClasses.config.isMicroPython = isMicroPython
 
 import sensors
 import processing
-import actionEngine
+import boss_missionCommander
+import boss_flightDirector
 import groundStation
 
 
@@ -44,29 +53,30 @@ def main() -> None:
 
     comm = comms.Comms(hw)
 
-    sensors.swInitialization(hw,comm)
+    sensorsObj = sensors.Sensors(hw,comm)    
 
     gndStation = groundStation.GroundStation(comm,hw)
 
 
-    action = actionEngine.ActionEngine(comm)
+    missionCommander = boss_missionCommander.MissionCommander()
+    flightDirector = boss_flightDirector.FlightDirector(comms)
 
 
     while(True):
 
         time.sleep(loopPause)
 
-        sensors.collectData()
+        sensorsObj.collectData()
 
         processing.parseSensorData()
+        
+        missionCommander.updateState()
 
-        gndStation.sendStatusMessage()
+        flightDirector.getNextStep()
 
-        action.updateState()
+        flightDirector.executeNextStep()
 
-      #  action.getNextStep()
-
-        action.executeNextStep()
+        gndStation.sendStatusMessage(missionCommander,flightDirector)
 
 
 main()

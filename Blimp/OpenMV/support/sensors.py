@@ -5,88 +5,76 @@
 import time
 import dataClasses
 
+
 class Sensors:
-    def __init__(self):
+    def __init__(self,hw,com):
+        self.hw = hw
+        self.mavlink = com.mavlink
+
         self.irSensor = None
         self.camera = None        
         self.lidar = None
+        self.imuSensor = None
 
-sensors = Sensors()
+        self.swInitializeCamera()
 
-class Lidar():
-    def __init__(self,com):
-        self.mavlink = com.mavlink
-        self.mavlink.send_set_msg_interval_cmd(132,50000)
         print("INITIALIZED")
         time.sleep(0.5)
         
+
     def getDataFake(self):
         return 144
 
-    def getData(self):    
-        msg = self.mavlink._uart.readline()
-        
-        if msg != None:
-            dist = self.mavlink.parse_distance(msg)
-        
-        else:
-            dist = None
-        
-        return dist
+
+    def swInitializeCamera(self): 
+        print("initializing camera")
+
+        self.camera = self.hw.camera
+
+        self.camera.reset()
+        self.camera.set_pixformat(self.camera.RGB565)
+        #sensor.set_framesize(sensor.QVGA)
+        self.camera.set_framesize(self.camera.QQVGA) #needed for april tag detections
+        self.camera.skip_frames(2000)
+
+        # needed for april tag finder
+        self.camera.set_auto_gain(False)  # must turn this off to prevent image washout...
+        self.camera.set_auto_whitebal(False)  # must turn this off to prevent image washout...
 
 
-def swInitialization(hw,com): # https://github.com/mavlink/c_library_v1/blob/master/checksum.h
+    def collectData(self):
     
-    global sensors
-    output = 0
-     
-    swInitializeCamera(hw)   
-    swInitializeIrSensor(hw)
+        print("collecting data")
+        
+        dataClasses.rawData.img = self.camera.snapshot()     
 
-    swInitializeLidar(com)
-    return output 
-
-def swInitializeIrSensor(hw):
-    global sensors
-    sensors.irSensor = hw.irSensor
-
-def swInitializeLidar(com):
-    global sensors
-    sensors.lidar = Lidar(com)
-
-
-def swInitializeCamera(hw):
-    global sensors        
-    print("initializing camera")
-
-    sensors.camera = hw.camera
-
-    sensors.camera.reset()
-    sensors.camera.set_pixformat(sensors.camera.RGB565)
-    #sensor.set_framesize(sensor.QVGA)
-    sensors.camera.set_framesize(sensors.camera.QQVGA) #needed for april tag detections
-    sensors.camera.skip_frames(2000)
-
-    # needed for april tag finder
-    sensors.camera.set_auto_gain(False)  # must turn this off to prevent image washout...
-    sensors.camera.set_auto_whitebal(False)  # must turn this off to prevent image washout...
-
-
-def collectData():
-    global sensors    
-    output = 0
-    print("collecting data")
     
-    dataClasses.rawData.img = sensors.camera.snapshot()     
+        #dataClasses.rawData.imu_pitch = sensors.imuSensor.getRoll()
+        #dataClasses.rawData.imu_yaw = sensors.imuSensor.getPitch()
+        #dataClasses.rawData.imu_roll = sensors.imuSensor.getYaw()
+        #dataClasses.rawData.irSensor = self.irSensor.value()    
 
-    dataClasses.rawData.irSensor = sensors.irSensor.value()    
+        current_raw_sensor_data = self.mavlink.getSensors()
 
-    dataClasses.rawData.lidar_cm = sensors.lidar.getDataFake()
+        if current_raw_sensor_data['Attitude'] != None:
+            dataClasses.rawData.imu_yaw = current_raw_sensor_data['Attitude']['yaw']
+            dataClasses.rawData.imu_pitch = current_raw_sensor_data['Attitude']['pitch']
+            dataClasses.rawData.imu_roll = current_raw_sensor_data['Attitude']['roll']
 
-    print(" DISTANCE " + str(dataClasses.rawData.lidar_cm))
-   # data_dict = mavlink.getDataFromPixRacer
+        if current_raw_sensor_data['RCCH'] != None:
+            dataClasses.rawData.rc_sw_door = current_raw_sensor_data['RCCH']['ch7'] 
+            dataClasses.rawData.rc_sw_flt_mode = current_raw_sensor_data['RCCH']['ch6'] 
+            dataClasses.rawData.rc_sw_st_cntl = current_raw_sensor_data['RCCH']['ch5'] 
 
-  #  mavlink.refreshPixRacerCurrentValues
+        if current_raw_sensor_data['Servo'] != None:
+            dataClasses.rawData.motor_throttle = current_raw_sensor_data['Servo']['servo1'] 
+            dataClasses.rawData.motor_yaw = current_raw_sensor_data['Servo']['servo2'] 
+            dataClasses.rawData.motor_up = current_raw_sensor_data['Servo']['servo3'] 
+
+        if current_raw_sensor_data['Lidar'] != None:
+            dataClasses.rawData.lidar_cm = current_raw_sensor_data['Lidar']
+
+        dataClasses.rawData.door_position = self.hw.servo.angle()
 
 
-    return output
+      

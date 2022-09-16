@@ -45,8 +45,7 @@ class FlightAction:
         print("\ttime: " + str(self.timeClock))                
         self.mavlink.setControls(self.controls)
 
-        self.mavlink._read_uart()
-        print("AFTER READ UART!!")
+        self.mavlink._read_uart()        
     
     def sendNoop(self):
         blankControls = Controls()

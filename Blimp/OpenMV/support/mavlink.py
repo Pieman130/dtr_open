@@ -211,6 +211,11 @@ class MavLink():
             _mav_put_uint8_t(buf, 12, orientation);
             _mav_put_uint8_t(buf, 13, covariance);
         '''
+        try:
+            return struct.unpack('<1f',msg[8:10])[0] #current_distance
+  
+        except ValueError:
+            return None
 
 
     def __parse_attitude_msg(self,msg):
@@ -227,7 +232,10 @@ class MavLink():
             _mav_put_float(buf, 24, yawspeed);
         '''
         try:
-            return (struct.unpack('<6f',msg[4:28])) #(roll,pitch,yaw,rollspeed,pitchspeed,yawspeed)
+            att_tup = struct.unpack('<6f',msg[4:28]) #(roll,pitch,yaw,rollspeed,pitchspeed,yawspeed)
+            return {'roll': att_tup[0],'pitch':att_tup[1],'yaw':att_tup[2],
+                    'roll_speed':att_tup[3],'pitch_speed':att_tup[4],'yaw_speed':att_tup[5]}
+            #return (struct.unpack('<6f',msg[4:28])) 
         except ValueError:
             return None
 
@@ -250,7 +258,11 @@ class MavLink():
             _mav_put_uint8_t(buf, 21, rssi);
         '''
         try:
-            return (struct.unpack('<8H',msg[4:20]))
+            rc_tup = struct.unpack('<8H',msg[4:20]) #(roll,pitch,yaw,rollspeed,pitchspeed,yawspeed)
+            return {'ch1': rc_tup[0],'ch2':rc_tup[1],'ch3':rc_tup[2],
+                    'ch4':rc_tup[3],'ch5':rc_tup[4],'ch6':rc_tup[5],
+                    'ch7':rc_tup[6],'ch8':rc_tup[7]}
+            #return (struct.unpack('<8H',msg[4:20]))
         except ValueError:
             return None
 
@@ -270,7 +282,10 @@ class MavLink():
             _mav_put_uint16_t(buf, 18, servo8_raw);
             _mav_put_uint8_t(buf, 20, port);'''
         try:
-            return (struct.unpack('<8H',msg[4:20]))
+            sv_tup struct.unpack('<8H',msg[4:20])
+             return {'servo1': git ssv_tup[0],'servo2':sv_tup[1],'servo3':sv_tup[2],
+                    'servo4':sv_tup[3],'servo5':sv_tup[4],'servo6':sv_tup[5],
+                    'servo7':sv_tup[6],'servo8':sv_tup[7]}
         except ValueError:
             return None
 

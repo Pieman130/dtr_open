@@ -58,17 +58,44 @@ class AutonomousModeState:
     startInBalloonSeek = [1000, 'balloonSeek']
     startInGoalSeek = [2000, 'goalSeek']
 
+    def __init__(self):
+        self.items = [self.startInBalloonSeek, self.startInGoalSeek]
+    def __iter__(self):
+        return iter(self.items)
+    def __next__(self):
+        return next(self.items)
+    def __len__(self):
+        return len(self.items)
+
 
 class FlightModeState:
     Manual = [2000, 'manual']
     Assisted = [1500, 'assisted']
     Auto = [1000, 'auto']
 
+    def __init__(self):
+        self.items = [self.Auto, self.Assisted, self.Manual]
+    def __iter__(self):
+        return iter(self.items)
+    def __next__(self):
+        return next(self.items)
+    def __len__(self):
+        return len(self.items)
+
 
 class DoorControlState:
     Closed = [2000, 'closed']
     Open = [1500, 'open']
     Auto = [1000, 'auto']
+
+    def __init__(self):
+        self.items = [self.Auto, self.Open, self.Closed]
+    def __iter__(self):
+        return iter(self.items)
+    def __next__(self):
+        return next(self.items)
+    def __len__(self):
+        return len(self.items)
 
 
 data = ProcessedData()

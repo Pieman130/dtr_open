@@ -16,6 +16,7 @@ class RawData:
         self.rc_sw_door = None
         self.rc_sw_flt_mode = None
         self.rc_sw_st_cntl = None
+        self.door_position = None
 
 
 class ProcessedData:

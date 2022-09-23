@@ -79,4 +79,7 @@ class Sensors:
             print(dataClasses.rawData.lidar_cm)
 
 
+        dataClasses.rawData.door_position = self.hw.servo.angle()
+
+
       

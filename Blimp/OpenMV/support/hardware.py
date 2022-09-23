@@ -75,6 +75,9 @@ class Hardware:
         # The following must be initialized after wlan as they overload pin assignments in WINC class
         self.irSensor = Pin(IR_DETECT_PIN,Pin.IN,Pin.PULL_NONE)
         self.servo = pyb.Servo(SERVO_PWM_ID)
+        self.servo_value_closed = SERVO_CLOSED
+        self.servo_value_open = SERVO_OPEN
+        
         self.imuSensor = None
 
         self.turnOnPoweredOnLight()
@@ -98,12 +101,4 @@ class Hardware:
     def closeDoor(self):
         self.servo.angle(SERVO_CLOSED)
 
-    def statusDoor(self):
-        angle = self.servo()
-
-        if angle == SERVO_OPEN:
-            return 'open'
-        elif angle == SERVO_CLOSED:
-            return 'closed'
-        else:
-            return str(angle) #if stuck between states return the actual angle
+ 

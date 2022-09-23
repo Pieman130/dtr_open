@@ -25,8 +25,7 @@ class Controller():
         self.thr_pid = pid.PID(p=self.thr_p,i=self.thr_i,d=self.thr_d,imax=self.thr_imax)
         #TODO Need output clipping for each PID
 
-    def get_pid(self, cntl_type, error):
-        scaler = 1
+    def get_pid(self, cntl_type, error, scaler):
         if cntl_type == 'yaw':
             return self.yaw_pid.get_pid(error,scaler)
         elif cntl_type == 'up':

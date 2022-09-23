@@ -16,6 +16,7 @@ class RawData:
         self.rc_sw_door = None
         self.rc_sw_flt_mode = None
         self.rc_sw_st_cntl = None
+        self.door_position = None
 
 
 class ProcessedData:
@@ -25,7 +26,10 @@ class ProcessedData:
         self.distanceToBall = None
         self.aprilTagFound = None
         self.isAprilTagDetected = None
-        self.lidarDistance_ft = 0        
+        self.lidarDistance_ft = 0                
+        self.door_state = None
+        self.sw_door_control = 'open' #
+        self.sw_flight_mode = 'manual'     
 
 
 class GroundStationCommand:

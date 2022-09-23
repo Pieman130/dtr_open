@@ -69,6 +69,7 @@ def main() -> None:
         sensorsObj.collectData()
 
         processing.parseSensorData()
+        processing.parseRCSwitchPositions()
         
         missionCommander.updateState()
 

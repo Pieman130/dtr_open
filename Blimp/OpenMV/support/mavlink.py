@@ -175,12 +175,8 @@ class MavLink():
             msg[5] = message type 
             msg[6:6+n] = payload n = message payload length
             msg[6+n:6+n+3] = checksum'''
-        result = self._uart.read()
+        result = self._uart.read(256)
 
-        #print("****************************")
-        #print("MAVLINK UART RESULTS:")
-        #print(result)
-        #print("****************************")
         if result == None:
             return None
         else:

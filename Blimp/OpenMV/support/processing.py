@@ -76,19 +76,19 @@ def parseRCSwitchPositions():
     currentDelta = 500 / (len(dataClasses.DoorControlState()) - 1)
     for state in dataClasses.DoorControlState():
         if state[0] + currentDelta >= currentValue and state[0] - currentDelta <= currentValue:
-            dataClasses.ProcessedData.sw_door_control = state[1]
+            dataClasses.data.sw_door_control = state[1]
             break
     else:   # I hate for/else loops but this is a good way of handling an unexpected error
-        dataClasses.ProcessedData.sw_door_control = None
+        dataClasses.data.sw_door_control = None
 
     currentValue = dataClasses.rawData.rc_sw_flt_mode
     currentDelta = 500 / (len(dataClasses.FlightModeState()) - 1)
     for state in dataClasses.FlightModeState():
         if state[0] + currentDelta >= currentValue and state[0] - currentDelta <= currentValue:
-            dataClasses.ProcessedData.sw_flight_mode = state[1]
+            dataClasses.data.sw_flight_mode = state[1]
             break
     else:
-        dataClasses.ProcessedData.sw_flight_mode = None
+        dataClasses.data.sw_flight_mode = None
 
     # There's no switch for this in ProcessedData.
     # currentValue = dataClasses.rawData.rc_sw_st_cntl

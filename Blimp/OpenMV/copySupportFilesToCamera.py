@@ -13,7 +13,7 @@ if os.name == 'posix': #Unix-like machines
 
 else: #Windows machines
     currDir = os.path.dirname(__file__);
-    to_directory = "E:/"
+    to_directory = "D:/"
     from_directory = currDir + "\support"
 
 copy_tree(from_directory, to_directory)

@@ -28,6 +28,23 @@ class FlightAction:
         self.data = dataClasses.data
         self.mavlink = comms.mavlink
 
+        self.p_up = 0
+        self.i_up = 0
+        self.d_up = 0
+
+        self.p_throttle = 0
+        self.i_throttle = 0
+        self.d_throttle = 0
+        
+        self.p_yaw = 0
+        self.i_yaw = 0
+        self.d_yaw = 0
+
+        self.scalar_up = 0
+        self.scalar_yaw = 0
+        self.scalar_throttle = 0
+        
+
     def reset(self):
         self.startTime = None
         self.timeClock = 0
@@ -44,6 +61,7 @@ class FlightAction:
         print(self.description + " -  Maneuver")
         print("\ttime: " + str(self.timeClock))                
         self.mavlink.setControls(self.controls)
+        self.controls.printValues()
 
         self.mavlink._read_uart()        
     

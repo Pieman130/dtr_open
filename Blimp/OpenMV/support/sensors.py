@@ -11,7 +11,7 @@ class Sensors:
         self.hw = hw
         self.mavlink = com.mavlink
 
-        self.irSensor = None
+        self.irSensor = hw.irSensor
         self.camera = None        
         self.lidar = None
         self.imuSensor = None
@@ -52,9 +52,10 @@ class Sensors:
         #dataClasses.rawData.imu_pitch = sensors.imuSensor.getRoll()
         #dataClasses.rawData.imu_yaw = sensors.imuSensor.getPitch()
         #dataClasses.rawData.imu_roll = sensors.imuSensor.getYaw()
-        #dataClasses.rawData.irSensor = self.irSensor.value()    
+        dataClasses.rawData.irSensor = self.irSensor.value()    
 
-        current_raw_sensor_data = self.mavlink.getSensors()
+        print("right before get mavlink data")
+        current_raw_sensor_data = self.mavlink.getSensors()        
 
         if current_raw_sensor_data['Attitude'] != None:
             dataClasses.rawData.imu_yaw = current_raw_sensor_data['Attitude']['yaw']
@@ -73,5 +74,9 @@ class Sensors:
 
         if current_raw_sensor_data['Lidar'] != None:
             dataClasses.rawData.lidar_cm = current_raw_sensor_data['Lidar']
+            
+            print("&&&&&&&&&&&")
+            print(dataClasses.rawData.lidar_cm)
+
 
       

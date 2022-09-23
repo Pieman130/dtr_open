@@ -176,6 +176,11 @@ class MavLink():
             msg[6:6+n] = payload n = message payload length
             msg[6+n:6+n+3] = checksum'''
         result = self._uart.read()
+
+        #print("****************************")
+        #print("MAVLINK UART RESULTS:")
+        #print(result)
+        #print("****************************")
         if result == None:
             return None
         else:
@@ -283,7 +288,7 @@ class MavLink():
             _mav_put_uint8_t(buf, 20, port);'''
         try:
             sv_tup = struct.unpack('<8H',msg[4:20])
-            return {'servo1': ssv_tup[0],'servo2':sv_tup[1],'servo3':sv_tup[2],
+            return {'servo1': sv_tup[0],'servo2':sv_tup[1],'servo3':sv_tup[2],
                     'servo4':sv_tup[3],'servo5':sv_tup[4],'servo6':sv_tup[5],
                     'servo7':sv_tup[6],'servo8':sv_tup[7]}
         except ValueError:
@@ -292,8 +297,11 @@ class MavLink():
 
     def getSensors(self):
         '''Returns dict where key = Sensor_type, value = most recent value received via mavlink'''
-        msg_list = self._read_uart()
+        msg_list = self._read_uart()     
+        print(">>>>>>>>>>>>>>>>>>")   
+        print(msg_list)
         sensors = {'Attitude': None, 'RCCH': None, 'Servo': None, 'Lidar': None}
+        
         if msg_list != None:
             for msg in msg_list:
                 if msg[0] == ATTITUDE:
@@ -310,6 +318,7 @@ class MavLink():
                         sensors['Servo'] = result
                 elif msg[0] == LIDAR:
                     result = self.__parse_lidar_msg(msg[1])
+                    print("GOT LIDAR DATA")
                     if result != None:
                         sensors['Lidar'] = result
 

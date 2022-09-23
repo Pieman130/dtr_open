@@ -7,7 +7,7 @@ class BlimpManeuvers():
         self.comms = comms
         self.forward = self.initForward()
         self.three60 = self.init360()
-        self.hover = self.initHover()
+        self.hover = self.initHover()        
 
     def initForward(self,throttle = 0.5):
         forwardExitCriteria = flightActions.ExitCriteria()
@@ -42,3 +42,23 @@ class BlimpManeuvers():
 
         hover = flightActions.FlightAction("hover",hoverCtrls,hoverExit,self.comms)
         return hover
+
+    def manualServerControl(self):
+        manualExit = flightActions.ExitCriteria()
+        manualCtrl = flightActions.Controls()
+        #manualCtrl.up = up
+       # manualCtrl.throttle = throttle
+        #manualCtrl.yaw = yaw
+
+        manual = flightActions.FlightAction("manual",manualCtrl,manualExit,self.comms)
+        return manual
+
+    def test(self):
+        testExit = flightActions.ExitCriteria()
+        testCtrl = flightActions.Controls()
+        #manualCtrl.up = up
+       # manualCtrl.throttle = throttle
+        #manualCtrl.yaw = yaw
+
+        manual = flightActions.FlightAction("test",testCtrl,testExit,self.comms)
+        return manual        

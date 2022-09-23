@@ -12,6 +12,7 @@ router.route('/status/')
     var state_description = req.body.state_description;
     var state_target = req.body.state_target;
     var state_action = req.body.state_action;
+    var lidarDistance_ft = req.body.lidarDistance_ft;
 
     var sqlStr = " UPDATE systemStatus SET blimpLastHeartbeat = '" + lastHeartbeat + 
                 "', cameraDetectionStr = '" + cameraDetectionStr + "'" +
@@ -19,7 +20,8 @@ router.route('/status/')
                  " ,currentManeuver = '" +  currentManeuver + "'" +
                  " ,state_description = '" + state_description + "'" +
                  " ,state_target = '" + state_target + "'" +
-                 " ,state_action = '" + state_action + "'"
+                 " ,state_action = '" + state_action + "'" +
+                 " ,lidarDistance_ft = " + lidarDistance_ft
 
     sqlTools.sqlRequestPromise(sqlStr)
     .then(function(){

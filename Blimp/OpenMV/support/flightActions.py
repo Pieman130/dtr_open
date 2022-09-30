@@ -1,7 +1,7 @@
 import dataClasses
 import time
 import mavlink
-
+import logger
 
 class ExitCriteria:
     def __init__(self):
@@ -59,8 +59,8 @@ class FlightAction:
 
     def execute(self):
         self.updateTime()
-        print(self.description + " -  Maneuver")
-        print("\ttime: " + str(self.timeClock))                
+        logger.log.verbose(self.description + " -  Maneuver")
+        logger.log.verbose("\ttime: " + str(self.timeClock))                
         self.mavlink.setControls(self.controls)
         
         if self.controls.servo == 1:
@@ -90,7 +90,7 @@ class FlightAction:
                 if item.value == self.getProperty(item.variableName):
                     numCriterionMet = numCriterionMet + 1           
                 else:
-                    print("NO MATCH (" + item.variableName + ") = " + str(item.value) + " != " + str(self.getProperty(item.variableName)) )                    
+                    logger.log.verbose("NO MATCH (" + item.variableName + ") = " + str(item.value) + " != " + str(self.getProperty(item.variableName)) )                    
                     numCriterionUnmet = numCriterionUnmet + 1               
 
         if numCriterionUnmet == 0 and numCriterionMet > 0:
@@ -127,8 +127,8 @@ class Controls:
         self.throttle = 0 #-1 to 1
         self.servo = 0 # 0 for OFF. 1 for ON.
     def printValues(self):            
-        print("\t\tyaw: " + str(self.yaw))
-        print("\t\tup: " + str(self.up))
-        print("\t\tthrottle: " + str(self.throttle))
-        print("\t\tservo: " + str(self.servo))
+        logger.log.verbose("\t\tyaw: " + str(self.yaw))
+        logger.log.verbose("\t\tup: " + str(self.up))
+        logger.log.verbose("\t\tthrottle: " + str(self.throttle))
+        logger.log.verbose("\t\tservo: " + str(self.servo))
 

@@ -1,4 +1,5 @@
 import struct, time
+import logger
 
 THROTTLE_SERVO = 1
 YAW_SERVO = 2
@@ -106,7 +107,7 @@ class MavLink():
         '''Command Protocol message, mavlink returns Command ACK (#77) upon receipt of this message
         https://github.com/mavlink/c_library_v1/blob/master/common/mavlink_msg_command_long.h'''
         if len(params)<7:
-            print("ERROR: command_long message requires exactly 7 parameters, unused param locations should be filled with NaN.")
+            logger.log.verbose("ERROR: command_long message requires exactly 7 parameters, unused param locations should be filled with NaN.")
             return False
         target_system = 1
         target_component = 1 #TODO maybe "0"?
@@ -297,9 +298,9 @@ class MavLink():
         msg_list = self._read_uart()     
         
         if(msg_list == None):
-            print(">>>>>>>>>>>>>>>>>>") 
-            print("MAVLINK LINK FAIL")
-            print(">>>>>>>>>>>>>>>>>>") 
+            logger.log.warning(">>>>>>>>>>>>>>>>>>") 
+            logger.log.warning("MAVLINK LINK FAIL")
+            logger.log.warning(">>>>>>>>>>>>>>>>>>") 
             self.hw.systemFail()
 
         sensors = {'Attitude': None, 'RCCH': None, 'Servo': None, 'Lidar': None}
@@ -320,9 +321,10 @@ class MavLink():
                         sensors['Servo'] = result
                 elif msg[0] == LIDAR:
                     result = self.__parse_lidar_msg(msg[1])  
-                    print('^^^^^^^^LIDAR^^^^^^^^^^^^^^^^')  
-                    print(result)
-                    print('^^^^^^^^^^^^^^^^^^^^^^^^')               
+                   # logger.log.verbose('^^^^^^^^LIDAR^^^^^^^^^^^^^^^^')  
+                    #logger.log.verbose(result)
+                    #logger.log.debugOnly('lidar value = ' + str(result))                    
+                   # logger.log.verbose('^^^^^^^^^^^^^^^^^^^^^^^^')               
                     if result != None:
                        
                         
@@ -332,6 +334,6 @@ class MavLink():
 
 
 if __name__ == "__main__":
-    mvlink = MavLink()
+    mvlink = MavLink(hw)
     result = mvlink.getSensors()
-    print(result)
+    logger.log.verbose(result)

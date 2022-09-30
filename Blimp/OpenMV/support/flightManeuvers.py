@@ -2,8 +2,7 @@ import flightActions
 class BlimpManeuvers():
     #contains all the defined flight actions blimp is setup to do.
 
-    def __init__(self,comms,hw):
-        print("something here")
+    def __init__(self,comms,hw):        
         self.hw = hw
         self.comms = comms
         self.forward = self.initForward()

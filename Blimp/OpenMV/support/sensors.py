@@ -4,6 +4,7 @@
 
 import time
 import dataClasses
+import logger
 
 
 class Sensors:
@@ -16,7 +17,7 @@ class Sensors:
         self.lidar = None
         self.imuSensor = None
 
-        print("before sw initialize")
+        logger.log.verbose("before sw initialize")
         self.swInitializeCamera()
        
         time.sleep(0.5)
@@ -51,7 +52,7 @@ class Sensors:
         #self.hw.pybReset()
         #print('PYB HARDWARE RESET DONE')
     
-        #print("collecting data")
+        #logger.log.verbose("collecting data")
         
         dataClasses.rawData.img = self.camera.snapshot()     
 
@@ -61,7 +62,7 @@ class Sensors:
         #dataClasses.rawData.imu_roll = sensors.imuSensor.getYaw()
         dataClasses.rawData.irSensor = self.irSensor.value()    
 
-        print("right before get mavlink data")
+        logger.log.verbose("right before get mavlink data")
         current_raw_sensor_data = self.mavlink.getSensors()        
 
         if current_raw_sensor_data['Attitude'] != None:
@@ -82,8 +83,8 @@ class Sensors:
         if current_raw_sensor_data['Lidar'] != None:
             dataClasses.rawData.lidar_cm = current_raw_sensor_data['Lidar']
             
-            print("&&&&&&&&&&&")
-            print(dataClasses.rawData.lidar_cm)
+            logger.log.verbose("&&&&&&&&&&&")
+            logger.log.verbose(dataClasses.rawData.lidar_cm)
 
 
         dataClasses.rawData.door_position = self.hw.servo.angle()

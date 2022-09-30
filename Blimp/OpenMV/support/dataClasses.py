@@ -1,3 +1,4 @@
+import logger
 class Configuration:
     def __init__(self):
         self.isMicroPython = None
@@ -62,9 +63,9 @@ class GroundStationCommand:
 
 
     def print(self):
-        print("manuever desc: " + self.maneuverDescription)
-        print("base up: " + str(self.baseUpVal))
-        print("duration: " + str(self.duration))
+        logger.log.verbose("manuever desc: " + self.maneuverDescription)
+        logger.log.verbose("base up: " + str(self.baseUpVal))
+        logger.log.verbose("duration: " + str(self.duration))
 
 # These values are based off of RC servo pulse widths. Makes comparing easier.
 

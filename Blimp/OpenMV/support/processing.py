@@ -1,6 +1,7 @@
 
 
 # Do processing of sensor data
+import logger
 import dataClasses
 import math
 if dataClasses.config.isMicroPython:
@@ -15,13 +16,13 @@ SERVO_CLOSED = 45
 
 def parseSensorData():  # https://github.com/mavlink/c_library_v1/blob/master/checksum.h
     output = 0
-    print("parsing sensor data")
+    logger.log.verbose("parsing sensor data")
 
     parseIrSensorData()
     dataClasses.data.colorDetected = imageProcessing.colorDetectedByCamera(
         dataClasses.rawData.img)
 
-    print("color detected: " + dataClasses.data.colorDetected)
+    logger.log.verbose("color detected: " + dataClasses.data.colorDetected)
 
     dataClasses.data.aprilTagFound = imageProcessing.lookForAprilTag(
         dataClasses.rawData.img)
@@ -41,20 +42,23 @@ def parseSensorData():  # https://github.com/mavlink/c_library_v1/blob/master/ch
 def parseIrSensorData():
     dataClasses.data.irData = not bool(dataClasses.rawData.irSensor)
 
-    print('ir sensor: ' + str(dataClasses.data.irData))
+    logger.log.verbose('ir sensor: ' + str(dataClasses.data.irData))
 
 
 def parseLidarData():
-    print('>>>>>>>>>>>>>>>')
-    print('LIDAR DATA')
-    print('>>>>>>>>>>>>>>>')
-    print(dataClasses.rawData.lidar_cm )
+    logger.log.verbose('>>>>>>>>>>>>>>>')
+    logger.log.verbose('LIDAR DATA')
+    logger.log.verbose('>>>>>>>>>>>>>>>')
+    logger.log.verbose(dataClasses.rawData.lidar_cm )
     if (dataClasses.rawData.lidar_cm != None):
         rawDist_ft = dataClasses.rawData.lidar_cm / 30.48
         correctedDist_ft = attitudeCorrectDistance(
             rawDist_ft, dataClasses.rawData.imu_roll, dataClasses.rawData.imu_pitch)
+        #correctedDist_ft = rawDist_ft
+        
+        logger.log.debugOnly('lidar value = ' + str(rawDist_ft) + ', lidar corr = ' + str(correctedDist_ft) + ',imu_roll = ' + str(dataClasses.rawData.imu_roll) + ', imu_pitch =' + str(dataClasses.rawData.imu_pitch))
         dataClasses.data.lidarDistance_ft = correctedDist_ft
-        print('lidar distance (ft): ' + str(correctedDist_ft))
+        logger.log.verbose('lidar distance (ft): ' + str(correctedDist_ft))
 
 
 def attitudeCorrectDistance(measDist=0.0, roll_rad=0.0, pitch_rad=0.0):

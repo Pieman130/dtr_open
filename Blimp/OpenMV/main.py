@@ -2,6 +2,8 @@
 
 import time
 
+
+
 try:
     import hardware
     import comms
@@ -33,11 +35,16 @@ except Exception as e:
         print(e)
         print(".")
 
+import logger
+logger.log.setLevel_debugOnly()
+#logger.log.setLevel_verbose()
+
 
 import dataClasses
-print('is micropython: ' + str(isMicroPython))
-dataClasses.config.isMicroPython = isMicroPython
 
+
+logger.log.info('is micropython: ' + str(isMicroPython))
+dataClasses.config.isMicroPython = isMicroPython
 
 import sensors
 import processing
@@ -47,13 +54,13 @@ import groundStation
 
 
 def main() -> None:
-    loopPause = 1
+    loopPause = 0.5
 
     hw = hardware.Hardware()
 
     comm = comms.Comms(hw)
-
-    sensorsObj = sensors.Sensors(hw,comm)    
+    
+    sensorsObj = sensors.Sensors(hw,comm)        
 
     gndStation = groundStation.GroundStation(comm,hw)
 
@@ -66,16 +73,16 @@ def main() -> None:
     while(True):
 
         time.sleep(loopPause)
-
+        
         sensorsObj.collectData()
 
         processing.parseSensorData()
         processing.parseRCSwitchPositions()
         
         if dataClasses.data.sw_door_control is not None:
-            print("DoorSwitch: " + dataClasses.data.sw_door_control)
+            logger.log.verbose("DoorSwitch: " + dataClasses.data.sw_door_control)
         if dataClasses.data.sw_flight_mode is not None:
-            print("FlightMode: " + dataClasses.data.sw_flight_mode)
+            logger.log.verbose("FlightMode: " + dataClasses.data.sw_flight_mode)
         
         missionCmder.updateState()
 
@@ -83,7 +90,7 @@ def main() -> None:
 
         fltDirector.executeNextStep()
 
-        gndStation.sendStatusMessage(missionCmder,fltDirector)
+       # gndStation.sendStatusMessage(missionCmder,fltDirector)
 
 
 main()

@@ -1,3 +1,4 @@
+import logger
 def parse_mavlink(ser_msg):
     '''
     0th B = preamble (254)
@@ -20,7 +21,7 @@ def parse_mavlink(ser_msg):
             if ser_msg[5] == 132:
                 payload = ser_msg[6:-2]
                 dist = int.from_bytes(payload[8:10], "little")
-                print("Range: ", dist)
+                logger.log.verbose("Range: ", dist)
                 return (dist)
             else:
                 return None

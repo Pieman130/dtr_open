@@ -1,5 +1,6 @@
 import flightManeuvers
 import dataClasses 
+import logger
 
 class FlightDirector:    
     ''' 
@@ -22,7 +23,7 @@ class FlightDirector:
   
 
     def getNextStep(self):
-        print(" FLIGHT DIRECTOR CURRENT MODE: " + self.currentState.description)     
+        logger.log.verbose(" FLIGHT DIRECTOR CURRENT MODE: " + self.currentState.description)     
 
         if(self.currentState.description == 'lookForBall'):
             self.currentManeuver = self.blimpManeuvers.three60
@@ -48,10 +49,6 @@ class FlightDirector:
             self.currentManeuver.controls.throttle = dataClasses.gndStationCmd.manual_throttle
             self.currentManeuver.controls.yaw = dataClasses.gndStationCmd.manual_yaw
             self.currentManeuver.controls.servo = dataClasses.gndStationCmd.manual_servo
-
-
-            print('test')
-            #dataClasses
 
         elif(self.currentState.description == 'automatedAssist'):
 

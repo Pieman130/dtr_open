@@ -1,25 +1,26 @@
 
 import random
+import logger
 
 class NetworkMock:
     def __init__(self):
-        print("network mock")
+        logger.log.info("network mock")
 
     def connect(self,ssid,key):
-        print("mock connecting to: " + ssid + ", " + key)
+        logger.log.info("mock connecting to: " + ssid + ", " + key)
 
     def ifconfig(self):
-        print("mock if config")
+        logger.log.info("mock if config")
 
 class ServoMock:
     def __init__(self):
-        print("servo mock");
+        logger.log.info("servo mock");
     def angle(self):
         return 0
 
 class IMUMock:
     def __init__(self):
-        print("imu mock")
+        logger.log.info("imu mock")
 
     def getRoll(self):
         return 0
@@ -32,47 +33,47 @@ class IMUMock:
 
 class UartMock:
     def __init__(self):
-        print("uart mock")
+        logger.log.info("uart mock")
     
     def write(self,msg):
-        print("uart mock send: " + str(msg))
+        logger.log.verbose("uart mock send: " + str(msg))
 
     def read(self,val):
-        print("uart read")
+        logger.log.verbose("uart read")
 
 class IrSensorMock:
     def __init__(self):
-        print("ir sensor mock")
+        logger.log.info("ir sensor mock")
 
     def value(self):
         return random.randint(0,1)
 
 class CameraMock:
     def __init__(self):
-        print("camera mock")
+        logger.log.info("camera mock")
         self.RGB565 = 0 #nonsense
         self.QQVGA = 0 #nonsense
 
     def reset(self):
-        print("mock reset camera")
+        logger.log.info("mock reset camera")
 
     def set_pixformat(self,pixFormat):
-        print("mock set pix format: " + str(pixFormat))
+        logger.log.info("mock set pix format: " + str(pixFormat))
 
     def set_framesize(self,frameSize):
-        print("mock set frame size: " + str(frameSize))
+        logger.log.info("mock set frame size: " + str(frameSize))
     
     def skip_frames(self, frameTimeSkip):
-        print("mock set skip frame time: " + str(frameTimeSkip))
+        logger.log.info("mock set skip frame time: " + str(frameTimeSkip))
     
     def set_auto_gain(self,isSetAutogain):
-        print("mock set autogain: " + str(isSetAutogain))
+        logger.log.info("mock set autogain: " + str(isSetAutogain))
     
     def set_auto_whitebal(self, isSetAutoWhitebalance):
-        print("mock set auto while bal" + str(isSetAutoWhitebalance))
+        logger.log.info("mock set auto while bal" + str(isSetAutoWhitebalance))
 
     def snapshot(self):
-        print("mock snapshot")
+        logger.log.info("mock snapshot")
 
 class ServoMock:
     def __init__(self):
@@ -97,19 +98,19 @@ class Hardware:
         self.servo = ServoMock()  
         
     def turnOnPoweredOnLight(self):
-       print("LED GREEN")
+       logger.log.info("LED GREEN")
 
     def turnOnConnectedToGndStationLight(self):
-        print("LED BLUE")        
+        logger.log.info("LED BLUE")        
 
     def turnOnNotConnectedToGndStationLight(self):
-        print("LED LIGHT GREEN")
+        logger.log.info("LED LIGHT GREEN")
 
     def openDoor(self):
-        print("mock open door")
+        logger.log.info("mock open door")
     
     def closeDoor(self):
-        print("close door")
+        logger.log.info("close door")
                                
     def systemFail(self):
-        print("SYSTEM FAIL TURN ON RED LED!")              
+        logger.log.info("SYSTEM FAIL TURN ON RED LED!")              

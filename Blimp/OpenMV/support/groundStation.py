@@ -1,4 +1,5 @@
 import dataClasses 
+import logger
 
 class GroundStation:
     def __init__(self,comms,hw):
@@ -8,7 +9,7 @@ class GroundStation:
     def sendStatusMessage(self,missionCommander,flightDirector):
         global wifiInfo    
         
-        print('in print status message')
+        logger.log.verbose('in print status message')
         data = '{"cameraDetectionStr":"' + dataClasses.data.colorDetected + '"'
         ir1_0str = str(int(dataClasses.data.irData))
 
@@ -24,20 +25,20 @@ class GroundStation:
 
         data = data +  '}'
 
-        print(data)
+        logger.log.verbose(data)
         #r = urequests.request('POST',fullAddress,data )
         headers = {'Content-Type': 'application/json'}
 
         fullAddress = self.wifi.getFullAddress(self.wifi.ip,'debug/status')        
 
-        print("about to post data to: " + fullAddress)
+        logger.log.verbose("about to post data to: " + fullAddress)
 
         #a = uping.ping(wifiInfo.ip) # - EINVAL error.. ? why
         
         try:
             r = self.wifi.post(fullAddress,data = data,headers = headers)            
                     
-            print('status to server success! received:')              
+            logger.log.verbose('status to server success! received:')              
             jsonList = r.json()
             jsonDict = jsonList[0]                    
                     
@@ -74,4 +75,4 @@ class GroundStation:
 
         except:
             self.hw.turnOnNotConnectedToGndStationLight()
-            print('cannot connect to server')
+            logger.log.warning('cannot connect to server')

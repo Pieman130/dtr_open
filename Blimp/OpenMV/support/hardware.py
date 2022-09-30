@@ -2,6 +2,8 @@ import pyb
 import network
 from machine import Pin
 import sensor
+import logger
+
 
 
 UART_BAUDRATE = 115200
@@ -100,15 +102,15 @@ class Hardware:
 
 
     def openDoor(self):
-        print("********************")
-        print("OPEN DOOR")
-        print("********************")
+        logger.log.verbose("********************")
+        logger.log.verbose("OPEN DOOR")
+        logger.log.verbose("********************")
         self.servo.angle(SERVO_OPEN)
     
     def closeDoor(self):
-        print("********************")
-        print("CLOSE DOOR")
-        print("********************")
+        logger.log.verbose("********************")
+        logger.log.verbose("CLOSE DOOR")
+        logger.log.verbose("********************")
         self.servo.angle(SERVO_CLOSED)
 
  

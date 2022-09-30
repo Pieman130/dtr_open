@@ -1,4 +1,4 @@
-
+import logger
 import dataClasses 
 
 ACTION_LOOK = "look"
@@ -51,39 +51,39 @@ class MissionCommander:
             
         else:
             if(requestedState == lookForBall.description):
-                print("changed to look for ball")
+                logger.log.verbose("changed to look for ball")
                 self.currentState = lookForBall
                 
 
             elif(requestedState == moveToBall.description):
                 self.currentState = moveToBall
-                print("changed to moveToBall")
+                logger.log.verbose("changed to moveToBall")
 
             elif(requestedState == captureBall.description):
                 self.currentState = captureBall
-                print("changed to captureBall")
+                logger.log.verbose("changed to captureBall")
 
             elif(requestedState == lookForGoal.description):
                 self.currentState = lookForGoal
-                print("changed to lookForGoal")
+                logger.log.verbose("changed to lookForGoal")
 
             elif(requestedState == moveToGoal.description):
                 self.currentState = moveToGoal
-                print("changed to moveToGoal")
+                logger.log.verbose("changed to moveToGoal")
 
             elif(requestedState == scoreGoal.description):
                 self.currentState = scoreGoal
-                print("changed to scoreGoal")
+                logger.log.verbose("changed to scoreGoal")
 
 
             elif(requestedState == manualTesting.description):
                 self.currentState = manualTesting
-                print("changed to scoreGoal")
+                logger.log.verbose("changed to scoreGoal")
 
 
             elif(requestedState == automatedAssist.description):
                 self.currentState = automatedAssist
-                print("changed to scoreGoal")                
+                logger.log.verbose("changed to scoreGoal")                
 
             self.flightDirector.currentState = self.currentState
     

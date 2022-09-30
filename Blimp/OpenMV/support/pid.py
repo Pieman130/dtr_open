@@ -1,5 +1,5 @@
 import time, pid
-
+import logger
 
 class Controller():
     def __init__(self,up_p=1,up_i=0.001,up_d=0.1,up_imax=0.5,

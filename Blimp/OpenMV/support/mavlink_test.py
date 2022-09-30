@@ -6,6 +6,7 @@
 # P4 = TXD
 
 import image, math, pyb, sensor, struct, time
+import logger
 
 # Parameters #################################################################
 
@@ -84,14 +85,14 @@ def parse_mavlink(ser_msg):
         if ser_msg[0] != 254: #if inital byte not 254, it is misaligned message, ignore
             return None
         else:
-            print("Payload Length: ", ser_msg[1])
-            print("Message Type: ", ser_msg[5])
+            logger.log.verbose("Payload Length: ", ser_msg[1])
+            logger.log.verbose("Message Type: ", ser_msg[5])
 
         payload = ser_msg[6:-2]
-        print("Payload: ", payload)
-        print("Checksum: ", "Bytes: ", ser_msg[-2:], "Int: ", ser_msg[-2], ser_msg[-1])
-        print("Total Packet Len: ", len(ser_msg))
-        print("---------------------")
+        logger.log.verbose("Payload: ", payload)
+        logger.log.verbose("Checksum: ", "Bytes: ", ser_msg[-2:], "Int: ", ser_msg[-2], ser_msg[-1])
+        logger.log.verbose("Total Packet Len: ", len(ser_msg))
+        logger.log.verbose("---------------------")
     except IndexError:
         return None
 
@@ -135,7 +136,7 @@ def mvlink_ch_overide(packet_sequence, ch=(0,0,0,0,0,0,0,0)):
 def mvlink_cmd_long(packet_sequence,cmd,params=[float('NaN')]*7):
     '''https://github.com/mavlink/c_library_v1/blob/master/common/mavlink_msg_command_long.h'''
     if len(params)<7:
-        print("ERROR: command_long message requires exactly 7 parameters, unused param locations should be filled with NaN.")
+        logger.log.verbose("ERROR: command_long message requires exactly 7 parameters, unused param locations should be filled with NaN.")
         return False
     target_system = 1
     target_component = 1 #TODO maybe "0"?
@@ -221,17 +222,17 @@ while(True):
                                           buttons=0) #8-bit bitfield
     send_msg(msg)
     time.sleep(0.5)
-    print("All messages sent!")
+    logger.log.verbose("All messages sent!")
 
     a = uart.readline()
     if a != None:
         parse_mavlink(a)
         try:
             if msg_type == 36:
-                #print("SERVO 4 VALUE: ", int.from_bytes(payload[10:12], "little"))
+                #logger.log.verbose("SERVO 4 VALUE: ", int.from_bytes(payload[10:12], "little"))
                 pass
             elif msg_type == 132:
-                print("Range: ", int.from_bytes(payload[8:10], "little"))
+                logger.log.verbose("Range: ", int.from_bytes(payload[8:10], "little"))
         except:
             pass
     packet_sequence += 1

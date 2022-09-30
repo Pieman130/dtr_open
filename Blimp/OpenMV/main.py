@@ -70,6 +70,12 @@ def main() -> None:
         sensorsObj.collectData()
 
         processing.parseSensorData()
+        processing.parseRCSwitchPositions()
+        
+        if dataClasses.data.sw_door_control is not None:
+            print("DoorSwitch: " + dataClasses.data.sw_door_control)
+        if dataClasses.data.sw_flight_mode is not None:
+            print("FlightMode: " + dataClasses.data.sw_flight_mode)
         
         missionCmder.updateState()
 

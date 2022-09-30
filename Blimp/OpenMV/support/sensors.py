@@ -35,7 +35,7 @@ class Sensors:
         self.camera.set_pixformat(self.camera.RGB565)
         #sensor.set_framesize(sensor.QVGA)
         self.camera.set_framesize(self.camera.QQVGA) #needed for april tag detections
-        self.camera.skip_frames(2000)
+        # self.camera.skip_frames(2000)
 
         # needed for april tag finder
         self.camera.set_auto_gain(False)  # must turn this off to prevent image washout...

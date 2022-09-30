@@ -176,7 +176,6 @@ class MavLink():
             msg[6:6+n] = payload n = message payload length
             msg[6+n:6+n+3] = checksum'''
         result = self._uart.read(256)
-
         if result == None:
             return None
         else:

@@ -11,6 +11,12 @@ class NetworkMock:
     def ifconfig(self):
         print("mock if config")
 
+class ServoMock:
+    def __init__(self):
+        print("servo mock");
+    def angle(self):
+        return 0
+
 class IMUMock:
     def __init__(self):
         print("imu mock")
@@ -83,7 +89,10 @@ class Hardware:
         
         self.imuSensor = IMUMock()
 
-        self.camera = CameraMock()   
+        self.camera = CameraMock()
+
+        self.servo = ServoMock()     
+
 
         self.servo = ServoMock()  
         

@@ -97,7 +97,7 @@ def main() -> None:
 
         fltDirector.executeNextStep()
 
-      #  gndStation.sendStatusMessage(missionCmder,fltDirector)
+        gndStation.sendStatusMessage(missionCmder,fltDirector)
 
 
 main()

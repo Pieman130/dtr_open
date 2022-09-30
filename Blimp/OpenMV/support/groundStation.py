@@ -15,13 +15,27 @@ class GroundStation:
 
         data = data + ',"isIrSensorDetection":"' + ir1_0str + '"'
 
-        data = data + ',"lidarDistance_ft":"' + str(dataClasses.data.lidarDistance_ft) + '"'
+        if (dataClasses.data.lidarDistance == None):
+            lidarDistance = 'null'
+        else:
+            lidarDistance = str(dataClasses.data.lidarDistance)
+
+        data = data + ',"lidarDistance":"' + lidarDistance + '"'
 
         data = data + ',"state_description":"' + missionCommander.currentState.description + '"'
         data = data + ',"state_target":"' + missionCommander.currentState.target + '"'
         data = data + ',"state_action":"' + missionCommander.currentState.action + '"'
         
         data = data + ',"currentManeuver":"' + flightDirector.currentManeuver.description + '"'
+
+        logs = logger.log.getLogsForServerAndClear()
+        
+       # logsParsed = logs.replace(':',"\:")
+
+        
+
+       # data = data + ',"logs":"' + logs + '"'        
+        
 
         data = data +  '}'
 
@@ -73,6 +87,9 @@ class GroundStation:
             dataClasses.gndStationCmd.scalar_throttle = jsonDict['scalar_throttle'] 
 
 
-        except:
+        except Exception as e:
             self.hw.turnOnNotConnectedToGndStationLight()
+            
             logger.log.warning('cannot connect to server')
+            #logger.log.warning(e.msg)
+            

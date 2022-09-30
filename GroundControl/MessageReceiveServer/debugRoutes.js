@@ -12,7 +12,7 @@ router.route('/status/')
     var state_description = req.body.state_description;
     var state_target = req.body.state_target;
     var state_action = req.body.state_action;
-    var lidarDistance_ft = req.body.lidarDistance_ft;
+    var lidarDistance_ft = req.body.lidarDistance;
 
     var sqlStr = " UPDATE systemStatus SET blimpLastHeartbeat = '" + lastHeartbeat + 
                 "', cameraDetectionStr = '" + cameraDetectionStr + "'" +

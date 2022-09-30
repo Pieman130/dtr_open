@@ -25,6 +25,9 @@ class FlightDirector:
     def getNextStep(self):
         logger.log.verbose(" FLIGHT DIRECTOR CURRENT MODE: " + self.currentState.description)     
 
+        self.blimpManeuvers.hover.execute_assisted_altitude(190)
+        
+
         if(self.currentState.description == 'lookForBall'):
             self.currentManeuver = self.blimpManeuvers.three60
             

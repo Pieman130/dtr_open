@@ -2,7 +2,7 @@ import dataClasses
 import time
 import mavlink
 import logger
-from pid import Controller
+from pidModule import Controller
 
 class ExitCriteria:
     def __init__(self):
@@ -19,8 +19,12 @@ class ExitCriterion:
 
 
 class FlightAction:
+    ''' Responsible for:
+            -running/managing pid 
+            -sending control values to motors                    
+    '''
     def __init__(self,description,controls,exitCriteria,comms,hw):
-        
+    
         self.description = description
         self.timeClock = 0
         self.startTime = None
@@ -58,7 +62,7 @@ class FlightAction:
         else:
             self.hw.closeDoor()
 
-        logger.log.info("Controls Values: {}".format(self.controls.printValues()))
+        logger.log.verbose("Controls Values: {}".format(self.controls.printValues()))
         
     
     def sendNoop(self):
@@ -113,7 +117,8 @@ class FlightAction:
     def execute_assisted_altitude(self, height):
         '''take in desired distance to ceiling (height)
         maintain a pid controlled hover about that distance'''
-        if height != None:
+        logger.log.info("executing assisted altitude to height: " + str(height))
+        if self.data.lidarDistance != None:                                         
             self.controls.up = self.pid_up.get_pid(height-self.data.lidarDistance) 
             logger.log.info("Executing Assisted Altitude.  PID Up Value: {}".format(self.controls.up) )
 

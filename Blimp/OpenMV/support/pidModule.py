@@ -7,7 +7,7 @@ class Controller():
         self.p = p
         self.i = i
         self.d = d
-        self.imax = imax
+        self.imax = imax        
         self.pid = pid.PID(p=self.p,i=self.i,d=self.d,imax=self.imax)
         #TODO Need output clipping for each PID
 

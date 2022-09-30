@@ -16,7 +16,7 @@ class RawData:
         self.motor_throttle = None
         self.motor_up = None
         self.motor_yaw = None
-        self.lidar_cm = None
+        self.lidar = None
         self.rc_sw_door = None
         self.rc_sw_flt_mode = None
         self.rc_sw_st_cntl = None
@@ -37,7 +37,7 @@ class ProcessedData:
         self.distanceToBall = None
         self.aprilTagFound = None
         self.isAprilTagDetected = None
-        self.lidarDistance_ft = None
+        self.lidarDistance = None
         self.door_state = None
         self.sw_door_control = 'open'
         self.sw_flight_mode = 'manual'

@@ -49,15 +49,15 @@ def parseLidarData():
     logger.log.verbose('>>>>>>>>>>>>>>>')
     logger.log.verbose('LIDAR DATA')
     logger.log.verbose('>>>>>>>>>>>>>>>')
-    logger.log.verbose(dataClasses.rawData.lidar_cm )
-    if (dataClasses.rawData.lidar_cm != None):
-        rawDist_ft = dataClasses.rawData.lidar_cm / 30.48
+    logger.log.verbose(dataClasses.rawData.lidar )
+    if (dataClasses.rawData.lidar != None):
+        rawDist = dataClasses.rawData.lidar 
         correctedDist_ft = attitudeCorrectDistance(
-            rawDist_ft, dataClasses.rawData.imu_roll, dataClasses.rawData.imu_pitch)
-        #correctedDist_ft = rawDist_ft
+            rawDist, dataClasses.rawData.imu_roll, dataClasses.rawData.imu_pitch)
+        #correctedDist_ft = rawDist
+        dataClasses.data.lidarDistance = dataClasses.rawData.lidar
+        logger.log.verbose('lidar value = ' + str(rawDist) + ', lidar corr = ' + str(correctedDist_ft) + ',imu_roll = ' + str(dataClasses.rawData.imu_roll) + ', imu_pitch =' + str(dataClasses.rawData.imu_pitch))
         
-        logger.log.debugOnly('lidar value = ' + str(rawDist_ft) + ', lidar corr = ' + str(correctedDist_ft) + ',imu_roll = ' + str(dataClasses.rawData.imu_roll) + ', imu_pitch =' + str(dataClasses.rawData.imu_pitch))
-        dataClasses.data.lidarDistance_ft = correctedDist_ft
         logger.log.verbose('lidar distance (ft): ' + str(correctedDist_ft))
 
 

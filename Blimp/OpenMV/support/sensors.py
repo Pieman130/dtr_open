@@ -84,10 +84,10 @@ class Sensors:
             dataClasses.rawData.motor_up = current_raw_sensor_data['Servo']['servo3'] 
 
         if current_raw_sensor_data['Lidar'] != None:
-            dataClasses.rawData.lidar_cm = current_raw_sensor_data['Lidar']
+            dataClasses.rawData.lidar = current_raw_sensor_data['Lidar']
             
-            logger.log.verbose("&&&&&&&&&&&")
-            logger.log.verbose(dataClasses.rawData.lidar_cm)
+            logger.log.info("lidar distance: " + str(dataClasses.rawData.lidar))
+            
 
 
         dataClasses.rawData.door_position = self.hw.servo.angle()

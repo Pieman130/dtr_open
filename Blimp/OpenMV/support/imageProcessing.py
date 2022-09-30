@@ -30,41 +30,8 @@ margin = 10
 x_ema = None
 y_ema = None
 def colorDetectedByCamera(img):
-    width = 0
-    #search for ball in img
-    biggestball = [0,0,0,0] #[x, y, width, height]
-    closest = [0,0,0,0]
-    for blob in img.find_blobs([color_thresholds[0]], pixels_threshold, area_threshold, merge=True, margin = margin):
-        currentball = [blob.cx(), blob.cy(), blob.rect()[2], blob.rect()[3]]
-        if currentball[2] > biggestball[2]:
-            biggestball = currentball
-    if blob != 0:
-        if x_ema == None:
-            x_ema = EMA(current[0], 1 - 0.7)
-        else:
-            x_ema.update(current[0])
-        if y_ema == None:
-            y_ema = EMA(current[1], 1 - 0.7)
-        else:
-            y_ema.update(current[1])
-        dataClasses.ProcessedData.ballx = x_ema
-        dataClasses.ProcessedData.bally = y_ema
-        width = biggestball[2]
-    if dataClasses.ProcessedData.goalColorChoice == "yellow":
-        threshold = 1
-    elif dataClasses.ProcessedData.goalColorChoice == "orange":
-        threshold = 2
-    #search for yellow goal
-    for blob in img.find_blobs([color_thresholds[threshold]], pixels_threshold, area_threshold, merge=True, margin = margin):
-        current = [blob.cx(), blob.cy(), blob.rect()[2], blob.rect()[3]]
-        if abs(160 - (current[0])) < abs(160 - (closest[0])): #instead of current[0], use pythagorean theorem to find closest ball
-            closest = current
-    if blob != 0:
-        dataClasses.ProcessedData.goalColorDetected = True
-        dataClasses.ProcessedData.goalx = closest[0]
-        dataClasses.ProcessedData.goaly = closest[1]
-        dataClasses.ProcessedData.goalskew = closest[3]/closest[4]
-    return
+   
+    return "no"
 
 class TagInfo:
     def __init__(self):

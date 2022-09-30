@@ -38,9 +38,10 @@ except Exception as e:
         print(e)
         print(".")
 
-
-logger.log.setLevel_debugOnly()
-logger.log.setLevel_verbose()
+import logger
+#logger.log.setLevel_debugOnly()
+logger.log.setLevel_info()
+#logger.log.setLevel_debugOnly()
 
 
 import dataClasses
@@ -76,6 +77,9 @@ def main() -> None:
     while(True):
 
         time.sleep(loopPause)
+        logger.log.heartbeat("===============================")
+        logger.log.heartbeat("Top of loop")
+        logger.log.heartbeat("===============================")
         
         sensorsObj.collectData()
 
@@ -93,7 +97,7 @@ def main() -> None:
 
         fltDirector.executeNextStep()
 
-       # gndStation.sendStatusMessage(missionCmder,fltDirector)
+      #  gndStation.sendStatusMessage(missionCmder,fltDirector)
 
 
 main()

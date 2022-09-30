@@ -1,5 +1,5 @@
 
-from Blimp.OpenMV.support.dataClasses import ProcessedData
+from dataClasses import ProcessedData
 import dataClasses
 import logger
 

@@ -69,6 +69,9 @@ class Sensors:
             dataClasses.rawData.imu_yaw = current_raw_sensor_data['Attitude']['yaw']
             dataClasses.rawData.imu_pitch = current_raw_sensor_data['Attitude']['pitch']
             dataClasses.rawData.imu_roll = current_raw_sensor_data['Attitude']['roll']
+            dataClasses.rawData.imu_yaw_rate = current_raw_sensor_data['Attitude']['yaw_speed']
+            dataClasses.rawData.imu_pitch_rate = current_raw_sensor_data['Attitude']['pitch_speed']
+            dataClasses.rawData.imu_roll_rate = current_raw_sensor_data['Attitude']['roll_speed']
 
         if current_raw_sensor_data['RCCH'] != None:
             dataClasses.rawData.rc_sw_door = current_raw_sensor_data['RCCH']['ch7'] 

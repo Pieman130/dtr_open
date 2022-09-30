@@ -1,15 +1,10 @@
 import sys
 import pathlib
 
-#WHEN I TESTED THIS I HAD IT DIRECTLY IN SUPPORT FOLDER.  TO TEST FROM HERE NEED TO ADD /SUPPORT FOLDER.  Didn't figure out how to do that.
-#baseDir = str(pathlib.Path(__file__).parent.resolve()) # Get directory of main
-#import os
-#os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'templates'))
-
-
-#pathDir = baseDir + '..\\support'
-#sys.path.append()``
-
+# add Logger path to python path
+baseDir = pathlib.Path(__file__).parent 
+supportPath = str((baseDir  / "../support/").resolve())
+sys.path.append(supportPath)
 
 import logger
 

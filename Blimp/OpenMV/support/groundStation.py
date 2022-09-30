@@ -43,6 +43,7 @@ class GroundStation:
                     
 
             self.hw.turnOnConnectedToGndStationLight()
+            dataClasses.gndStationCmd.requestedState = jsonDict['requestedState']
             dataClasses.gndStationCmd.firstManeuver = jsonDict['firstManeuver']
             dataClasses.gndStationCmd.secondManeuver = jsonDict['secondManeuver']
             dataClasses.gndStationCmd.baseUpVal = jsonDict['baseUpVal']

@@ -57,7 +57,7 @@ def main() -> None:
 
     gndStation = groundStation.GroundStation(comm,hw)
 
-    fltDirector = flightDirector.FlightDirector(comm)
+    fltDirector = flightDirector.FlightDirector(comm,hw)
 
     missionCmder = missionCommander.MissionCommander(fltDirector)
     

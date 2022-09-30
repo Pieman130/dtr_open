@@ -31,7 +31,7 @@ class UartMock:
     def write(self,msg):
         print("uart mock send: " + str(msg))
 
-    def read(self):
+    def read(self,val):
         print("uart read")
 
 class IrSensorMock:
@@ -68,6 +68,11 @@ class CameraMock:
     def snapshot(self):
         print("mock snapshot")
 
+class ServoMock:
+    def __init__(self):
+        pass
+    def angle(self):
+        pass
 class Hardware:
     def __init__(self):       
         self.wlan = NetworkMock()
@@ -78,9 +83,9 @@ class Hardware:
         
         self.imuSensor = IMUMock()
 
-        self.camera = CameraMock()     
+        self.camera = CameraMock()   
 
-
+        self.servo = ServoMock()  
         
     def turnOnPoweredOnLight(self):
        print("LED GREEN")
@@ -90,4 +95,10 @@ class Hardware:
 
     def turnOnNotConnectedToGndStationLight(self):
         print("LED LIGHT GREEN")
+
+    def openDoor(self):
+        print("mock open door")
+    
+    def closeDoor(self):
+        print("close door")
                                               

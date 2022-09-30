@@ -1,9 +1,9 @@
 /****** Script for SelectTopNRows command from SSMS  ******/
 UPDATE [dtr].[dbo].[maneuverToExecute] SET requestedState = 'manualTesting',
-	manual_up = 0.6,
+	manual_up = 0,
 	manual_throttle = 0,
 	manual_yaw = 0,
-	manual_servo = 0,
+	manual_servo = 1,
 	scalar_up = 0,
 	scalar_yaw = 0,
 	scalar_throttle = 0,

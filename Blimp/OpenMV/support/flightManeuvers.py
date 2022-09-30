@@ -2,12 +2,14 @@ import flightActions
 class BlimpManeuvers():
     #contains all the defined flight actions blimp is setup to do.
 
-    def __init__(self,comms):
+    def __init__(self,comms,hw):
         print("something here")
+        self.hw = hw
         self.comms = comms
         self.forward = self.initForward()
         self.three60 = self.init360()
-        self.hover = self.initHover()        
+        self.hover = self.initHover()     
+           
 
     def initForward(self,throttle = 0.5):
         forwardExitCriteria = flightActions.ExitCriteria()
@@ -19,7 +21,7 @@ class BlimpManeuvers():
         #forwardControls.up = 1 #test only
         #forwardControls.yaw = 1 #test only
 
-        forwardOrGreen = flightActions.FlightAction("Go forward until see green water bottle.",forwardControls,forwardExitCriteria,self.comms)
+        forwardOrGreen = flightActions.FlightAction("Go forward until see green water bottle.",forwardControls,forwardExitCriteria,self.comms,self.hw)
         return forwardOrGreen
 
     def init360(self,yaw = 0.5):
@@ -29,7 +31,7 @@ class BlimpManeuvers():
         three60orAprilTagCtrls = flightActions.Controls()
         three60orAprilTagCtrls.yaw = yaw
 
-        three60orAprilTag = flightActions.FlightAction("360 or until see april tag.",three60orAprilTagCtrls,three60orAprilTagExit,self.comms)
+        three60orAprilTag = flightActions.FlightAction("360 or until see april tag.",three60orAprilTagCtrls,three60orAprilTagExit,self.comms,self.hw)
         return three60orAprilTag
 
     def initHover(self,up = 0.5):
@@ -40,7 +42,7 @@ class BlimpManeuvers():
         hoverCtrls = flightActions.Controls()
         hoverCtrls.up = up
 
-        hover = flightActions.FlightAction("hover",hoverCtrls,hoverExit,self.comms)
+        hover = flightActions.FlightAction("hover",hoverCtrls,hoverExit,self.comms,self.hw)
         return hover
 
     def manualServerControl(self):
@@ -50,7 +52,7 @@ class BlimpManeuvers():
        # manualCtrl.throttle = throttle
         #manualCtrl.yaw = yaw
 
-        manual = flightActions.FlightAction("manual",manualCtrl,manualExit,self.comms)
+        manual = flightActions.FlightAction("manual",manualCtrl,manualExit,self.comms,self.hw)
         return manual
 
     def test(self):
@@ -60,5 +62,5 @@ class BlimpManeuvers():
        # manualCtrl.throttle = throttle
         #manualCtrl.yaw = yaw
 
-        manual = flightActions.FlightAction("test",testCtrl,testExit,self.comms)
+        manual = flightActions.FlightAction("test",testCtrl,testExit,self.comms,self.hw)
         return manual        

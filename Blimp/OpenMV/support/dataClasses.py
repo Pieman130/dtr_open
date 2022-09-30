@@ -34,6 +34,7 @@ class ProcessedData:
 
 class GroundStationCommand:
     def __init__(self):
+        self.requestedState = None
         self.firstManeuver = None
         self.secondManeuver = None
         self.baseUpVal = None

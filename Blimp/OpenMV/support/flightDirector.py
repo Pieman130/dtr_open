@@ -9,14 +9,14 @@ class FlightDirector:
             -determines if another flight maneuver needs to be executed.
             -determine pid set values            
     '''
-    def __init__(self,comms):
+    def __init__(self,comms,hw):
         self.allowGroundStationCommands = True        
         self.currentManeuver = None
         self.currentState = None
 
         self.requestedFirstManeuver = None
         self.requestedSecondManeuver = None
-        self.blimpManeuvers = flightManeuvers.BlimpManeuvers(comms)
+        self.blimpManeuvers = flightManeuvers.BlimpManeuvers(comms,hw)
         #self.blimpManeuvers = flightManeuvers.BlimpManeuvers(comms)
 
   

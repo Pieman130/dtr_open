@@ -16,8 +16,8 @@ LED_RED = 1
 LED_GREEN = 2
 LED_BLUE = 3
 
-SERVO_OPEN = 0
-SERVO_CLOSED = 45
+SERVO_OPEN = 15
+SERVO_CLOSED = 65
 
 
 class Led:
@@ -96,9 +96,15 @@ class Hardware:
 
 
     def openDoor(self):
+        print("********************")
+        print("OPEN DOOR")
+        print("********************")
         self.servo.angle(SERVO_OPEN)
     
     def closeDoor(self):
+        print("********************")
+        print("CLOSE DOOR")
+        print("********************")
         self.servo.angle(SERVO_CLOSED)
 
  

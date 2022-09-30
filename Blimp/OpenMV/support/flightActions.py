@@ -18,7 +18,7 @@ class ExitCriterion:
 
 
 class FlightAction:
-    def __init__(self,description,controls,exitCriteria,comms):
+    def __init__(self,description,controls,exitCriteria,comms,hw):
         
         self.description = description
         self.timeClock = 0
@@ -27,6 +27,7 @@ class FlightAction:
         self.controls = controls
         self.data = dataClasses.data
         self.mavlink = comms.mavlink
+        self.hw = hw
 
         self.p_up = 0
         self.i_up = 0
@@ -61,6 +62,12 @@ class FlightAction:
         print(self.description + " -  Maneuver")
         print("\ttime: " + str(self.timeClock))                
         self.mavlink.setControls(self.controls)
+        
+        if self.controls.servo == 1:
+            self.hw.openDoor()
+        else:
+            self.hw.closeDoor()
+
         self.controls.printValues()
 
         self.mavlink._read_uart()        

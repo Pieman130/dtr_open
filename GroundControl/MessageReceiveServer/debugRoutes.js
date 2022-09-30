@@ -14,6 +14,8 @@ router.route('/status/')
     var state_action = req.body.state_action;
     var lidarDistance_ft = req.body.lidarDistance;
 
+    var logLines = req.body.logs;
+
     var sqlStr = " UPDATE systemStatus SET blimpLastHeartbeat = '" + lastHeartbeat + 
                 "', cameraDetectionStr = '" + cameraDetectionStr + "'" +
                  " ,isIrSensorDetection = " + irSensorDetection  +
@@ -25,9 +27,14 @@ router.route('/status/')
 
     sqlTools.sqlRequestPromise(sqlStr)
     .then(function(){
+        var valueStr = sqlTools.makeValuesStr(logLines,lastHeartbeat)
+        sqlStr = " INSERT INTO loggerPrints(logLines,logTime) " + valueStr
+        return sqlTools.sqlRequestPromise(sqlStr,res);
+    })
+    .then(function(){
         sqlStr = " SELECT * FROM maneuverToExecute "
         sqlTools.run(sqlStr,res);
-    });    
+    });            
 })
 
 module.exports = router;

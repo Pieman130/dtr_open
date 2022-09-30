@@ -30,11 +30,11 @@ class GroundStation:
 
         logs = logger.log.getLogsForServerAndClear()
         
-       # logsParsed = logs.replace(':',"\:")
+        logsParsed = logs.replace('\n',"\\n")
 
         
 
-       # data = data + ',"logs":"' + logs + '"'        
+        data = data + ',"logs":"' + logsParsed + '"'        
         
 
         data = data +  '}'

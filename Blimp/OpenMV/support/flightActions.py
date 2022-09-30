@@ -2,6 +2,7 @@ import dataClasses
 import time
 import mavlink
 import logger
+from pid import Controller
 
 class ExitCriteria:
     def __init__(self):
@@ -29,26 +30,17 @@ class FlightAction:
         self.mavlink = comms.mavlink
         self.hw = hw
 
-        self.p_up = 0
-        self.i_up = 0
-        self.d_up = 0
+        self.pid_yaw = Controller()
+        self.pid_up = Controller()
+        self.pid_throttle = Controller()
 
-        self.p_throttle = 0
-        self.i_throttle = 0
-        self.d_throttle = 0
-        
-        self.p_yaw = 0
-        self.i_yaw = 0
-        self.d_yaw = 0
+        self.desired_height = None
 
-        self.scalar_up = 0
-        self.scalar_yaw = 0
-        self.scalar_throttle = 0
-        
 
     def reset(self):
         self.startTime = None
         self.timeClock = 0
+
 
     def updateTime(self):
         if self.startTime == None:
@@ -68,9 +60,8 @@ class FlightAction:
         else:
             self.hw.closeDoor()
 
-        self.controls.printValues()
-
-        self.mavlink._read_uart()        
+        logger.log.info("Controls Values: {}".format(self.controls.printValues()))
+        
     
     def sendNoop(self):
         blankControls = Controls()
@@ -119,6 +110,14 @@ class FlightAction:
             return getattr(self,name)
         else:
             return getattr(self.data,name)
+
+
+    def execute_assisted_altitude(self, height):
+        '''take in desired distance to ceiling (height)
+        maintain a pid controlled hover about that distance'''
+        if self.desired_height != None:
+            self.pid_up.get_pid(height-) 
+
 
 class Controls:
     def __init__(self):                

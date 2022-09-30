@@ -7,6 +7,7 @@ import time
 try:
     import hardware
     import comms
+    import logger
     isMicroPython = True
 
 except Exception as e:
@@ -16,13 +17,13 @@ except Exception as e:
     import pathlib
 
     try:
-        baseDir = str(pathlib.Path(__file__).parent.resolve()) # Get directory of main
-        if (sys.platform == "Windows"):
-            sys.path.append(baseDir + '\\unitTest')
-            sys.path.append(baseDir + '\\support')
-        else:   
-            sys.path.append(baseDir + "/unitTest")
-            sys.path.append(baseDir + "/support")
+        baseDir = pathlib.Path(__file__).parent # Get directory of main
+        unitDir = (baseDir / "unitTest/").resolve()
+        supportDir = (baseDir / "support/").resolve()
+        print(unitDir, supportDir)
+
+        sys.path.append(str(unitDir))
+        sys.path.append(str(supportDir))
 
         import hardwareMock
         hardware = hardwareMock
@@ -30,14 +31,16 @@ except Exception as e:
         import commsMock
         comms = commsMock
 
+        import logger
+
     except Exception as e:
         #this is for upython.
         print(e)
         print(".")
 
-import logger
+
 logger.log.setLevel_debugOnly()
-#logger.log.setLevel_verbose()
+logger.log.setLevel_verbose()
 
 
 import dataClasses

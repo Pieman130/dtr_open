@@ -6,6 +6,12 @@ angular.module('mainModel',[])
             var obj = {
                 status: {},       
                 intervalTimeMs: 1000,     
+                input:{
+                    up: null,
+                    throttle: null,
+                    yaw: null,
+                    doorOpen: 0
+                },
                 getStatus(){
                     MainToServer.getStatus().then(function(ret){
                         obj.status = ret.data[0];

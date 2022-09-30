@@ -1,6 +1,7 @@
 import mavlink
 import requests
 import json
+import logger
 class WiFi:
     def __init__(self,hw):
         self.ssid = 'DTR_team_a'

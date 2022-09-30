@@ -1,6 +1,7 @@
 
 from Blimp.OpenMV.support.dataClasses import ProcessedData
 import dataClasses
+import logger
 
 if dataClasses.config.isMicroPython:
     import image # for stupid example
@@ -75,7 +76,7 @@ tagsFound = TagInfo()
     
 
 def lookForAprilTag(img):
-    print("in look for april tag")
+    logger.log.verbose("in look for april tag")
 
     foundIt = 0
     
@@ -84,9 +85,9 @@ def lookForAprilTag(img):
         tagsFound.tags = tag 
         tagsFound.rotation = (180 * tag.rotation()) / math.pi    
         print_args = (family_name(tag), tag.id(), (180 * tag.rotation()) / math.pi)
-        print("Tag Family %s, Tag ID %d, rotation %f (degrees)" % print_args)
+        logger.log.verbose("Tag Family %s, Tag ID %d, rotation %f (degrees)" % print_args)
 
-    print("found april tag?: " + str(tagsFound.foundIt))
+    logger.log.verbose("found april tag?: " + str(tagsFound.foundIt))
 
     return tagsFound
 

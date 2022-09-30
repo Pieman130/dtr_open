@@ -16,7 +16,6 @@
 
 
 
-
 <div class="card"> 
     <h5 class="card-header">Sensor Information:</h5>
     
@@ -26,6 +25,36 @@
     <h3>Ir Sensor Detection:</h3>
     <h4>{{m.status.isIrSensorDetection}}</h4>
 
+    <h3>Lidar Distance(ft):</h3>
+    <h4>{{m.status.lidarDistance_ft}}</h4>
+
 </div>
 
+
+<!--
+<div class="card"> 
+    <h5 class="card-header">Manual Control:</h5>
+    
+    <label>Up</label>
+    <input type = "number" ng-model = "m.input.up" style="width: 75px;" >  
+
+    <label>Throttle</label>
+    <input type = "number" ng-model = "m.input.throttle" style="width: 75px;" >  
+
+    <label>Yaw</label>
+    <input type = "number" ng-model = "m.input.yaw" style="width: 75px;" >  
+
+    <label>Door open</label>
+    <input type = "number" ng-model = "m.input.doorOpen" style="width: 75px;" >  
+
+
+    <h4>{{m.status.cameraDetectionStr}}</h4>
+    <h3>Camera detection string:</h3>
+
+    <h3>Ir Sensor Detection:</h3>
+    <h4>{{m.status.isIrSensorDetection}}</h4>
+
+</div>
+
+-->
 

@@ -1,4 +1,5 @@
 import struct, time
+import logger
 
 THROTTLE_SERVO = 1
 YAW_SERVO = 2
@@ -14,6 +15,7 @@ class MavLink():
     '''Implements select Mavlink v1 messages to enable bydirectional communication between 
     OpenMV and Pixracer (ardupilot)'''
     def __init__(self,hw):
+        self.hw = hw
         self._uart = hw.uart
         self.__ps = -1 #starting packet number
         self.ser_buf = bytearray()
@@ -105,7 +107,7 @@ class MavLink():
         '''Command Protocol message, mavlink returns Command ACK (#77) upon receipt of this message
         https://github.com/mavlink/c_library_v1/blob/master/common/mavlink_msg_command_long.h'''
         if len(params)<7:
-            print("ERROR: command_long message requires exactly 7 parameters, unused param locations should be filled with NaN.")
+            logger.log.verbose("ERROR: command_long message requires exactly 7 parameters, unused param locations should be filled with NaN.")
             return False
         target_system = 1
         target_component = 1 #TODO maybe "0"?
@@ -175,7 +177,8 @@ class MavLink():
             msg[5] = message type 
             msg[6:6+n] = payload n = message payload length
             msg[6+n:6+n+3] = checksum'''
-        result = self._uart.read()
+        result = self._uart.read(256)
+       
         if result == None:
             return None
         else:
@@ -211,11 +214,11 @@ class MavLink():
             _mav_put_uint8_t(buf, 12, orientation);
             _mav_put_uint8_t(buf, 13, covariance);
         '''
-        try:
-            return struct.unpack('<1f',msg[8:10])[0] #current_distance
+        #try:
+        return struct.unpack('<1H',msg[8:10])[0] #current_distance
   
-        except ValueError:
-            return None
+        #except ValueError:
+         #   return None
 
 
     def __parse_attitude_msg(self,msg):
@@ -283,7 +286,7 @@ class MavLink():
             _mav_put_uint8_t(buf, 20, port);'''
         try:
             sv_tup = struct.unpack('<8H',msg[4:20])
-            return {'servo1': ssv_tup[0],'servo2':sv_tup[1],'servo3':sv_tup[2],
+            return {'servo1': sv_tup[0],'servo2':sv_tup[1],'servo3':sv_tup[2],
                     'servo4':sv_tup[3],'servo5':sv_tup[4],'servo6':sv_tup[5],
                     'servo7':sv_tup[6],'servo8':sv_tup[7]}
         except ValueError:
@@ -292,8 +295,16 @@ class MavLink():
 
     def getSensors(self):
         '''Returns dict where key = Sensor_type, value = most recent value received via mavlink'''
-        msg_list = self._read_uart()
+        msg_list = self._read_uart()     
+        
+        if(msg_list == None):
+            logger.log.warning(">>>>>>>>>>>>>>>>>>") 
+            logger.log.warning("MAVLINK LINK FAIL")
+            logger.log.warning(">>>>>>>>>>>>>>>>>>") 
+            self.hw.systemFail()
+
         sensors = {'Attitude': None, 'RCCH': None, 'Servo': None, 'Lidar': None}
+        
         if msg_list != None:
             for msg in msg_list:
                 if msg[0] == ATTITUDE:
@@ -309,14 +320,20 @@ class MavLink():
                     if result != None:
                         sensors['Servo'] = result
                 elif msg[0] == LIDAR:
-                    result = self.__parse_lidar_msg(msg[1])
+                    result = self.__parse_lidar_msg(msg[1])  
+                   # logger.log.verbose('^^^^^^^^LIDAR^^^^^^^^^^^^^^^^')  
+                    #logger.log.verbose(result)
+                    #logger.log.debugOnly('lidar value = ' + str(result))                    
+                   # logger.log.verbose('^^^^^^^^^^^^^^^^^^^^^^^^')               
                     if result != None:
+                       
+                        
                         sensors['Lidar'] = result
 
         return sensors #Any sensor that is not updated will return 'None'
 
 
 if __name__ == "__main__":
-    mvlink = MavLink()
+    mvlink = MavLink(hw)
     result = mvlink.getSensors()
-    print(result)
+    logger.log.verbose(result)

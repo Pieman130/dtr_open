@@ -1,5 +1,6 @@
 import mavlink
 import urequests
+import logger
 
 class WiFi:
     def __init__(self,hw):

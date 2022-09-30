@@ -1,7 +1,7 @@
 import dataClasses
 import time
 import mavlink
-
+import logger
 
 class ExitCriteria:
     def __init__(self):
@@ -18,7 +18,7 @@ class ExitCriterion:
 
 
 class FlightAction:
-    def __init__(self,description,controls,exitCriteria,comms):
+    def __init__(self,description,controls,exitCriteria,comms,hw):
         
         self.description = description
         self.timeClock = 0
@@ -27,6 +27,24 @@ class FlightAction:
         self.controls = controls
         self.data = dataClasses.data
         self.mavlink = comms.mavlink
+        self.hw = hw
+
+        self.p_up = 0
+        self.i_up = 0
+        self.d_up = 0
+
+        self.p_throttle = 0
+        self.i_throttle = 0
+        self.d_throttle = 0
+        
+        self.p_yaw = 0
+        self.i_yaw = 0
+        self.d_yaw = 0
+
+        self.scalar_up = 0
+        self.scalar_yaw = 0
+        self.scalar_throttle = 0
+        
 
     def reset(self):
         self.startTime = None
@@ -41,9 +59,16 @@ class FlightAction:
 
     def execute(self):
         self.updateTime()
-        print(self.description + " -  Maneuver")
-        print("\ttime: " + str(self.timeClock))                
+        logger.log.verbose(self.description + " -  Maneuver")
+        logger.log.verbose("\ttime: " + str(self.timeClock))                
         self.mavlink.setControls(self.controls)
+        
+        if self.controls.servo == 1:
+            self.hw.openDoor()
+        else:
+            self.hw.closeDoor()
+
+        self.controls.printValues()
 
         self.mavlink._read_uart()        
     
@@ -65,7 +90,7 @@ class FlightAction:
                 if item.value == self.getProperty(item.variableName):
                     numCriterionMet = numCriterionMet + 1           
                 else:
-                    print("NO MATCH (" + item.variableName + ") = " + str(item.value) + " != " + str(self.getProperty(item.variableName)) )                    
+                    logger.log.verbose("NO MATCH (" + item.variableName + ") = " + str(item.value) + " != " + str(self.getProperty(item.variableName)) )                    
                     numCriterionUnmet = numCriterionUnmet + 1               
 
         if numCriterionUnmet == 0 and numCriterionMet > 0:
@@ -102,8 +127,8 @@ class Controls:
         self.throttle = 0 #-1 to 1
         self.servo = 0 # 0 for OFF. 1 for ON.
     def printValues(self):            
-        print("\t\tyaw: " + str(self.yaw))
-        print("\t\tup: " + str(self.up))
-        print("\t\tthrottle: " + str(self.throttle))
-        print("\t\tservo: " + str(self.servo))
+        logger.log.verbose("\t\tyaw: " + str(self.yaw))
+        logger.log.verbose("\t\tup: " + str(self.up))
+        logger.log.verbose("\t\tthrottle: " + str(self.throttle))
+        logger.log.verbose("\t\tservo: " + str(self.servo))
 

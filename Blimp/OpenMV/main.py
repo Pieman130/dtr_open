@@ -2,6 +2,8 @@
 
 import time
 
+
+
 try:
     import hardware
     import comms
@@ -33,50 +35,62 @@ except Exception as e:
         print(e)
         print(".")
 
+import logger
+logger.log.setLevel_debugOnly()
+#logger.log.setLevel_verbose()
+
 
 import dataClasses
-print('is micropython: ' + str(isMicroPython))
-dataClasses.config.isMicroPython = isMicroPython
 
+
+logger.log.info('is micropython: ' + str(isMicroPython))
+dataClasses.config.isMicroPython = isMicroPython
 
 import sensors
 import processing
-import boss_missionCommander
-import boss_flightDirector
+import missionCommander
+import flightDirector
 import groundStation
 
 
 def main() -> None:
-    loopPause = 1
+    loopPause = 0.5
 
     hw = hardware.Hardware()
 
     comm = comms.Comms(hw)
-
-    sensorsObj = sensors.Sensors(hw,comm)    
+    
+    sensorsObj = sensors.Sensors(hw,comm)        
 
     gndStation = groundStation.GroundStation(comm,hw)
 
+    fltDirector = flightDirector.FlightDirector(comm,hw)
 
-    missionCommander = boss_missionCommander.MissionCommander()
-    flightDirector = boss_flightDirector.FlightDirector(comms)
+    missionCmder = missionCommander.MissionCommander(fltDirector)
+    
 
 
     while(True):
 
         time.sleep(loopPause)
-
+        
         sensorsObj.collectData()
 
         processing.parseSensorData()
+        processing.parseRCSwitchPositions()
         
-        missionCommander.updateState()
+        if dataClasses.data.sw_door_control is not None:
+            logger.log.verbose("DoorSwitch: " + dataClasses.data.sw_door_control)
+        if dataClasses.data.sw_flight_mode is not None:
+            logger.log.verbose("FlightMode: " + dataClasses.data.sw_flight_mode)
+        
+        missionCmder.updateState()
 
-        flightDirector.getNextStep()
+        fltDirector.getNextStep()
 
-        flightDirector.executeNextStep()
+        fltDirector.executeNextStep()
 
-        gndStation.sendStatusMessage(missionCommander,flightDirector)
+       # gndStation.sendStatusMessage(missionCmder,fltDirector)
 
 
 main()

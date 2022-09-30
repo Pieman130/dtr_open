@@ -4,6 +4,7 @@
 
 import time
 import dataClasses
+import logger
 
 
 class Sensors:
@@ -11,14 +12,14 @@ class Sensors:
         self.hw = hw
         self.mavlink = com.mavlink
 
-        self.irSensor = None
+        self.irSensor = hw.irSensor
         self.camera = None        
         self.lidar = None
         self.imuSensor = None
 
+        logger.log.verbose("before sw initialize")
         self.swInitializeCamera()
-
-        print("INITIALIZED")
+       
         time.sleep(0.5)
         
 
@@ -26,25 +27,32 @@ class Sensors:
         return 144
 
 
-    def swInitializeCamera(self): 
-        print("initializing camera")
+    def swInitializeCamera(self):         
 
         self.camera = self.hw.camera
+       
 
         self.camera.reset()
+        
         self.camera.set_pixformat(self.camera.RGB565)
+        
         #sensor.set_framesize(sensor.QVGA)
         self.camera.set_framesize(self.camera.QQVGA) #needed for april tag detections
-        self.camera.skip_frames(2000)
+        
+        # self.camera.skip_frames(2000)
 
         # needed for april tag finder
         self.camera.set_auto_gain(False)  # must turn this off to prevent image washout...
-        self.camera.set_auto_whitebal(False)  # must turn this off to prevent image washout...
-
+        
+        self.camera.set_auto_whitebal(False)  # must turn this off to prevent image washout...        
 
     def collectData(self):
+
+       
+        #self.hw.pybReset()
+        #print('PYB HARDWARE RESET DONE')
     
-        print("collecting data")
+        #logger.log.verbose("collecting data")
         
         dataClasses.rawData.img = self.camera.snapshot()     
 
@@ -52,9 +60,10 @@ class Sensors:
         #dataClasses.rawData.imu_pitch = sensors.imuSensor.getRoll()
         #dataClasses.rawData.imu_yaw = sensors.imuSensor.getPitch()
         #dataClasses.rawData.imu_roll = sensors.imuSensor.getYaw()
-        #dataClasses.rawData.irSensor = self.irSensor.value()    
+        dataClasses.rawData.irSensor = self.irSensor.value()    
 
-        current_raw_sensor_data = self.mavlink.getSensors()
+        logger.log.verbose("right before get mavlink data")
+        current_raw_sensor_data = self.mavlink.getSensors()        
 
         if current_raw_sensor_data['Attitude'] != None:
             dataClasses.rawData.imu_yaw = current_raw_sensor_data['Attitude']['yaw']
@@ -73,6 +82,10 @@ class Sensors:
 
         if current_raw_sensor_data['Lidar'] != None:
             dataClasses.rawData.lidar_cm = current_raw_sensor_data['Lidar']
+            
+            logger.log.verbose("&&&&&&&&&&&")
+            logger.log.verbose(dataClasses.rawData.lidar_cm)
+
 
         dataClasses.rawData.door_position = self.hw.servo.angle()
 

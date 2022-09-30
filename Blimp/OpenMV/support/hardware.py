@@ -2,6 +2,8 @@ import pyb
 import network
 from machine import Pin
 import sensor
+import logger
+
 
 
 UART_BAUDRATE = 115200
@@ -16,8 +18,8 @@ LED_RED = 1
 LED_GREEN = 2
 LED_BLUE = 3
 
-SERVO_OPEN = 0
-SERVO_CLOSED = 45
+SERVO_OPEN = 15
+SERVO_CLOSED = 65
 
 
 class Led:
@@ -65,7 +67,8 @@ class Led:
         self.redLed.off()
 
 class Hardware:
-    def __init__(self):       
+    def __init__(self):  
+        self.pyb = pyb     
         self.led = Led() 
         self.wlan = network.WINC() # must go first. on initialize, shares a pin needed only on startup by wifi module
                                    # with ir sensor.
@@ -94,11 +97,20 @@ class Hardware:
     def systemFail(self):
          self.led.turnOn('red')
 
+    def pybReset(self):
+        self.pyb.hard_reset()
+
 
     def openDoor(self):
+        logger.log.verbose("********************")
+        logger.log.verbose("OPEN DOOR")
+        logger.log.verbose("********************")
         self.servo.angle(SERVO_OPEN)
     
     def closeDoor(self):
+        logger.log.verbose("********************")
+        logger.log.verbose("CLOSE DOOR")
+        logger.log.verbose("********************")
         self.servo.angle(SERVO_CLOSED)
 
  

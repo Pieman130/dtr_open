@@ -34,8 +34,6 @@ class FlightAction:
         self.pid_up = Controller()
         self.pid_throttle = Controller()
 
-        self.desired_height = None
-
 
     def reset(self):
         self.startTime = None
@@ -115,8 +113,9 @@ class FlightAction:
     def execute_assisted_altitude(self, height):
         '''take in desired distance to ceiling (height)
         maintain a pid controlled hover about that distance'''
-        if self.desired_height != None:
-            self.pid_up.get_pid(height-) 
+        if height != None:
+            self.controls.up = self.pid_up.get_pid(height-self.data.lidarDistance) 
+            logger.log.info("Executing Assisted Altitude.  PID Up Value: {}".format(self.controls.up) )
 
 
 class Controls:

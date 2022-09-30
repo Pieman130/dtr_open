@@ -1,8 +1,5 @@
 # Untitled - By: timothy.woodbridge - Fri May 20 2022
-
 import time
-
-
 
 try:
     import hardware
@@ -17,7 +14,7 @@ except Exception as e:
     import pathlib
 
     try:
-        baseDir = pathlib.Path(__file__).parent # Get directory of main
+        baseDir = pathlib.Path(__file__).parent  # Get directory of main
         unitDir = (baseDir / "unitTest/").resolve()
         supportDir = (baseDir / "support/").resolve()
         print(unitDir, supportDir)
@@ -31,19 +28,14 @@ except Exception as e:
         import commsMock
         comms = commsMock
 
-        import logger
-
     except Exception as e:
-        #this is for upython.
+        # this is for upython.
         print(e)
         print(".")
 
-
+import logger
 logger.log.setLevel_debugOnly()
-logger.log.setLevel_verbose()
-
-
-import dataClasses
+# logger.log.setLevel_verbose()
 
 
 logger.log.info('is micropython: ' + str(isMicroPython))
@@ -62,31 +54,29 @@ def main() -> None:
     hw = hardware.Hardware()
 
     comm = comms.Comms(hw)
-    
-    sensorsObj = sensors.Sensors(hw,comm)        
 
-    gndStation = groundStation.GroundStation(comm,hw)
+    sensorsObj = sensors.Sensors(hw, comm)
 
-    fltDirector = flightDirector.FlightDirector(comm,hw)
+    gndStation = groundStation.GroundStation(comm, hw)
+
+    fltDirector = flightDirector.FlightDirector(comm, hw)
 
     missionCmder = missionCommander.MissionCommander(fltDirector)
-    
 
-
-    while(True):
+    while (True):
 
         time.sleep(loopPause)
-        
+
         sensorsObj.collectData()
 
         processing.parseSensorData()
         processing.parseRCSwitchPositions()
-        
+
         if dataClasses.data.sw_door_control is not None:
             logger.log.verbose("DoorSwitch: " + dataClasses.data.sw_door_control)
         if dataClasses.data.sw_flight_mode is not None:
             logger.log.verbose("FlightMode: " + dataClasses.data.sw_flight_mode)
-        
+
         missionCmder.updateState()
 
         fltDirector.getNextStep()

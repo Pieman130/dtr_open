@@ -10,6 +10,9 @@ class RawData:
         self.imu_yaw = 0
         self.imu_pitch = 0
         self.imu_roll = 0
+        self.imu_yaw_rate = 0
+        self.imu_pitch_rate = 0
+        self.imu_roll_rate = 0
         self.motor_throttle = None
         self.motor_up = None
         self.motor_yaw = None

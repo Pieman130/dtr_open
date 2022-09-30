@@ -65,7 +65,8 @@ class Led:
         self.redLed.off()
 
 class Hardware:
-    def __init__(self):       
+    def __init__(self):  
+        self.pyb = pyb     
         self.led = Led() 
         self.wlan = network.WINC() # must go first. on initialize, shares a pin needed only on startup by wifi module
                                    # with ir sensor.
@@ -93,6 +94,9 @@ class Hardware:
 
     def systemFail(self):
          self.led.turnOn('red')
+
+    def pybReset(self):
+        self.pyb.hard_reset()
 
 
     def openDoor(self):

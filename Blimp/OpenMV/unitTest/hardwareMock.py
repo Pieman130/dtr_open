@@ -110,4 +110,6 @@ class Hardware:
     
     def closeDoor(self):
         print("close door")
-                                              
+                               
+    def systemFail(self):
+        print("SYSTEM FAIL TURN ON RED LED!")              

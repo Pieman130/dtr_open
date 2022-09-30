@@ -12,8 +12,8 @@ if os.name == 'posix': #Unix-like machines
         pass #TODO fix for Linux machines
 
 else: #Windows machines
-    currDir = os.path.dirname(__file__);
-    to_directory = "D:/"
+    currDir = os.path.dirname(__file__)
+    to_directory = "E:/"
     from_directory = currDir + "\support"
 
 copy_tree(from_directory, to_directory)

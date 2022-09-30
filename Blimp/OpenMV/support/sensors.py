@@ -16,9 +16,9 @@ class Sensors:
         self.lidar = None
         self.imuSensor = None
 
+        print("before sw initialize")
         self.swInitializeCamera()
-
-        print("INITIALIZED")
+       
         time.sleep(0.5)
         
 
@@ -26,25 +26,32 @@ class Sensors:
         return 144
 
 
-    def swInitializeCamera(self): 
-        print("initializing camera")
+    def swInitializeCamera(self):         
 
         self.camera = self.hw.camera
+       
 
         self.camera.reset()
+        
         self.camera.set_pixformat(self.camera.RGB565)
+        
         #sensor.set_framesize(sensor.QVGA)
         self.camera.set_framesize(self.camera.QQVGA) #needed for april tag detections
+        
         # self.camera.skip_frames(2000)
 
         # needed for april tag finder
         self.camera.set_auto_gain(False)  # must turn this off to prevent image washout...
-        self.camera.set_auto_whitebal(False)  # must turn this off to prevent image washout...
-
+        
+        self.camera.set_auto_whitebal(False)  # must turn this off to prevent image washout...        
 
     def collectData(self):
+
+       
+        #self.hw.pybReset()
+        #print('PYB HARDWARE RESET DONE')
     
-        print("collecting data")
+        #print("collecting data")
         
         dataClasses.rawData.img = self.camera.snapshot()     
 

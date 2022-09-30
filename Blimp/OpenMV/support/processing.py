@@ -45,6 +45,10 @@ def parseIrSensorData():
 
 
 def parseLidarData():
+    print('>>>>>>>>>>>>>>>')
+    print('LIDAR DATA')
+    print('>>>>>>>>>>>>>>>')
+    print(dataClasses.rawData.lidar_cm )
     if (dataClasses.rawData.lidar_cm != None):
         rawDist_ft = dataClasses.rawData.lidar_cm / 30.48
         correctedDist_ft = attitudeCorrectDistance(

@@ -14,6 +14,7 @@ class MavLink():
     '''Implements select Mavlink v1 messages to enable bydirectional communication between 
     OpenMV and Pixracer (ardupilot)'''
     def __init__(self,hw):
+        self.hw = hw
         self._uart = hw.uart
         self.__ps = -1 #starting packet number
         self.ser_buf = bytearray()
@@ -176,6 +177,7 @@ class MavLink():
             msg[6:6+n] = payload n = message payload length
             msg[6+n:6+n+3] = checksum'''
         result = self._uart.read(256)
+       
         if result == None:
             return None
         else:
@@ -211,11 +213,11 @@ class MavLink():
             _mav_put_uint8_t(buf, 12, orientation);
             _mav_put_uint8_t(buf, 13, covariance);
         '''
-        try:
-            return struct.unpack('<1f',msg[8:10])[0] #current_distance
+        #try:
+        return struct.unpack('<1H',msg[8:10])[0] #current_distance
   
-        except ValueError:
-            return None
+        #except ValueError:
+         #   return None
 
 
     def __parse_attitude_msg(self,msg):
@@ -293,8 +295,13 @@ class MavLink():
     def getSensors(self):
         '''Returns dict where key = Sensor_type, value = most recent value received via mavlink'''
         msg_list = self._read_uart()     
-        print(">>>>>>>>>>>>>>>>>>")   
-        print(msg_list)
+        
+        if(msg_list == None):
+            print(">>>>>>>>>>>>>>>>>>") 
+            print("MAVLINK LINK FAIL")
+            print(">>>>>>>>>>>>>>>>>>") 
+            self.hw.systemFail()
+
         sensors = {'Attitude': None, 'RCCH': None, 'Servo': None, 'Lidar': None}
         
         if msg_list != None:
@@ -312,9 +319,13 @@ class MavLink():
                     if result != None:
                         sensors['Servo'] = result
                 elif msg[0] == LIDAR:
-                    result = self.__parse_lidar_msg(msg[1])
-                    print("GOT LIDAR DATA")
+                    result = self.__parse_lidar_msg(msg[1])  
+                    print('^^^^^^^^LIDAR^^^^^^^^^^^^^^^^')  
+                    print(result)
+                    print('^^^^^^^^^^^^^^^^^^^^^^^^')               
                     if result != None:
+                       
+                        
                         sensors['Lidar'] = result
 
         return sensors #Any sensor that is not updated will return 'None'

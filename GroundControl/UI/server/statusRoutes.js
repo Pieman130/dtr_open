@@ -4,7 +4,8 @@ var express = links.express;
 var router = express.Router();
 
 router.route('/heartbeat/')
-.get(function(req,res){   
+.post(function(req,res){   
+    var numLogLoopsToView = req.body.numLogLoopsToView;
     var output = {
         systemStatus: {},
         logger: {}
@@ -15,11 +16,11 @@ router.route('/heartbeat/')
     sqlTools.sqlRequestPromise(sqlStr)
     .then(function(ret){
         output.systemStatus = ret.recordset[0];
-        sqlStr = " SELECT TOP 1 * FROM loggerPrints ORDER BY ID desc"
+        sqlStr = " SELECT TOP " + numLogLoopsToView + " ID,logLines,convert(varchar(50),logTime,13) as logTime FROM loggerPrints ORDER BY ID desc"
         return sqlTools.sqlRequestPromise(sqlStr)
     })
     .then(function(ret){
-        output.logger = ret.recordset[0];
+        output.logger = ret.recordset;
         res.send(output);
     })
 

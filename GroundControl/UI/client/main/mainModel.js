@@ -5,7 +5,11 @@ angular.module('mainModel',[])
         return new Promise(function(resolve,reject){
             var obj = {
                 status: {},       
-                logs: {},
+                logs: {
+                    lines: '',
+                    logTime: '',
+                },
+                numLogLoopsToView: 1,
                 intervalTimeMs: 1000,     
                 input:{
                     up: null,
@@ -14,10 +18,19 @@ angular.module('mainModel',[])
                     doorOpen: 0
                 },
                 getStatus(){
-                    MainToServer.getStatus().then(function(ret){
+                    MainToServer.getStatus(obj.numLogLoopsToView).then(function(ret){
                         obj.status = ret.data.systemStatus;
-                        obj.logs = ret.data.logger;
+                        obj.logs.lines = obj.parseLogLines(ret.data.logger);
+                        obj.logs.logTime = ret.data.logger[0].logTime
                     })                    
+                },
+                parseLogLines(logger){
+                    var out = '';
+                    for (var ctr = 0; ctr < logger.length; ctr++){
+                        out = out + logger[ctr].logLines;                            
+                    }
+                    return out;
+                    
                 },
                 refreshFcn(){
                     obj.getStatus()

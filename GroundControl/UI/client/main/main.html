@@ -31,8 +31,11 @@
 
 <div class="card">     
     <h5 class="card-header">Log printouts {{m.logs.logTime}}</h5>
+    <label>Num log loops to view: </label>    
+    <input type = "number" ng-model = "m.numLogLoopsToView" style="width: 75px;" >  
+
     <p></p>
-    <textarea ng-model="m.logs.logLines" rows="25"></textarea>
+    <textarea ng-model="m.logs.lines" rows="25"></textarea>
 </div>
 
 <!--

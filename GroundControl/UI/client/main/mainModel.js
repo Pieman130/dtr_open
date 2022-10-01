@@ -5,6 +5,7 @@ angular.module('mainModel',[])
         return new Promise(function(resolve,reject){
             var obj = {
                 status: {},       
+                logs: {},
                 intervalTimeMs: 1000,     
                 input:{
                     up: null,
@@ -14,7 +15,8 @@ angular.module('mainModel',[])
                 },
                 getStatus(){
                     MainToServer.getStatus().then(function(ret){
-                        obj.status = ret.data[0];
+                        obj.status = ret.data.systemStatus;
+                        obj.logs = ret.data.logger;
                     })                    
                 },
                 refreshFcn(){

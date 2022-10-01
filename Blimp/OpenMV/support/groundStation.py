@@ -30,16 +30,15 @@ class GroundStation:
 
         logs = logger.log.getLogsForServerAndClear()
         
-        logsParsed = logs.replace('\n',"\\n")
+        logsEscaped = logs.replace('\n',"\\n")
+        logsEscaped = logsEscaped.replace('\t',"\\t")
 
-        
-
-        data = data + ',"logs":"' + logsParsed + '"'        
+        data = data + ',"logs":"' + logsEscaped + '"'        
         
 
         data = data +  '}'
 
-        logger.log.verbose(data)
+        #logger.log.verbose(data)
         #r = urequests.request('POST',fullAddress,data )
         headers = {'Content-Type': 'application/json'}
 

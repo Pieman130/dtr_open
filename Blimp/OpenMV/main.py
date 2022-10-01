@@ -40,7 +40,8 @@ except Exception as e:
 
 import logger
 #logger.log.setLevel_debugOnly()
-logger.log.setLevel_info()
+#logger.log.setLevel_info()
+logger.log.setLevel_verbose()
 #logger.log.setLevel_debugOnly()
 
 

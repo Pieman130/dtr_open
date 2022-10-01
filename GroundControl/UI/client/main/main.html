@@ -15,7 +15,6 @@
 </div>
 
 
-
 <div class="card"> 
     <h5 class="card-header">Sensor Information:</h5>
     
@@ -30,6 +29,11 @@
 
 </div>
 
+<div class="card">     
+    <h5 class="card-header">Log printouts {{m.logs.logTime}}</h5>
+    <p></p>
+    <textarea ng-model="m.logs.logLines" rows="25"></textarea>
+</div>
 
 <!--
 <div class="card"> 

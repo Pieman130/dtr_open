@@ -71,9 +71,7 @@ def main() -> None:
 
     fltDirector = flightDirector.FlightDirector(comm,hw)
 
-    missionCmder = missionCommander.MissionCommander(fltDirector)
-    
-
+    missionCmder = missionCommander.MissionCommander(fltDirector)        
 
     while(True):
 

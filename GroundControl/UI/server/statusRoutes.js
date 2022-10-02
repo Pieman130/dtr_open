@@ -34,9 +34,23 @@ router.route('/heartbeat/')
 
 })
 
-router.route('/getLastRequestValues/')
+router.route('/getLastControlRequestedValues/')
 .get(function(req,res){
-    var sqlStr = " SELECT * FROM maneuverToExecute " 
+    var sqlStr = " SELECT manual_up as up, manual_throttle as throttle, manual_yaw as yaw, manual_servo as doorOpen FROM maneuverToExecute " 
+    sqlTools.run(sqlStr,res);
+})
+
+router.route('/sendControlRequest/')
+.post(function(req,res){
+    var up = req.body.up;
+    var throttle = req.body.throttle;
+    var yaw = req.body.yaw;
+    var doorOpen = req.body.doorOpen;
+    
+    var sqlStr = " UPDATE maneuverToExecute SET manual_servo = " + doorOpen +
+                            ", manual_yaw = " + yaw +
+                            ", manual_throttle = " + throttle +
+                            ", manual_up = " + up
     sqlTools.run(sqlStr,res);
 })
 

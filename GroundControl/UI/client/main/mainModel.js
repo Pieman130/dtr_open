@@ -18,8 +18,25 @@ angular.module('mainModel',[])
                         up: null,
                         throttle: null,
                         yaw: null,
-                        doorOpen: 0                    
+                        doorOpen: 0                                            
                 },                
+                sendRequests(){
+                    return new Promise(function(resolve,reject){
+                        MainToServer.sendManualControlRequest(obj.requests).then(function(){
+                            resolve();
+                        })                        
+                    })
+                },
+                getLastControlRequestedValues(){
+                    return new Promise(function(resolve,reject){
+                        MainToServer.getLastControlRequestedValues().then(function(ret){
+                            $timeout(function(){
+                                obj.requests = ret.data[0];
+                                resolve();
+                            })                            
+                        })
+                    })                    
+                },
                 plotting:{
                     options: D3factory.getDefaultD3chartOptions(graphHeight,xtitle,ytitle),
                     data: {}
@@ -57,9 +74,13 @@ angular.module('mainModel',[])
                     obj.getStatus()
                 }     
             }
-            obj.intervalObj = TimerObjects.getRefreshIntervalObj(obj.refreshFcn,obj.intervalTimeMs)
-            obj.intervalObj.start();
-            resolve(obj);
+
+            obj.getLastControlRequestedValues().then(function(){
+                obj.intervalObj = TimerObjects.getRefreshIntervalObj(obj.refreshFcn,obj.intervalTimeMs)
+                obj.intervalObj.start();
+                resolve(obj);
+            })
+
         })
     }
     return service;

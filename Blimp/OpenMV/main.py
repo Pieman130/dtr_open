@@ -47,6 +47,8 @@ logger.log.setLevel_verbose()
 
 import dataClasses
 
+dataClasses.rawData.lidar = 120 #HACK
+
 
 logger.log.info('is micropython: ' + str(isMicroPython))
 dataClasses.config.isMicroPython = isMicroPython

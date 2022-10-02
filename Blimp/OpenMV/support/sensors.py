@@ -23,10 +23,6 @@ class Sensors:
         time.sleep(0.5)
         
 
-    def getDataFake(self):
-        return 144
-
-
     def swInitializeCamera(self):         
 
         self.camera = self.hw.camera
@@ -91,6 +87,5 @@ class Sensors:
 
 
         dataClasses.rawData.door_position = self.hw.servo.angle()
-
 
       

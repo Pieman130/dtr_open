@@ -28,6 +28,12 @@ class GroundStation:
         
         data = data + ',"currentManeuver":"' + flightDirector.currentManeuver.description + '"'
 
+        data = data + ',"upMotor":"' + str(flightDirector.currentManeuver.controls.up) + '"'
+        data = data + ',"throttleMotor":"' + str(flightDirector.currentManeuver.controls.throttle) + '"'
+        data = data + ',"yawMotor":"' + str(flightDirector.currentManeuver.controls.yaw) + '"'
+        data = data + ',"servoDoor":"' + str(flightDirector.currentManeuver.controls.servo) + '"'
+
+
         logs = logger.log.getLogsForServerAndClear()
         
         logsEscaped = logs.replace('\n',"\\n")

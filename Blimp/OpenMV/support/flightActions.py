@@ -8,6 +8,8 @@ else:
     class Controller:
         def __init__(self):
             pass
+        def get_pid(self,val):
+            pass
 
 class ExitCriteria:
     def __init__(self):

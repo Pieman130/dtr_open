@@ -32,6 +32,8 @@ def colorDetectedByCamera(img):
     #search for ball in img
     biggestball = [0,0,0,0] #[x, y, width, height]
     currentball = [0,0,0,0] #[x, y, width, height]
+    currentgoal = [0,0,0,0] #[x, y, width, height]
+    closestgoal = [0,0,0,0] #[x, y, width, height]
     for blobs in img.find_blobs([color_thresholds[0]], pixels_threshold = pixels_threshold, area_threshold = area_threshold, merge=True, margin = margin):
         currentball = [blob.cx(), blob.cy(), blob.rect()[2], blob.rect()[3]]
         if currentball[2] > biggestball[2]:
@@ -48,6 +50,7 @@ def colorDetectedByCamera(img):
         dataClasses.ProcessedData.ballx = x_ema
         dataClasses.ProcessedData.bally = y_ema
         width = biggestball[2]
+        degree = width/ .225
     #NEED TO DISCUSS HOW TO PICK GOAL
     if dataClasses.ProcessedData.goalColorChoice == "yellow":
         threshold = 1

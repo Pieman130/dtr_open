@@ -126,7 +126,7 @@ class FlightAction:
         maintain a pid controlled hover about that distance'''
         logger.log.info("executing assisted altitude to height: " + str(height))
         if self.data.lidarDistance != None:                                         
-            self.controls.up = self.pid_up.get_pid(height-self.data.lidarDistance) 
+            self.controls.up = self.pid_up.get_pid(self.data.lidarDistance-height,scaler=1) 
             logger.log.info("Executing Assisted Altitude.  PID Up Value: {}".format(self.controls.up) )
 
 

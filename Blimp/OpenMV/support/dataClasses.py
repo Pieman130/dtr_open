@@ -51,22 +51,22 @@ class GroundStationCommand:
         self.duration = None
         self.mockSensor_greenDetected = ''
         self.mockSensor_aprilTagDetected = ''
-        self.p_up = None
-        self.i_up = None
-        self.d_up = None
-        self.p_throttle = None
-        self.i_throttle = None
-        self.d_throttle = None
-        self.p_yaw = None
-        self.i_yaw = None
-        self.d_yaw = None
+        self.p_up = 1
+        self.i_up = 0
+        self.d_up = 0
+        self.p_throttle = 1
+        self.i_throttle = 0
+        self.d_throttle = 0
+        self.p_yaw = 1
+        self.i_yaw = 0
+        self.d_yaw = 0
         self.manual_up = None
         self.manual_throttle = None
         self.manual_yaw = None
         self.manual_servo = None
-        self.scalar_up = None
-        self.scalar_yaw = None
-        self.scalar_throttle = None
+        self.scalar_up = 1
+        self.scalar_yaw = 1
+        self.scalar_throttle = 1
 
 
         self.requestedState = None

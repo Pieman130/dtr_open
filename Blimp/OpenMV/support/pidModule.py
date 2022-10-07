@@ -1,5 +1,9 @@
+import dataClasses
 import time, pid
 import logger
+
+
+
 
 class Controller():
     def __init__(self,p=1,i=0.001,d=0.1,imax=0.5):
@@ -14,7 +18,7 @@ class Controller():
 
     def set_pid_gains(self,**kwargs):
         if 'p' in kwargs:
-            self.pid._kp = kwargs['p']
+            self.pid._kp = kwargs['p']        
         if 'i' in kwargs:
             self.pid._ki = kwargs['i']
         if 'd' in kwargs:
@@ -28,6 +32,10 @@ class Controller():
 
 
     def get_pid(self, error, scaler=1):
+        if(scaler == None):
+            logger.log.warning('Scaler is none in get_pid')
+            return 0
+        
         output = self.pid.get_pid(error,scaler)
         if output > 1:
             output = 1

@@ -8,7 +8,7 @@ else:
     class Controller:
         def __init__(self):
             pass
-        def get_pid(self,val):
+        def get_pid(self,val,scaler):
             pass
 
 class ExitCriteria:
@@ -125,8 +125,11 @@ class FlightAction:
         '''take in desired distance to ceiling (height)
         maintain a pid controlled hover about that distance'''
         logger.log.info("executing assisted altitude to height: " + str(height))
-        if self.data.lidarDistance != None:                                         
-            self.controls.up = self.pid_up.get_pid(self.data.lidarDistance-height,scaler=1) 
+        if self.data.lidarDistance != None:   
+
+            self.pid_up.set_pid_gains(p = dataClasses.gndStationCmd.p_up)            
+            self.controls.up = self.pid_up.get_pid(self.data.lidarDistance-height,scaler= dataClasses.gndStationCmd.scalar_up) 
+            logger.log.debugOnly("controls.up = " + str(self.controls.up))
             logger.log.info("Executing Assisted Altitude.  PID Up Value: {}".format(self.controls.up) )
 
 

@@ -41,8 +41,8 @@ except Exception as e:
 import logger
 
 #logger.log.setLevel_info()
-#logger.log.setLevel_verbose()
-logger.log.setLevel_debugOnly()
+logger.log.setLevel_verbose()
+#logger.log.setLevel_debugOnly()
 
 
 import dataClasses
@@ -61,37 +61,39 @@ import groundStation
 
 
 def main() -> None:
-    loopPause = 0.5
+    loopPause = 0
 
     hw = hardware.Hardware()
 
     comm = comms.Comms(hw)
-    
-    sensorsObj = sensors.Sensors(hw,comm)        
+
+    sensorsObj = sensors.Sensors(hw,comm)
 
     gndStation = groundStation.GroundStation(comm,hw)
 
     fltDirector = flightDirector.FlightDirector(comm,hw)
 
-    missionCmder = missionCommander.MissionCommander(fltDirector)        
+    missionCmder = missionCommander.MissionCommander(fltDirector)
 
     while(True):
 
-        time.sleep(loopPause)        
+        time.sleep(loopPause)
         logger.log.heartbeat("===============================")
         logger.log.heartbeat("Top of loop")
         logger.log.heartbeat("===============================")
-        
+
         sensorsObj.collectData()
+        logger.log.debugOnly("lidar = " + str(dataClasses.data.lidarDistance))
+        logger.log.verbose("motor up value = " + str(dataClasses.rawData.motor_up))
 
         processing.parseSensorData()
         processing.parseRCSwitchPositions()
-        
+
         if dataClasses.data.sw_door_control is not None:
             logger.log.verbose("DoorSwitch: " + dataClasses.data.sw_door_control)
         if dataClasses.data.sw_flight_mode is not None:
             logger.log.verbose("FlightMode: " + dataClasses.data.sw_flight_mode)
-        
+
         missionCmder.updateState()
 
         fltDirector.getNextStep()

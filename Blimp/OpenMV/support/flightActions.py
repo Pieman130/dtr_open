@@ -2,7 +2,14 @@ import dataClasses
 import time
 import mavlink
 import logger
-from pid import Controller
+if ( dataClasses.config.isMicroPython):
+    from pidModule import Controller
+else:
+    class Controller:
+        def __init__(self):
+            pass
+        def get_pid(self,val):
+            pass
 
 
 class ExitCriteria:

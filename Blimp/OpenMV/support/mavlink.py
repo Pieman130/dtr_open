@@ -214,11 +214,11 @@ class MavLink():
             _mav_put_uint8_t(buf, 12, orientation);
             _mav_put_uint8_t(buf, 13, covariance);
         '''
-        #try:
-        return struct.unpack('<1H',msg[8:10])[0] #current_distance
+        try:
+            return struct.unpack('<1H',msg[8:10])[0] #current_distance
   
-        #except ValueError:
-         #   return None
+        except ValueError:
+            return None
 
 
     def __parse_attitude_msg(self,msg):

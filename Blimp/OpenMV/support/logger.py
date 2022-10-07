@@ -13,6 +13,7 @@ LEVEL_SILLY = 6
 class Logger():
     def __init__(self):
         self.level = LEVEL_VERBOSE
+        self.loggingToServerStr = ''
 
     def setLevel_silent(self):
         self.level = LEVEL_SILENT
@@ -47,31 +48,47 @@ class Logger():
 
     def debugOnly(self,str):
         if(self.level == LEVEL_DEBUG_ONLY):
-            print(str)
+            self.doPrint(str)
 
     def error(self,str):
         if(self.level >= LEVEL_ERROR and self.level > 0):
-            print(str)
+            self.doPrint(str)
 
     def warning(self,str):
         if(self.level >= LEVEL_WARNING  and self.level > 0):
-            print(str)
+            self.doPrint(str)
 
     def heartbeat(self,str):
         if(self.level >= LEVEL_HEARTBEAT  and self.level > 0):
-            print(str)
+            self.doPrint(str)
 
     def info(self,str):
         if(self.level >= LEVEL_INFO  and self.level > 0):
-            print(str)
+            self.doPrint(str)
 
     def verbose(self,str):
         if(self.level >= LEVEL_VERBOSE  and self.level > 0):
-            print(str)
+            self.doPrint(str)
 
     def silly(self,str):
         if(self.level >= LEVEL_SILLY and self.level > 0):
-            print(str)
+            self.doPrint(str)
+
+    def doPrint(self,str_in):
+        if(str_in == None):
+            str_toPrint = ''
+        else:
+            str_toPrint = str(str_in)
+
+        self.loggingToServerStr = self.loggingToServerStr + str_toPrint + '\n' 
+        print(str_toPrint)
+
+    def getLogsForServerAndClear(self):
+        logOut = self.loggingToServerStr
+        logOut_raw = r'{}'.format(logOut)
+        self.loggingToServerStr = ''
+        return logOut_raw
+
 
 
 log = Logger()

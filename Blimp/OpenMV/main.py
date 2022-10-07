@@ -14,7 +14,7 @@ except Exception as e:
     import pathlib
 
     try:
-        baseDir = pathlib.Path(__file__).parent  # Get directory of main
+        baseDir = pathlib.Path(__file__).parent # Get directory of main
         unitDir = (baseDir / "unitTest/").resolve()
         supportDir = (baseDir / "support/").resolve()
         print(unitDir, supportDir)
@@ -29,13 +29,20 @@ except Exception as e:
         comms = commsMock
 
     except Exception as e:
-        # this is for upython.
+        #this is for upython.
         print(e)
         print(".")
 
 import logger
+
+#logger.log.setLevel_info()
+#logger.log.setLevel_verbose()
 logger.log.setLevel_debugOnly()
-# logger.log.setLevel_verbose()
+
+
+import dataClasses
+
+dataClasses.rawData.lidar = 120 #HACK
 
 
 logger.log.info('is micropython: ' + str(isMicroPython))
@@ -54,19 +61,24 @@ def main() -> None:
     hw = hardware.Hardware()
 
     comm = comms.Comms(hw)
+    
+    sensorsObj = sensors.Sensors(hw,comm)        
 
-    sensorsObj = sensors.Sensors(hw, comm)
-
-    gndStation = groundStation.GroundStation(comm, hw)
+    gndStation = groundStation.GroundStation(comm,hw)
 
     fltDirector = flightDirector.FlightDirector(comm, hw)
 
     missionCmder = missionCommander.MissionCommander(fltDirector)
+    
 
-    while (True):
 
-        time.sleep(loopPause)
+    while(True):
 
+        time.sleep(loopPause)        
+        logger.log.heartbeat("===============================")
+        logger.log.heartbeat("Top of loop")
+        logger.log.heartbeat("===============================")
+        
         sensorsObj.collectData()
 
         processing.parseSensorData()
@@ -83,7 +95,7 @@ def main() -> None:
 
         fltDirector.executeNextStep()
 
-       # gndStation.sendStatusMessage(missionCmder,fltDirector)
+        gndStation.sendStatusMessage(missionCmder,fltDirector)
 
 
 main()

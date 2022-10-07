@@ -7,7 +7,7 @@ class Controller():
         self.p = p
         self.i = i
         self.d = d
-        self.imax = imax
+        self.imax = imax        
         self.pid = pid.PID(p=self.p,i=self.i,d=self.d,imax=self.imax)
         #TODO Need output clipping for each PID
 
@@ -28,11 +28,18 @@ class Controller():
 
 
     def get_pid(self, error, scaler=1):
-            return self.pid.get_pid(error,scaler)
+        output = self.pid.get_pid(error,scaler)
+        if output > 1:
+            output = 1
+            self.reset_i() #prevent integrator windup
+        elif output < -1:
+            output = -1
+            self.reset_i() #prevent integrator windup
+        return output
 
 
     def reset_i(self):
-        self.pid.reset_i()
+        self.pid.reset_I()
 
 
     

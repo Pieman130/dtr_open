@@ -44,7 +44,7 @@ class MissionCommander:
 
     def updateState(self):  
                    
-        requestedState = dataClasses.gndStationCmd.requestedMode   
+        requestedState = dataClasses.gndStationCmd.requestedState   
 
         if(self.currentState.description == requestedState):
             pass #do nothing.

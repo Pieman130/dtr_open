@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 var statusRoute = require('./statusRoutes.js');
 app.use('/status/',statusRoute);
 
-var port = process.env.PORT || 4000;
+var port = process.env.PORT || 3333;
 app.listen(port,function(){
     console.log('Running server on port ' + port);
 })

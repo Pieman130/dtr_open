@@ -19,10 +19,42 @@ angular.module('mainModel',[])
                         throttle: null,
                         yaw: null,
                         doorOpen: 0                                            
+                },
+                config: {
+                    pid: {
+                        up: {
+                            p: null,
+                            i: null,
+                            d: null
+                        },
+                        throttle: {
+                            p: null,
+                            i: null,
+                            d: null
+                        },
+                        yaw: {
+                            p: null,
+                            i: null,
+                            d: null
+                        }
+                    },
+                    scalar: {
+                        up: null,
+                        throttle: null,
+                        yaw: null
+                    },
+                    requestedState: ''
                 },                
                 sendRequests(){
                     return new Promise(function(resolve,reject){
                         MainToServer.sendManualControlRequest(obj.requests).then(function(){
+                            resolve();
+                        })                        
+                    })
+                },
+                sendConfig(){
+                    return new Promise(function(resolve,reject){
+                        MainToServer.sendConfigValues(obj.config).then(function(){
                             resolve();
                         })                        
                     })

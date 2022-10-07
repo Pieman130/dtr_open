@@ -54,6 +54,21 @@ class GroundStationCommand:
         self.p_up = None
         self.i_up = None
         self.d_up = None
+        self.p_throttle = None
+        self.i_throttle = None
+        self.d_throttle = None
+        self.p_yaw = None
+        self.i_yaw = None
+        self.d_yaw = None
+        self.manual_up = None
+        self.manual_throttle = None
+        self.manual_yaw = None
+        self.manual_servo = None
+        self.scalar_up = None
+        self.scalar_yaw = None
+        self.scalar_throttle = None
+
+
         self.requestedState = None
 
     def print(self):

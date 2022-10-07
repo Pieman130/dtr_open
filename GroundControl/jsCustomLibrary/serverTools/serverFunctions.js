@@ -192,7 +192,7 @@ var makeValuesStr = function(){
         if (isNaN(arguments[ctr]))
         {
             var valStr = "'" + handleSingleQuote(arguments[ctr]) + "'";            
-        }else if(arguments[ctr] === undefined){
+        }else if((arguments[ctr] === undefined) || (arguments[ctr] === '')){
             var valStr = null;
         }else{
             var valStr = arguments[ctr];

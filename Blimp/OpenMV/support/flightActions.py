@@ -59,9 +59,9 @@ class FlightAction:
         logger.log.verbose("\ttime: " + str(self.timeClock))
 
         if dataClasses.data.sw_flight_mode == "manual":
-            # Is there a way to dynamically program the mavlink to do this on its own?
+            # The Mavlink automatically handles remote control inputs - nothing needed here
             # TODO: Implement raw passthrough
-            self.mavlink.setControls(self.controls)4
+            pass
 
         elif dataClasses.data.sw_flight_mode == "assisted":
             # Altitude hold and yaw stability ?
@@ -138,7 +138,7 @@ class FlightAction:
         '''take in desired distance to ceiling (height)
         maintain a pid controlled hover about that distance'''
         if height != None:
-            self.controls.up = self.pid_up.get_pid(height-self.data.lidarDistance)
+            self.controls.up = self.pid_up.get_pid(height-self.data.lidarDistance_ft)
             logger.log.info("Executing Assisted Altitude.  PID Up Value: {}".format(self.controls.up))
 
 

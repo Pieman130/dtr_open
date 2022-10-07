@@ -852,7 +852,7 @@ graph {
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1">
    <tr>
     <td port="p1l">1</td>
-    <td>PWM</td>
+    <td>GND</td>
    </tr>
    <tr>
     <td port="p2l">2</td>
@@ -860,7 +860,7 @@ graph {
    </tr>
    <tr>
     <td port="p3l">3</td>
-    <td>GND</td>
+    <td>PWM</td>
    </tr>
   </table>
  </td></tr>
@@ -871,6 +871,11 @@ graph {
      <td width="200" height="119.67871485943776" fixedsize="true"><img scale="true" src="JST 1.25 3 Pos Pin ID.png"/></td>
     </tr></table>
    </td>
+  </tr></table>
+ </td></tr>
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">Ignore cable colors in image.</td>
   </tr></table>
  </td></tr>
 </table>
@@ -1147,10 +1152,10 @@ graph {
 	CatchServoCable:w1:e -- "Catch Servo":p2l:w
 	edge [color="#000000:#ffff00:#000000"]
 	"OpenMV_Hat-Servo3 - Bottom":p2r:e -- CatchServoCable:w2:w
-	CatchServoCable:w2:e -- "Catch Servo":p1l:w
+	CatchServoCable:w2:e -- "Catch Servo":p3l:w
 	edge [color="#000000:#000000:#000000"]
 	"OpenMV_Hat-Servo3 - Bottom":p3r:e -- CatchServoCable:w3:w
-	CatchServoCable:w3:e -- "Catch Servo":p3l:w
+	CatchServoCable:w3:e -- "Catch Servo":p1l:w
 	CatchServoCable [label=<
 <table border="0" cellspacing="0" cellpadding="0">
  <tr><td>
@@ -1189,7 +1194,7 @@ graph {
     <td>
      2:YE
     </td>
-    <td>Catch Servo:1:PWM</td>
+    <td>Catch Servo:3:PWM</td>
    </tr>
    <tr>
     <td colspan="3" border="0" cellspacing="0" cellpadding="0" port="w2" height="6">
@@ -1205,7 +1210,7 @@ graph {
     <td>
      3:BK
     </td>
-    <td>Catch Servo:3:GND</td>
+    <td>Catch Servo:1:GND</td>
    </tr>
    <tr>
     <td colspan="3" border="0" cellspacing="0" cellpadding="0" port="w3" height="6">

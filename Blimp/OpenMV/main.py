@@ -1,8 +1,5 @@
 # Untitled - By: timothy.woodbridge - Fri May 20 2022
-
 import time
-
-
 
 try:
     import hardware
@@ -30,8 +27,6 @@ except Exception as e:
 
         import commsMock
         comms = commsMock
-
-        import logger
 
     except Exception as e:
         #this is for upython.
@@ -71,9 +66,11 @@ def main() -> None:
 
     gndStation = groundStation.GroundStation(comm,hw)
 
-    fltDirector = flightDirector.FlightDirector(comm,hw)
+    fltDirector = flightDirector.FlightDirector(comm, hw)
 
     missionCmder = missionCommander.MissionCommander(fltDirector)
+    
+
 
     while(True):
 

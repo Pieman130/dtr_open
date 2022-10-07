@@ -54,37 +54,28 @@ router.route('/sendControlRequest/')
     sqlTools.run(sqlStr,res);
 })
 
-router.route('/requestsToBlimp/')
+router.route('/sendConfigValues/')
 .post(function(req,res){
-
-    var manualServo = req.body.manual_servo;
-    var manualYaw = req.body.manual_yaw;
-    var manualThrottle = req.body.manual_throttle;
-    var manualUp = req.body.manual_up;
     
-    var p_up = req.body.p_up;
-    var i_up = req.body.p_up;
-    var d_up = req.body.p_up;
+    var p_up = req.body.pid.up.p;
+    var i_up = req.body.pid.up.i;
+    var d_up = req.body.pid.up.d;
     
-    var p_throttle = req.body.p_up;
-    var i_throttle = req.body.p_up;
-    var d_throttle = req.body.p_up;
+    var p_throttle = req.body.pid.throttle.p;
+    var i_throttle = req.body.pid.throttle.i;
+    var d_throttle = req.body.pid.throttle.d;
 
-    var p_yaw = req.body.p_up;
-    var i_yaw = req.body.p_up;
-    var d_yaw = req.body.p_up;
+    var p_yaw = req.body.pid.yaw.p;
+    var i_yaw = req.body.pid.yaw.i;
+    var d_yaw = req.body.pid.yaw.d;
 
-    var scalar_up = req.body.scalar_up;
-    var scalar_yaw = req.body.scalar_yaw;
-    var scalar_throttle = req.body.scalar_throttle;
+    var scalar_up = req.body.scalar.up;
+    var scalar_yaw = req.body.scalar.yaw;
+    var scalar_throttle = req.body.scalar.throttle;
 
     var requestedState = req.body.requestedState;
 
-    var sqlStr = " UPDATE maneuverToExecute SET manual_servo = " + manualServo +
-                                             ", manual_yaw = " + manualYaw +
-                                             ", manual_throttle = " + manualThrottle +
-                                             ", manual_up = " + manualUp +
-                                             ", p_up = " + p_up +
+    var sqlStr = " UPDATE maneuverToExecute SET p_up = " + p_up +
                                              ", i_up = " + i_up +
                                              ", d_up = " + d_up + 
                                              ", p_throttle = " + p_throttle +
@@ -96,7 +87,7 @@ router.route('/requestsToBlimp/')
                                              ", scalar_up = " + scalar_up + 
                                              ", scalar_yaw = " + scalar_yaw +
                                              ", scalar_throttle = " + scalar_throttle +
-                                             ", requestedState = " + requestedState
+                                             ", requestedState = '" + requestedState + "'"
     sqlTools.run(sqlStr,res);
 })
 

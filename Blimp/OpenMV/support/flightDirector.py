@@ -25,6 +25,24 @@ class FlightDirector:
     def getNextStep(self):
         logger.log.verbose(" FLIGHT DIRECTOR CURRENT MODE: " + self.currentState.description)     
 
+        if(dataClasses.gndStationCmd.p_up != None):
+            logger.log.debugOnly("Pid Up.  P: " + str(dataClasses.gndStationCmd.p_up))
+            logger.log.debugOnly("Pid Up.  I: " + str(dataClasses.gndStationCmd.i_up))
+            logger.log.debugOnly("Pid Up.  D: " + str(dataClasses.gndStationCmd.d_up))
+
+            logger.log.debugOnly("Pid Throttle.  P: " + str(dataClasses.gndStationCmd.p_throttle))
+            logger.log.debugOnly("Pid Throttle.  I: " + str(dataClasses.gndStationCmd.i_throttle))
+            logger.log.debugOnly("Pid Throttle.  D: " + str(dataClasses.gndStationCmd.d_throttle))
+
+            logger.log.debugOnly("Pid Yaw.  P: " + str(dataClasses.gndStationCmd.p_yaw))
+            logger.log.debugOnly("Pid Yaw.  I: " + str(dataClasses.gndStationCmd.i_yaw))
+            logger.log.debugOnly("Pid Yaw.  D: " + str(dataClasses.gndStationCmd.d_yaw))
+
+            logger.log.debugOnly("Scalar up: " + str(dataClasses.gndStationCmd.scalar_up))
+            logger.log.debugOnly("Scalar yaw:  " + str(dataClasses.gndStationCmd.scalar_yaw))
+            logger.log.debugOnly("Scalar throttle: " + str(dataClasses.gndStationCmd.scalar_throttle))
+
+
         self.blimpManeuvers.hover.execute_assisted_altitude(190)
         
 

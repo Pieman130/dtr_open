@@ -53,6 +53,96 @@
     
     </div>
 
+    <div class="card border-primary text-secondary" style="width: 30rem;" >    
+
+        <h5 class="card-header">Configuration Values</h5>
+        <form>            
+            <div class="form-row">
+                <div class="form-group col-md-2">    
+                    <h4>Up</h4>
+                </div>
+                <div class="form-group col-md-2">    
+                    <label>P</label>                
+                    <input type = "number" class="form-control" ng-model = "m.config.pid.up.p" >              
+                </div>
+                <div class="form-group col-md-2">    
+                    <label>I</label>                
+                    <input type = "number" class="form-control" ng-model = "m.config.pid.up.i" >  
+                </div>
+                <div class="form-group col-md-2">    
+                    <label>D</label>                
+                    <input type = "number" class="form-control" ng-model = "m.config.pid.up.d" >  
+                </div>         
+                <div class="form-group col-md-2">    
+                    <label>Scalar</label>                
+                    <input type = "number" class="form-control" ng-model = "m.config.scalar.up" >  
+                </div>                    
+            </div>
+        
+            <div class="form-row">
+                <div class="form-group col-md-2">    
+                    <h4>Throttle</h4>
+                </div>
+                <div class="form-group col-md-2">    
+                    <label>P</label>                
+                    <input type = "number" class="form-control" ng-model = "m.config.pid.throttle.p" >              
+                </div>
+                <div class="form-group col-md-2">    
+                    <label>I</label>                
+                    <input type = "number" class="form-control" ng-model = "m.config.pid.throttle.i" >  
+                </div>
+                <div class="form-group col-md-2">    
+                    <label>D</label>                
+                    <input type = "number" class="form-control" ng-model = "m.config.pid.throttle.d" >  
+                </div>       
+                <div class="form-group col-md-2">    
+                    <label>Scalar</label>                
+                    <input type = "number" class="form-control" ng-model = "m.config.scalar.throttle" >  
+                </div>                      
+            </div>
+
+
+            <div class="form-row">
+                <div class="form-group col-md-2">    
+                    <h4>Yaw</h4>
+                </div>
+                <div class="form-group col-md-2">    
+                    <label>P</label>                
+                    <input type = "number" class="form-control" ng-model = "m.config.pid.yaw.p" >              
+                </div>
+                <div class="form-group col-md-2">    
+                    <label>I</label>                
+                    <input type = "number" class="form-control" ng-model = "m.config.pid.yaw.i" >  
+                </div>
+                <div class="form-group col-md-2">    
+                    <label>D</label>                
+                    <input type = "number" class="form-control" ng-model = "m.config.pid.yaw.d" >  
+                </div>         
+                <div class="form-group col-md-2">    
+                    <label>Scalar</label>                
+                    <input type = "number" class="form-control" ng-model = "m.config.scalar.yaw" >  
+                </div>             
+            </div>           
+
+        </form>
+         
+        <button type="button" style="width: 150px;" class="btn btn-secondary" ng-click="m.sendConfig()">Send</button>                                         
+    </div>
+
+</div>
+
+
+<div class="card-group">
+    <div class="card text-white bg-dark mb-3" style="width: 40rem;">     
+        <h5 class="card-header">Log printouts {{m.logs.logTime}}</h5>
+        <label>Num log loops to view: </label>    
+        <input type = "number" ng-model = "m.numLogLoopsToView" style="width: 75px;" >  
+    
+        <p></p>
+        <textarea class="text-white bg-dark mb-3" ng-model="m.logs.lines" rows="25"></textarea>
+    </div>
+
+    
     <div class="card">
         <h5 class="card-header">Plotting</h5>
         <div class="card-body">
@@ -61,17 +151,11 @@
             </nvd3> 
         </div>    
     </div>
+
     
+
 </div>
 
 
 
-<div class="card text-white bg-dark mb-3" style="width: 40rem;">     
-    <h5 class="card-header">Log printouts {{m.logs.logTime}}</h5>
-    <label>Num log loops to view: </label>    
-    <input type = "number" ng-model = "m.numLogLoopsToView" style="width: 75px;" >  
-
-    <p></p>
-    <textarea class="text-white bg-dark mb-3" ng-model="m.logs.lines" rows="25"></textarea>
-</div>
 

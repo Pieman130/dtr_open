@@ -36,7 +36,11 @@ router.route('/heartbeat/')
 
 router.route('/getLastControlRequestedValues/')
 .get(function(req,res){
-    var sqlStr = " SELECT manual_up as up, manual_throttle as throttle, manual_yaw as yaw, manual_servo as doorOpen FROM maneuverToExecute " 
+    var sqlStr = " SELECT manual_up as up, manual_throttle as throttle, manual_yaw as yaw, manual_servo as doorOpen," +
+                 " p_up, i_up, d_up, scalar_up," +
+                 " p_throttle, i_throttle, d_throttle, scalar_throttle," +
+                 " p_yaw, i_yaw, d_yaw, scalar_yaw" +
+                 " FROM maneuverToExecute " 
     sqlTools.run(sqlStr,res);
 })
 

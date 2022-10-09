@@ -63,7 +63,28 @@ angular.module('mainModel',[])
                     return new Promise(function(resolve,reject){
                         MainToServer.getLastControlRequestedValues().then(function(ret){
                             $timeout(function(){
-                                obj.requests = ret.data[0];
+                                var d = ret.data[0];
+                                obj.requests.up = d.up;
+                                obj.requests.throttle = d.throttle;
+                                obj.requests.yaw = d.yaw;
+                                obj.requests.doorOpen = d.doorOpen;
+
+                                obj.config.pid.up.p = d.p_up; 
+                                obj.config.pid.up.i = d.i_up;
+                                obj.config.pid.up.d = d.d_up;
+
+                                obj.config.pid.throttle.p = d.p_throttle;
+                                obj.config.pid.throttle.i = d.i_throttle;
+                                obj.config.pid.throttle.d = d.d_throttle;
+
+                                obj.config.pid.yaw.p = d.p_yaw;
+                                obj.config.pid.yaw.i = d.i_yaw;
+                                obj.config.pid.yaw.d = d.d_yaw;
+
+                                obj.config.scalar.up = d.scalar_up;
+                                obj.config.scalar.throttle = d.scalar_throttle;
+                                obj.config.scalar.yaw = d.scalar_yaw;
+
                                 resolve();
                             })                            
                         })

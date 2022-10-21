@@ -60,7 +60,7 @@ import groundStation
 
 
 def main() -> None:
-    loopPause = 0.5
+    loopPause = 0
 
     hw = hardware.Hardware()
 

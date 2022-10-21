@@ -24,14 +24,15 @@ class SystemState:
         self.action = action    
 
 startup = SystemState("startup","none","none")
+hover = SystemState("hover","nothing","nothing")
 lookForBall = SystemState("lookForBall",TARGET_BALL,ACTION_LOOK)
 moveToBall = SystemState("moveToBall",TARGET_BALL,ACTION_MOVE)
 captureBall = SystemState("captureBall", TARGET_BALL,ACTION_CAPTURE)
 lookForGoal = SystemState("lookForGoal",TARGET_GOAL,ACTION_LOOK)
 moveToGoal = SystemState("moveToGoal", TARGET_GOAL,ACTION_MOVE)
 scoreGoal = SystemState("scoreGoal",TARGET_GOAL,ACTION_RELEASE)
-manualTesting = SystemState("manualTesting",TARGET_GOAL,ACTION_RELEASE)
-automatedAssist = SystemState("automatedAssist",TARGET_GOAL,ACTION_RELEASE)
+
+manualTesting = SystemState("manualTesting",TARGET_GOAL,ACTION_RELEASE) # direct control of motors
 
 
     
@@ -91,10 +92,12 @@ class MissionCommander:
     def updateStateAutoAssisted(self):        
         requestedState = dataClasses.gndStationCmd.requestedState     
 
-        if(requestedState == lookForBall.description):
+        if(requestedState == hover.description):
+            self.currentState = hover
+
+        elif(requestedState == lookForBall.description):
             logger.log.verbose("changed to look for ball")
-            self.currentState = lookForBall
-                
+            self.currentState = lookForBall                
 
         elif(requestedState == moveToBall.description):
             self.currentState = moveToBall
@@ -115,6 +118,8 @@ class MissionCommander:
         elif(requestedState == scoreGoal.description):
             self.currentState = scoreGoal
             logger.log.verbose("changed to scoreGoal")
+
+        self.flightDirector.currentState = self.currentState    
 
 
     def updateStateManualWeb(self):                

@@ -9,7 +9,7 @@ else:
         def __init__(self):
             pass
         def get_pid(self,val,scaler):
-            pass
+            return 0
         def set_pid_gains(self,val):
             pass
 
@@ -133,9 +133,15 @@ class FlightAction:
         logger.log.info("executing assisted altitude to height: " + str(height))
         if self.data.lidarDistance != None:   
 
-            self.pid_up.set_pid_gains(p = dataClasses.gndStationCmd.p_up)            
+            if ( dataClasses.config.isMicroPython):                
+                self.pid_up.set_pid_gains(p = dataClasses.gndStationCmd.p_up)    
+            else:
+                p = dataClasses.gndStationCmd.p_up
+                self.pid_up.set_pid_gains(p)  
+
             self.controls.up = self.pid_up.get_pid(self.data.lidarDistance-height,scaler= dataClasses.gndStationCmd.scalar_up)             
             logger.log.info("Executing Assisted Altitude.  PID Up Value: {}".format(self.controls.up) )
+            
 
 class Controls:
     def __init__(self):

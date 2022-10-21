@@ -61,6 +61,8 @@ angular.module('mainModel',[])
                         }
                         if(obj.control === 'manualWeb'){
                             info.requestedState = 'manualTesting'                            
+                        }else if(obj.control === 'auto-assisted'){
+                            info.requestedState = 'hover'      
                         }
                         MainToServer.sendControlChange(info).then(function(){
                             resolve();

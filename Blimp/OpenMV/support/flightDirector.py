@@ -58,9 +58,13 @@ class FlightDirector:
                 self.currentManeuver.controls.throttle = dataClasses.gndStationCmd.manual_throttle
                 self.currentManeuver.controls.yaw = dataClasses.gndStationCmd.manual_yaw
                 self.currentManeuver.controls.servo = dataClasses.gndStationCmd.manual_servo
-                #self.executeNextStep = self.blimpManeuvers.hover.assistedAltitudeWebControlled
                 
+                
+            elif(self.currentState.description == 'hover'):
+                self.currentManeuver = self.blimpManeuvers.hover
+                self.blimpManeuvers.hover.assistedAltitudeWebControlled()
 
+          
 
             elif(self.currentState.description == 'lookForBall'):
                 self.currentManeuver = self.blimpManeuvers.three60

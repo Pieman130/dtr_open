@@ -17,6 +17,7 @@ router.route('/status/')
     var throttleMotor = req.body.throttleMotor;
     var yawMotor = req.body.yawMotor;
     var servoDoor = req.body.servoDoor;
+    var controlAuthority = req.body.controlAuthority;
 
     var logLines = req.body.logs;
 
@@ -31,7 +32,8 @@ router.route('/status/')
                  " , upMotor = " + upMotor +
                  " , throttleMotor = " + throttleMotor + 
                  " , yawMotor = " + yawMotor + 
-                 " , servoDoor = " + servoDoor
+                 " , servoDoor = " + servoDoor + 
+                 " , controlAuthority = '" + controlAuthority + "'"
 
     sqlTools.sqlRequestPromise(sqlStr)
     .then(function(){

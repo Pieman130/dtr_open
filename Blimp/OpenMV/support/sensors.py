@@ -83,9 +83,11 @@ class Sensors:
             dataClasses.rawData.lidar = current_raw_sensor_data['Lidar']
             
             logger.log.info("lidar distance: " + str(dataClasses.rawData.lidar))
-            
 
 
         dataClasses.rawData.door_position = self.hw.servo.angle()
-
+            
+        
+        logger.log.debugOnly("lidar = " + str(dataClasses.data.lidarDistance))
+        logger.log.verbose("motor up value = " + str(dataClasses.rawData.motor_up))       
       

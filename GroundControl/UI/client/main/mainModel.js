@@ -7,13 +7,14 @@ angular.module('mainModel',[])
             var xtitle = 'x title'
             var ytitle = 'y title'
             var obj = {
+                control: '',
                 status: {},       
                 logs: {
                     lines: '',
                     logTime: '',
                 },
                 numLogLoopsToView: 1,
-                intervalTimeMs: 1000, 
+                intervalTimeMs: 1000,                 
                 requests:{
                         up: null,
                         throttle: null,
@@ -52,6 +53,20 @@ angular.module('mainModel',[])
                         })                        
                     })
                 },
+                sendControlChange(){
+                    return new Promise(function(resolve,reject){
+                        let info={
+                            control: obj.control,
+                            requestedState: ''
+                        }
+                        if(obj.control === 'auto-assisted'){
+                            info.requestedState = 'manualTesting'                            
+                        }
+                        MainToServer.sendControlChange(info).then(function(){
+                            resolve();
+                        })
+                    })
+                },
                 sendConfig(){
                     return new Promise(function(resolve,reject){
                         MainToServer.sendConfigValues(obj.config).then(function(){
@@ -84,6 +99,8 @@ angular.module('mainModel',[])
                                 obj.config.scalar.up = d.scalar_up;
                                 obj.config.scalar.throttle = d.scalar_throttle;
                                 obj.config.scalar.yaw = d.scalar_yaw;
+
+                                obj.control = d.control;
 
                                 resolve();
                             })                            

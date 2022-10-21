@@ -19,5 +19,8 @@ angular.module('mainToServer',[])
     mainFactory.sendConfigValues = function(info){
         return $http.post('/status/sendConfigValues/',info)
     }
+    mainFactory.sendControlChange = function(info){
+        return $http.post('/status/sendControlChange/',info);
+    }
     return mainFactory;
 })

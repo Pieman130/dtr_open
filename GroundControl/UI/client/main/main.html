@@ -1,11 +1,45 @@
-<h2>Last Blimp Heartbeat:</h2>
-<h4>{{m.status.blimpLastHeartbeat}}</h4> 
-<p></p>
 
 <div class="card-group">
     <div class="card" style="width: 30rem;"> 
-        <h5 class="card-header" >Autonomous Information:</h5>
+        <h2>Last Blimp Heartbeat:</h2>
+        <h4>{{m.status.blimpLastHeartbeat}}</h4> 
+        <p></p>
+    </div>
+    <div class="card" style="width: 30rem;">      
+        <h4 class="card-header" >Control:</h4>
+        <form>            
+            <div class="form-row">
+                <div class="form-group col-md-2">    
+                    <label>
+                        <input type="radio" ng-model = "m.control" value="autonomous" ng-change="m.sendControlChange()"> Autonomous
+                    </label>
+                </div>  
+                <div class="form-group col-md-2">    
+                    <label>
+                        <input type="radio" ng-model = "m.control" value="auto-assisted" ng-change="m.sendControlChange()"> Auto-Assisted
+                    </label>
+                </div>
+                <div class="form-group col-md-2">                                    
+                    <label>
+                        <input type="radio" ng-model = "m.control" value="manualWeb" ng-change="m.sendControlChange()"> Manual web control
+                    </label>
+                </div>
+                <div class="form-group col-md-2">                                    
+                    <label>
+                        <input type="radio" ng-model = "m.control" value="manualRemote" ng-change="m.sendControlChange()"> Manual Remote
+                    </label>
+                </div>                
+            </div>
+        </form>
+        <p></p>
+    </div>
+</div>
+
+<div class="card-group">
+    <div class="card" style="width: 30rem;"> 
+        <h5 class="card-header" >System Information:</h5>
         <div class="card-body">  
+            <h4>Control Authority: {{m.status.controlAuthority}}</h4>
             <h4>Mode: {{m.status.state_description}}</h4>
             <h4>Target: {{m.status.state_target}}</h4>
             <h4>Action: {{m.status.state_action}}</h4>

@@ -1,7 +1,7 @@
 class Configuration:
     def __init__(self):
         self.isMicroPython = None
-
+        self.controlAuthority = None
 
 class RawData:
     def __init__(self):
@@ -67,6 +67,9 @@ class GroundStationCommand:
         self.scalar_up = 1
         self.scalar_yaw = 1
         self.scalar_throttle = 1
+        self.controlAuthority = ''
+        self.manualHeight = 100000
+        self.resetOpenMVforFTPtsfr = 0
 
 
         self.requestedState = None

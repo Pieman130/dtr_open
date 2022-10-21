@@ -8,7 +8,14 @@ class BlimpManeuvers():
         self.forward = self.initForward()
         self.three60 = self.init360()
         self.hover = self.initHover()     
-           
+        self.doNothing = self.initDoNothing()
+
+    def initDoNothing(self):
+        exitCriteria = flightActions.ExitCriteria()
+        controls = flightActions.Controls()
+
+        doNothing = flightActions.FlightAction("Do nothing.",controls,exitCriteria,self.comms,self.hw)
+        return doNothing
 
     def initForward(self,throttle = 0.5):
         forwardExitCriteria = flightActions.ExitCriteria()

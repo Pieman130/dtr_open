@@ -10,6 +10,8 @@ else:
             pass
         def get_pid(self,val,scaler):
             pass
+        def set_pid_gains(self,val):
+            pass
 
 
 class ExitCriteria:
@@ -66,12 +68,14 @@ class FlightAction:
         elif dataClasses.data.sw_flight_mode == "assisted":
             # Altitude hold and yaw stability ?
             # TODO: Implement actual altitude hold and yaw controls
+            logger.log.verbose("CALL MAVLINK SET CONTROLS from assisted")
             self.mavlink.setControls(self.controls)
 
         else:
             # This is the autonomous section - where the code controls the blimp
             # What should go here? I'm just putting in this code as a boilerplate.
             # TODO: Implement actual autonomous controls.
+            logger.log.verbose("CALL MAVLINK SET CONTROLS from non manual/assisted")
             self.mavlink.setControls(self.controls)
 
         if dataClasses.data.sw_door_control == "closed":
@@ -134,17 +138,19 @@ class FlightAction:
         else:
             return getattr(self.data, name)
 
+    def assistedAltitudeWebControlled(self):
+        logger.log.info("TRYING TO HOVER AT ALTITUDE: " + str(dataClasses.gndStationCmd.manualHeight) + " cm")
+        self.execute_assisted_altitude(dataClasses.gndStationCmd.manualHeight)
+
     def execute_assisted_altitude(self, height):
         '''take in desired distance to ceiling (height)
         maintain a pid controlled hover about that distance'''
         logger.log.info("executing assisted altitude to height: " + str(height))
         if self.data.lidarDistance != None:   
 
-            self.pid_up.set_pid_gains(p = dataClasses.gndStationCmd.p_up)            
-            self.controls.up = self.pid_up.get_pid(self.data.lidarDistance-height,scaler= dataClasses.gndStationCmd.scalar_up) 
-            logger.log.debugOnly("controls.up = " + str(self.controls.up))
+            self.pid_up.set_pid_gains(dataClasses.gndStationCmd.p_up)            
+            self.controls.up = self.pid_up.get_pid(self.data.lidarDistance-height,scaler= dataClasses.gndStationCmd.scalar_up)             
             logger.log.info("Executing Assisted Altitude.  PID Up Value: {}".format(self.controls.up) )
-
 
 class Controls:
     def __init__(self):

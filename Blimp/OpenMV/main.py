@@ -49,14 +49,13 @@ logger.log.info('is micropython: ' + str(isMicroPython))
 dataClasses.config.isMicroPython = isMicroPython
 
 import sensors
-import processing
 import missionCommander
 import flightDirector
 import groundStation
 
 
 def main() -> None:
-    loopPause = 0
+    loopPause = 0.5
 
     hw = hardware.Hardware()
 
@@ -75,21 +74,14 @@ def main() -> None:
     while(True):
 
         time.sleep(loopPause)
+
         logger.log.heartbeat("===============================")
         logger.log.heartbeat("Top of loop")
         logger.log.heartbeat("===============================")
 
         sensorsObj.collectData()
-        logger.log.debugOnly("lidar = " + str(dataClasses.data.lidarDistance))
-        logger.log.verbose("motor up value = " + str(dataClasses.rawData.motor_up))
-
-        processing.parseSensorData()
-        processing.parseRCSwitchPositions()
-
-        if dataClasses.data.sw_door_control is not None:
-            logger.log.verbose("DoorSwitch: " + dataClasses.data.sw_door_control)
-        if dataClasses.data.sw_flight_mode is not None:
-            logger.log.verbose("FlightMode: " + dataClasses.data.sw_flight_mode)
+        
+        missionCmder.determineControlAuthority()
 
         missionCmder.updateState()
 

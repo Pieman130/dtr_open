@@ -14,7 +14,7 @@ router.route('/heartbeat/')
         data: {}
     };
     var sqlStr = " SELECT ID, convert(varchar(50),blimpLastHeartbeat,13) as blimpLastHeartbeat, cameraDetectionStr, isIrSensorDetection " +
-            ", currentManeuver, state_description,state_target,state_action,lidarDistance, upMotor,throttleMotor,yawMotor,servoDoor " +
+            ", currentManeuver, state_description,state_target,state_action,lidarDistance, upMotor,throttleMotor,yawMotor,servoDoor,controlAuthority " +
             " FROM systemStatus ";
     sqlTools.sqlRequestPromise(sqlStr)
     .then(function(ret){
@@ -39,8 +39,17 @@ router.route('/getLastControlRequestedValues/')
     var sqlStr = " SELECT manual_up as up, manual_throttle as throttle, manual_yaw as yaw, manual_servo as doorOpen," +
                  " p_up, i_up, d_up, scalar_up," +
                  " p_throttle, i_throttle, d_throttle, scalar_throttle," +
-                 " p_yaw, i_yaw, d_yaw, scalar_yaw" +
+                 " p_yaw, i_yaw, d_yaw, scalar_yaw, " +
+                 " control " + 
                  " FROM maneuverToExecute " 
+    sqlTools.run(sqlStr,res);
+})
+
+router.route('/sendControlChange/')
+.post(function(req,res){
+    var control = req.body.control;
+    var requestedState = req.body.requestedState;
+    var sqlStr = "UPDATE maneuverToExecute SET control = '"+ control + "', requestedState = '" + requestedState + "'";
     sqlTools.run(sqlStr,res);
 })
 

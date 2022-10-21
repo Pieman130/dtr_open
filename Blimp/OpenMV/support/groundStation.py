@@ -32,6 +32,7 @@ class GroundStation:
         data = data + ',"throttleMotor":"' + str(flightDirector.currentManeuver.controls.throttle) + '"'
         data = data + ',"yawMotor":"' + str(flightDirector.currentManeuver.controls.yaw) + '"'
         data = data + ',"servoDoor":"' + str(flightDirector.currentManeuver.controls.servo) + '"'
+        data = data + ',"controlAuthority":"' + dataClasses.config.controlAuthority + '"'
 
 
         logs = logger.log.getLogsForServerAndClear()
@@ -57,40 +58,8 @@ class GroundStation:
         try:
             r = self.wifi.post(fullAddress,data = data,headers = headers)            
                     
-            logger.log.verbose('status to server success! received:')              
-            jsonList = r.json()
-            jsonDict = jsonList[0]                    
-                    
-
-            self.hw.turnOnConnectedToGndStationLight()
-            dataClasses.gndStationCmd.requestedState = jsonDict['requestedState']
-            dataClasses.gndStationCmd.firstManeuver = jsonDict['firstManeuver']
-            dataClasses.gndStationCmd.secondManeuver = jsonDict['secondManeuver']
-            dataClasses.gndStationCmd.baseUpVal = jsonDict['baseUpVal']
-            dataClasses.gndStationCmd.duration = jsonDict['duration']
-
-            dataClasses.gndStationCmd.p_up = jsonDict['p_up']
-            dataClasses.gndStationCmd.i_up = jsonDict['i_up']
-            dataClasses.gndStationCmd.d_up = jsonDict['d_up']
-
-            dataClasses.gndStationCmd.p_throttle = jsonDict['p_throttle']
-            dataClasses.gndStationCmd.i_throttle = jsonDict['i_throttle']
-            dataClasses.gndStationCmd.d_throttle = jsonDict['d_throttle']
-            
-            dataClasses.gndStationCmd.p_yaw = jsonDict['p_yaw']
-            dataClasses.gndStationCmd.i_yaw = jsonDict['i_yaw']
-            dataClasses.gndStationCmd.d_yaw = jsonDict['d_yaw']            
-            dataClasses.gndStationCmd.requestedState = jsonDict['requestedState'] 
-
-            dataClasses.gndStationCmd.manual_up = jsonDict['manual_up'] 
-            dataClasses.gndStationCmd.manual_throttle = jsonDict['manual_throttle'] 
-            dataClasses.gndStationCmd.manual_yaw = jsonDict['manual_yaw'] 
-            dataClasses.gndStationCmd.manual_servo = jsonDict['manual_servo'] 
-
-            dataClasses.gndStationCmd.scalar_up = jsonDict['scalar_up'] 
-            dataClasses.gndStationCmd.scalar_yaw = jsonDict['scalar_yaw'] 
-            dataClasses.gndStationCmd.scalar_throttle = jsonDict['scalar_throttle'] 
-
+            logger.log.verbose('status to server success! received response.')                          
+            self.storeGndStationCmds(r)
 
         except Exception as e:
             self.hw.turnOnNotConnectedToGndStationLight()
@@ -98,3 +67,41 @@ class GroundStation:
             logger.log.warning('cannot connect to server')
             #logger.log.warning(e.msg)
             
+    def storeGndStationCmds(self,cmds):
+        jsonList = cmds.json()
+        jsonDict = jsonList[0]                    
+                
+
+        self.hw.turnOnConnectedToGndStationLight()
+        dataClasses.gndStationCmd.requestedState = jsonDict['requestedState']
+        dataClasses.gndStationCmd.firstManeuver = jsonDict['firstManeuver']
+        dataClasses.gndStationCmd.secondManeuver = jsonDict['secondManeuver']
+        dataClasses.gndStationCmd.baseUpVal = jsonDict['baseUpVal']
+        dataClasses.gndStationCmd.duration = jsonDict['duration']
+
+        dataClasses.gndStationCmd.p_up = jsonDict['p_up']
+        dataClasses.gndStationCmd.i_up = jsonDict['i_up']
+        dataClasses.gndStationCmd.d_up = jsonDict['d_up']
+
+        dataClasses.gndStationCmd.p_throttle = jsonDict['p_throttle']
+        dataClasses.gndStationCmd.i_throttle = jsonDict['i_throttle']
+        dataClasses.gndStationCmd.d_throttle = jsonDict['d_throttle']
+        
+        dataClasses.gndStationCmd.p_yaw = jsonDict['p_yaw']
+        dataClasses.gndStationCmd.i_yaw = jsonDict['i_yaw']
+        dataClasses.gndStationCmd.d_yaw = jsonDict['d_yaw']            
+        dataClasses.gndStationCmd.requestedState = jsonDict['requestedState'] 
+
+        dataClasses.gndStationCmd.manual_up = jsonDict['manual_up'] 
+        dataClasses.gndStationCmd.manual_throttle = jsonDict['manual_throttle'] 
+        dataClasses.gndStationCmd.manual_yaw = jsonDict['manual_yaw'] 
+        dataClasses.gndStationCmd.manual_servo = jsonDict['manual_servo'] 
+
+        dataClasses.gndStationCmd.scalar_up = jsonDict['scalar_up'] 
+        dataClasses.gndStationCmd.scalar_yaw = jsonDict['scalar_yaw'] 
+        dataClasses.gndStationCmd.scalar_throttle = jsonDict['scalar_throttle'] 
+        dataClasses.gndStationCmd.controlAuthority = jsonDict['control'] 
+        dataClasses.gndStationCmd.manualHeight = jsonDict['manualHeight']
+
+        dataClasses.gndStationCmd.resetOpenMVforFTPtsfr = jsonDict['resetOpenMVforFTPtsfr']
+

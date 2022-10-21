@@ -53,7 +53,12 @@ class FlightDirector:
 
 
             if(self.currentState.description == 'manualTesting'):
-                self.executeNextStep = self.blimpManeuvers.hover.assistedAltitudeWebControlled
+                self.currentManeuver = self.blimpManeuvers.manualServerControl()
+                self.currentManeuver.controls.up = dataClasses.gndStationCmd.manual_up
+                self.currentManeuver.controls.throttle = dataClasses.gndStationCmd.manual_throttle
+                self.currentManeuver.controls.yaw = dataClasses.gndStationCmd.manual_yaw
+                self.currentManeuver.controls.servo = dataClasses.gndStationCmd.manual_servo
+                #self.executeNextStep = self.blimpManeuvers.hover.assistedAltitudeWebControlled
                 
 
 
@@ -76,11 +81,7 @@ class FlightDirector:
             #     self.currentManeuver = self.blimpManeuvers.hover
 
             # elif(self.currentState.description == 'manualTesting'):
-            #     self.currentManeuver = self.blimpManeuvers.manualServerControl()
-            #     self.currentManeuver.controls.up = dataClasses.gndStationCmd.manual_up
-            #     self.currentManeuver.controls.throttle = dataClasses.gndStationCmd.manual_throttle
-            #     self.currentManeuver.controls.yaw = dataClasses.gndStationCmd.manual_yaw
-            #     self.currentManeuver.controls.servo = dataClasses.gndStationCmd.manual_servo
+
 
             # elif(self.currentState.description == 'automatedAssist'):
 
@@ -102,10 +103,11 @@ class FlightDirector:
             
 
     def executeNextStep(self): # to be defined by determine next step
-        pass
+        self.currentManeuver.execute() 
+        #pass
 
        # if(self.currentManeuver.description == "test"):
 
         #self.blimpManeuvers.hover.execute()
-        #self.currentManeuver.execute()            
+        #           
 

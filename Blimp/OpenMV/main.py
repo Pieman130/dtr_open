@@ -1,4 +1,9 @@
 # Untitled - By: timothy.woodbridge - Fri May 20 2022
+    # POWERED UP initializing = 'purple'
+    # OK, connected to ground station = 'green'
+    # OK, Not connected to gnd station = 'lightGreen'         
+    # FAIL 'red'
+
 import time
 
 try:

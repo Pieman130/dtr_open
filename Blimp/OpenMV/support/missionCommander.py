@@ -117,17 +117,9 @@ class MissionCommander:
             logger.log.verbose("changed to scoreGoal")
 
 
-        elif(requestedState == manualTesting.description):
-            self.currentState = manualTesting
-            logger.log.verbose("changed to manual testing")            
-
-        self.flightDirector.currentState = self.currentState
-
-
-    def updateStateManualWeb(self):
-        
-        self.flightDirector.currentState = self.currentState
-        
+    def updateStateManualWeb(self):                
+        logger.log.verbose("changed to manual testing")             
+        self.flightDirector.currentState = manualTesting
 
     def updateStateAuto(self):  
           

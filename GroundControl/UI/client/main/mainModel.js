@@ -59,7 +59,7 @@ angular.module('mainModel',[])
                             control: obj.control,
                             requestedState: ''
                         }
-                        if(obj.control === 'auto-assisted'){
+                        if(obj.control === 'manualWeb'){
                             info.requestedState = 'manualTesting'                            
                         }
                         MainToServer.sendControlChange(info).then(function(){

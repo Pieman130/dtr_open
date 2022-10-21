@@ -56,27 +56,12 @@ class FlightAction:
             self.timeClock = time.time() - self.startTime
 
     def execute(self):
+
         self.updateTime()
         logger.log.verbose(self.description + " -  Maneuver")
         logger.log.verbose("\ttime: " + str(self.timeClock))
 
-        if dataClasses.data.sw_flight_mode == "manual":
-            # The Mavlink automatically handles remote control inputs - nothing needed here
-            # TODO: Implement raw passthrough
-            pass
-
-        elif dataClasses.data.sw_flight_mode == "assisted":
-            # Altitude hold and yaw stability ?
-            # TODO: Implement actual altitude hold and yaw controls
-            logger.log.verbose("CALL MAVLINK SET CONTROLS from assisted")
-            self.mavlink.setControls(self.controls)
-
-        else:
-            # This is the autonomous section - where the code controls the blimp
-            # What should go here? I'm just putting in this code as a boilerplate.
-            # TODO: Implement actual autonomous controls.
-            logger.log.verbose("CALL MAVLINK SET CONTROLS from non manual/assisted")
-            self.mavlink.setControls(self.controls)
+        self.mavlink.setControls(self.controls)
 
         if dataClasses.data.sw_door_control == "closed":
             self.hw.closeDoor()
@@ -148,7 +133,7 @@ class FlightAction:
         logger.log.info("executing assisted altitude to height: " + str(height))
         if self.data.lidarDistance != None:   
 
-            self.pid_up.set_pid_gains(dataClasses.gndStationCmd.p_up)            
+            self.pid_up.set_pid_gains(p = dataClasses.gndStationCmd.p_up)            
             self.controls.up = self.pid_up.get_pid(self.data.lidarDistance-height,scaler= dataClasses.gndStationCmd.scalar_up)             
             logger.log.info("Executing Assisted Altitude.  PID Up Value: {}".format(self.controls.up) )
 

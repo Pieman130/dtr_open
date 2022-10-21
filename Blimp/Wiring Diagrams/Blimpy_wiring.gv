@@ -612,6 +612,43 @@ graph {
  </td></tr>
 </table>
 > fillcolor="#FFFFFF" shape=box style=filled]
+	"Reg-Power" [label=<
+<table border="0" cellspacing="0" cellpadding="0">
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">Reg-Power</td>
+  </tr></table>
+ </td></tr>
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">JST-PH 2.0</td>
+   <td balign="left">male</td>
+   <td balign="left">2-pin</td>
+  </tr></table>
+ </td></tr>
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1">
+   <tr>
+    <td>Vbatt</td>
+    <td port="p1r">1</td>
+   </tr>
+   <tr>
+    <td>GND</td>
+    <td port="p2r">2</td>
+   </tr>
+  </table>
+ </td></tr>
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">
+    <table border="0" cellspacing="0" cellborder="0"><tr>
+     <td width="200" height="130.29490616621985" fixedsize="true"><img scale="true" src="JST-PH 2.0 Pin ID.png"/></td>
+    </tr></table>
+   </td>
+  </tr></table>
+ </td></tr>
+</table>
+> fillcolor="#FFFFFF" shape=box style=filled]
 	"Lift ESC Signal" [label=<
 <table border="0" cellspacing="0" cellpadding="0">
  <tr><td>
@@ -750,53 +787,11 @@ graph {
  </td></tr>
 </table>
 > fillcolor="#FFFFFF" shape=box style=filled]
-	"Yaw ESC Power" [label=<
+	"Yaw and Thrust ESC Power" [label=<
 <table border="0" cellspacing="0" cellpadding="0">
  <tr><td>
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
-   <td balign="left">Yaw ESC Power</td>
-  </tr></table>
- </td></tr>
- <tr><td>
-  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
-   <td balign="left">JST-PH 2.0</td>
-   <td balign="left">female</td>
-   <td balign="left">2-pin</td>
-  </tr></table>
- </td></tr>
- <tr><td>
-  <table border="0" cellspacing="0" cellpadding="3" cellborder="1">
-   <tr>
-    <td port="p1l">1</td>
-    <td>Vbatt</td>
-   </tr>
-   <tr>
-    <td port="p2l">2</td>
-    <td>GND</td>
-   </tr>
-  </table>
- </td></tr>
- <tr><td>
-  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
-   <td balign="left">
-    <table border="0" cellspacing="0" cellborder="0"><tr>
-     <td width="200" height="113.22505800464037" fixedsize="true"><img scale="true" src="JST-PH 2.0 Female Pin ID.png"/></td>
-    </tr></table>
-   </td>
-  </tr></table>
- </td></tr>
- <tr><td>
-  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
-   <td balign="left">connects to soldered on JST-PH lead</td>
-  </tr></table>
- </td></tr>
-</table>
-> fillcolor="#FFFFFF" shape=box style=filled]
-	"Thrust ESC Power" [label=<
-<table border="0" cellspacing="0" cellpadding="0">
- <tr><td>
-  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
-   <td balign="left">Thrust ESC Power</td>
+   <td balign="left">Yaw and Thrust ESC Power</td>
   </tr></table>
  </td></tr>
  <tr><td>
@@ -880,35 +875,337 @@ graph {
  </td></tr>
 </table>
 > fillcolor="#FFFFFF" shape=box style=filled]
-	edge [color="#000000:#ff0000:#000000"]
-	Battery:p1r:e -- "Battery Distribution Cable":w1:w
-	"Battery Distribution Cable":w1:e -- "5VRegulator":p1l:w
-	edge [color="#000000:#000000:#000000"]
-	Battery:p2r:e -- "Battery Distribution Cable":w2:w
-	"Battery Distribution Cable":w2:e -- "5VRegulator":p2l:w
-	edge [color="#000000:#ff0000:#000000"]
-	Battery:p1r:e -- "Battery Distribution Cable":w1:w
-	"Battery Distribution Cable":w1:e -- "Lift ESC Power":p1l:w
-	edge [color="#000000:#000000:#000000"]
-	Battery:p2r:e -- "Battery Distribution Cable":w2:w
-	"Battery Distribution Cable":w2:e -- "Lift ESC Power":p2l:w
-	edge [color="#000000:#ff0000:#000000"]
-	Battery:p1r:e -- "Battery Distribution Cable":w1:w
-	"Battery Distribution Cable":w1:e -- "Yaw ESC Power":p1l:w
-	edge [color="#000000:#000000:#000000"]
-	Battery:p2r:e -- "Battery Distribution Cable":w2:w
-	"Battery Distribution Cable":w2:e -- "Yaw ESC Power":p2l:w
-	edge [color="#000000:#ff0000:#000000"]
-	Battery:p1r:e -- "Battery Distribution Cable":w1:w
-	"Battery Distribution Cable":w1:e -- "Thrust ESC Power":p1l:w
-	edge [color="#000000:#000000:#000000"]
-	Battery:p2r:e -- "Battery Distribution Cable":w2:w
-	"Battery Distribution Cable":w2:e -- "Thrust ESC Power":p2l:w
-	"Battery Distribution Cable" [label=<
+	"Rear ESC Power" [label=<
 <table border="0" cellspacing="0" cellpadding="0">
  <tr><td>
   <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
-   <td balign="left">Battery Distribution Cable</td>
+   <td balign="left">Rear ESC Power</td>
+  </tr></table>
+ </td></tr>
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">JST-PH 2.0</td>
+   <td balign="left">male</td>
+   <td balign="left">2-pin</td>
+  </tr></table>
+ </td></tr>
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1">
+   <tr>
+    <td>Vbatt</td>
+    <td port="p1r">1</td>
+   </tr>
+   <tr>
+    <td>GND</td>
+    <td port="p2r">2</td>
+   </tr>
+  </table>
+ </td></tr>
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">
+    <table border="0" cellspacing="0" cellborder="0"><tr>
+     <td width="200" height="130.29490616621985" fixedsize="true"><img scale="true" src="JST-PH 2.0 Pin ID.png"/></td>
+    </tr></table>
+   </td>
+  </tr></table>
+ </td></tr>
+</table>
+> fillcolor="#FFFFFF" shape=box style=filled]
+	"Mid ESC Power" [label=<
+<table border="0" cellspacing="0" cellpadding="0">
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">Mid ESC Power</td>
+  </tr></table>
+ </td></tr>
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">JST-PH 2.0</td>
+   <td balign="left">male</td>
+   <td balign="left">2-pin</td>
+  </tr></table>
+ </td></tr>
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1">
+   <tr>
+    <td>Vbatt</td>
+    <td port="p1r">1</td>
+   </tr>
+   <tr>
+    <td>GND</td>
+    <td port="p2r">2</td>
+   </tr>
+  </table>
+ </td></tr>
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">
+    <table border="0" cellspacing="0" cellborder="0"><tr>
+     <td width="200" height="130.29490616621985" fixedsize="true"><img scale="true" src="JST-PH 2.0 Pin ID.png"/></td>
+    </tr></table>
+   </td>
+  </tr></table>
+ </td></tr>
+</table>
+> fillcolor="#FFFFFF" shape=box style=filled]
+	_solder_1 [label=<
+<table border="0" cellspacing="0" cellpadding="0">
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">solder lead</td>
+  </tr></table>
+ </td></tr>
+</table>
+> fillcolor="#FFFFFF" shape=box style=filled]
+	_solder_2 [label=<
+<table border="0" cellspacing="0" cellpadding="0">
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">solder lead</td>
+  </tr></table>
+ </td></tr>
+</table>
+> fillcolor="#FFFFFF" shape=box style=filled]
+	_solder_3 [label=<
+<table border="0" cellspacing="0" cellpadding="0">
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">solder lead</td>
+  </tr></table>
+ </td></tr>
+</table>
+> fillcolor="#FFFFFF" shape=box style=filled]
+	_solder_4 [label=<
+<table border="0" cellspacing="0" cellpadding="0">
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">solder lead</td>
+  </tr></table>
+ </td></tr>
+</table>
+> fillcolor="#FFFFFF" shape=box style=filled]
+	_solder_5 [label=<
+<table border="0" cellspacing="0" cellpadding="0">
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">solder lead</td>
+  </tr></table>
+ </td></tr>
+</table>
+> fillcolor="#FFFFFF" shape=box style=filled]
+	_solder_6 [label=<
+<table border="0" cellspacing="0" cellpadding="0">
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">solder lead</td>
+  </tr></table>
+ </td></tr>
+</table>
+> fillcolor="#FFFFFF" shape=box style=filled]
+	edge [color="#000000:#ff0000:#000000"]
+	"Mid ESC Power":p1r:e -- "Mid ESC Power Cable":w1:w
+	"Mid ESC Power Cable":w1:e -- _solder_1:w
+	edge [color="#000000:#000000:#000000"]
+	"Mid ESC Power":p2r:e -- "Mid ESC Power Cable":w2:w
+	"Mid ESC Power Cable":w2:e -- _solder_2:w
+	"Mid ESC Power Cable" [label=<
+<table border="0" cellspacing="0" cellpadding="0">
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">Mid ESC Power Cable</td>
+  </tr></table>
+ </td></tr>
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">2x</td>
+   <td balign="left">22 AWG</td>
+   <td balign="left">6.0 in</td>
+  </tr></table>
+ </td></tr>
+ <tr><td>
+  <table border="0" cellspacing="0" cellborder="0">
+   <tr><td>&nbsp;</td></tr>
+   <tr>
+    <td>Mid ESC Power:1:Vbatt</td>
+    <td>
+     1:RD
+    </td>
+    <td></td>
+   </tr>
+   <tr>
+    <td colspan="3" border="0" cellspacing="0" cellpadding="0" port="w1" height="6">
+     <table cellspacing="0" cellborder="0" border="0">
+      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
+      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#ff0000" border="0"></td></tr>
+      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
+     </table>
+    </td>
+   </tr>
+   <tr>
+    <td>Mid ESC Power:2:GND</td>
+    <td>
+     2:BK
+    </td>
+    <td></td>
+   </tr>
+   <tr>
+    <td colspan="3" border="0" cellspacing="0" cellpadding="0" port="w2" height="6">
+     <table cellspacing="0" cellborder="0" border="0">
+      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
+      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
+      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
+     </table>
+    </td>
+   </tr>
+   <tr><td>&nbsp;</td></tr>
+  </table>
+ </td></tr>
+</table>
+> fillcolor="#FFFFFF" shape=box style=filled]
+	edge [color="#000000:#ff0000:#000000"]
+	"Rear ESC Power":p1r:e -- "Rear ESC Power Cable":w1:w
+	"Rear ESC Power Cable":w1:e -- _solder_3:w
+	edge [color="#000000:#000000:#000000"]
+	"Rear ESC Power":p2r:e -- "Rear ESC Power Cable":w2:w
+	"Rear ESC Power Cable":w2:e -- _solder_4:w
+	edge [color="#000000:#ff0000:#000000"]
+	"Rear ESC Power":p1r:e -- "Rear ESC Power Cable":w1:w
+	"Rear ESC Power Cable":w1:e -- _solder_5:w
+	edge [color="#000000:#000000:#000000"]
+	"Rear ESC Power":p2r:e -- "Rear ESC Power Cable":w2:w
+	"Rear ESC Power Cable":w2:e -- _solder_6:w
+	"Rear ESC Power Cable" [label=<
+<table border="0" cellspacing="0" cellpadding="0">
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">Rear ESC Power Cable</td>
+  </tr></table>
+ </td></tr>
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">2x</td>
+   <td balign="left">22 AWG</td>
+   <td balign="left">7.0 in</td>
+  </tr></table>
+ </td></tr>
+ <tr><td>
+  <table border="0" cellspacing="0" cellborder="0">
+   <tr><td>&nbsp;</td></tr>
+   <tr>
+    <td>Rear ESC Power:1:Vbatt</td>
+    <td>
+     1:RD
+    </td>
+    <td></td>
+   </tr>
+   <tr>
+    <td colspan="3" border="0" cellspacing="0" cellpadding="0" port="w1" height="6">
+     <table cellspacing="0" cellborder="0" border="0">
+      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
+      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#ff0000" border="0"></td></tr>
+      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
+     </table>
+    </td>
+   </tr>
+   <tr>
+    <td>Rear ESC Power:2:GND</td>
+    <td>
+     2:BK
+    </td>
+    <td></td>
+   </tr>
+   <tr>
+    <td colspan="3" border="0" cellspacing="0" cellpadding="0" port="w2" height="6">
+     <table cellspacing="0" cellborder="0" border="0">
+      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
+      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
+      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
+     </table>
+    </td>
+   </tr>
+   <tr><td>&nbsp;</td></tr>
+  </table>
+ </td></tr>
+</table>
+> fillcolor="#FFFFFF" shape=box style=filled]
+	edge [color="#000000:#ff0000:#000000"]
+	"Reg-Power":p1r:e -- "Regulator to Battery Cable":w1:w
+	"Regulator to Battery Cable":w1:e -- "5VRegulator":p1l:w
+	edge [color="#000000:#000000:#000000"]
+	"Reg-Power":p2r:e -- "Regulator to Battery Cable":w2:w
+	"Regulator to Battery Cable":w2:e -- "5VRegulator":p2l:w
+	"Regulator to Battery Cable" [label=<
+<table border="0" cellspacing="0" cellpadding="0">
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">Regulator to Battery Cable</td>
+  </tr></table>
+ </td></tr>
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">2x</td>
+   <td balign="left">22 AWG</td>
+   <td balign="left">7.0 in</td>
+  </tr></table>
+ </td></tr>
+ <tr><td>
+  <table border="0" cellspacing="0" cellborder="0">
+   <tr><td>&nbsp;</td></tr>
+   <tr>
+    <td>Reg-Power:1:Vbatt</td>
+    <td>
+     1:RD
+    </td>
+    <td>5VRegulator:1:Vin</td>
+   </tr>
+   <tr>
+    <td colspan="3" border="0" cellspacing="0" cellpadding="0" port="w1" height="6">
+     <table cellspacing="0" cellborder="0" border="0">
+      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
+      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#ff0000" border="0"></td></tr>
+      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
+     </table>
+    </td>
+   </tr>
+   <tr>
+    <td>Reg-Power:2:GND</td>
+    <td>
+     2:BK
+    </td>
+    <td>5VRegulator:2:GND</td>
+   </tr>
+   <tr>
+    <td colspan="3" border="0" cellspacing="0" cellpadding="0" port="w2" height="6">
+     <table cellspacing="0" cellborder="0" border="0">
+      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
+      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
+      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
+     </table>
+    </td>
+   </tr>
+   <tr><td>&nbsp;</td></tr>
+  </table>
+ </td></tr>
+</table>
+> fillcolor="#FFFFFF" shape=box style=filled]
+	edge [color="#000000:#ff0000:#000000"]
+	Battery:p1r:e -- "Battery Distribution Cable 1":w1:w
+	"Battery Distribution Cable 1":w1:e -- "Lift ESC Power":p1l:w
+	edge [color="#000000:#000000:#000000"]
+	Battery:p2r:e -- "Battery Distribution Cable 1":w2:w
+	"Battery Distribution Cable 1":w2:e -- "Lift ESC Power":p2l:w
+	edge [color="#000000:#ff0000:#000000"]
+	Battery:p1r:e -- "Battery Distribution Cable 1":w1:w
+	"Battery Distribution Cable 1":w1:e -- "Yaw and Thrust ESC Power":p1l:w
+	edge [color="#000000:#000000:#000000"]
+	Battery:p2r:e -- "Battery Distribution Cable 1":w2:w
+	"Battery Distribution Cable 1":w2:e -- "Yaw and Thrust ESC Power":p2l:w
+	"Battery Distribution Cable 1" [label=<
+<table border="0" cellspacing="0" cellpadding="0">
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">Battery Distribution Cable 1</td>
   </tr></table>
  </td></tr>
  <tr><td>
@@ -926,7 +1223,7 @@ graph {
     <td>
      1:RD
     </td>
-    <td>5VRegulator:1:Vin</td>
+    <td>Lift ESC Power:1:Vbatt</td>
    </tr>
    <tr>
     <td colspan="3" border="0" cellspacing="0" cellpadding="0" port="w1" height="6">
@@ -942,7 +1239,67 @@ graph {
     <td>
      2:BK
     </td>
-    <td>5VRegulator:2:GND</td>
+    <td>Lift ESC Power:2:GND</td>
+   </tr>
+   <tr>
+    <td colspan="3" border="0" cellspacing="0" cellpadding="0" port="w2" height="6">
+     <table cellspacing="0" cellborder="0" border="0">
+      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
+      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
+      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
+     </table>
+    </td>
+   </tr>
+   <tr><td>&nbsp;</td></tr>
+  </table>
+ </td></tr>
+</table>
+> fillcolor="#FFFFFF" shape=box style=filled]
+	edge [color="#000000:#ff0000:#000000"]
+	Battery:p1r:e -- "Battery Distribution Cable 2":w1:w
+	"Battery Distribution Cable 2":w1:e -- "Battery-Reg":p1l:w
+	edge [color="#000000:#000000:#000000"]
+	Battery:p2r:e -- "Battery Distribution Cable 2":w2:w
+	"Battery Distribution Cable 2":w2:e -- "Battery-Reg":p2l:w
+	"Battery Distribution Cable 2" [label=<
+<table border="0" cellspacing="0" cellpadding="0">
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">Battery Distribution Cable 2</td>
+  </tr></table>
+ </td></tr>
+ <tr><td>
+  <table border="0" cellspacing="0" cellpadding="3" cellborder="1"><tr>
+   <td balign="left">2x</td>
+   <td balign="left">22 AWG</td>
+   <td balign="left">11.0 in</td>
+  </tr></table>
+ </td></tr>
+ <tr><td>
+  <table border="0" cellspacing="0" cellborder="0">
+   <tr><td>&nbsp;</td></tr>
+   <tr>
+    <td>Battery:1:Vbatt</td>
+    <td>
+     1:RD
+    </td>
+    <td>Battery-Reg:1:Vbatt</td>
+   </tr>
+   <tr>
+    <td colspan="3" border="0" cellspacing="0" cellpadding="0" port="w1" height="6">
+     <table cellspacing="0" cellborder="0" border="0">
+      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
+      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#ff0000" border="0"></td></tr>
+      <tr><td colspan="3" cellpadding="0" height="2" bgcolor="#000000" border="0"></td></tr>
+     </table>
+    </td>
+   </tr>
+   <tr>
+    <td>Battery:2:GND</td>
+    <td>
+     2:BK
+    </td>
+    <td>Battery-Reg:2:GND</td>
    </tr>
    <tr>
     <td colspan="3" border="0" cellspacing="0" cellpadding="0" port="w2" height="6">

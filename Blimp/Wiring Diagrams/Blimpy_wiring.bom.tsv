@@ -1,6 +1,6 @@
 Id	Description	Qty	Unit	Designators
 1	Cable, 1 x 28 AWG	49.0	in	Lift ESC Signal Cable, Thrust ESC Signal Cable, Yaw ESC Signal Cable
-2	Cable, 2 x 22 AWG	14.0	in	Battery Distribution Cable, Regulator 5V to Pixracer Cable
+2	Cable, 2 x 22 AWG	45.0	in	Battery Distribution Cable 1, Battery Distribution Cable 2, Mid ESC Power Cable, Rear ESC Power Cable, Regulator 5V to Pixracer Cable, Regulator to Battery Cable
 3	Cable, 3 x 28 AWG	66.0	in	CatchServoCable, DetectorCable, RCCable
 4	Cable, 4 x 22/28 AWG	28.0	in	PixOpenMVCable
 5	Cable, 4 x 28 AWG	6.0	in	LIDARCable
@@ -11,6 +11,7 @@ Id	Description	Qty	Unit	Designators
 10	Connector, JST-GH_1.25, female, 4 pins	1		LIDAR-Serial
 11	Connector, JST-GH_1.25, female, 5 pins	1		Pixracer-RC
 12	Connector, JST-GH_1.25, female, 6 pins	3		Pixracer-PWR, Pixracer-Telem1, Pixracer-Telem2
-13	Connector, JST-PH 2.0, female, 2 pins	4		Battery-Reg, Lift ESC Power, Thrust ESC Power, Yaw ESC Power
-14	Connector, JST-PH 2.0, male, 2 pins	1		Battery
-15	Connector, solder pad, 3 pins	1		5VRegulator
+13	Connector, JST-PH 2.0, female, 2 pins	3		Battery-Reg, Lift ESC Power, Yaw and Thrust ESC Power
+14	Connector, JST-PH 2.0, male, 2 pins	4		Battery, Mid ESC Power, Rear ESC Power, Reg-Power
+15	Connector, solder lead	6		
+16	Connector, solder pad, 3 pins	1		5VRegulator

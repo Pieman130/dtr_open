@@ -69,6 +69,13 @@ connectors:
       src: JST-PH 2.0 Female Pin ID.png
       width: 200
     notes: connects to soldered on JST-PH lead
+  Reg-Power:
+    <<: *Batt_PH_M_template
+#Solder end
+  solder:
+    style: simple
+    type: solder lead
+    autogenerate: true
 
 #ESCs and servos
   Lift ESC Signal:
@@ -79,10 +86,8 @@ connectors:
     <<: *DP_SERVO_template
   Lift ESC Power:
     <<: *Batt_PH_F_template
-  Yaw ESC Power:
+  Yaw and Thrust ESC Power:
     <<: *Batt_PH_F_template
-  Thrust ESC Power:
-    <<: *Batt_PH_F_template 
   Catch Servo:
     <<: *DP_SERVO_template
     pinlabels: [GND,5V,PWM]
@@ -91,8 +96,12 @@ connectors:
     image:
       src: JST 1.25 3 Pos Pin ID.png
       width: 200
-    notes: Ignore cable colors in image. 
-  
+    notes: Ignore cable colors in image.
+  Rear ESC Power:
+    <<: *Batt_PH_M_template
+  Mid ESC Power: 
+    <<: *Batt_PH_M_template
+
 cables:
 # Power distribution cables
   # Regulator Battery Cable:
@@ -100,10 +109,30 @@ cables:
   #   length: 6 in
   #   gauge: 22 awg
   #   colors: [RD, BK]
-  Battery Distribution Cable:
+  Mid ESC Power Cable:
+    wirecount: 2
+    gauge: 22 awg
+    length: 6 in
+    colors: [RD,BK]
+  Rear ESC Power Cable:
+    wirecount: 2
+    gauge: 22 awg
+    length: 7 in
+    colors: [RD,BK]
+  Regulator to Battery Cable:
+    wirecount: 2
+    gauge: 22 awg
+    length: 7 in 
+    colors: [RD,BK]
+  Battery Distribution Cable 1:
     wirecount: 2
     gauge: 22 awg
     length: 8 in
+    colors: [RD, BK]
+  Battery Distribution Cable 2:
+    wirecount: 2
+    gauge: 22 awg
+    length: 11 in
     colors: [RD, BK]
   Regulator 5V to Pixracer Cable:
     wirecount: 2
@@ -158,7 +187,7 @@ cables:
 #     gauge: 22 awg
 #     length: 6 in
 #     colors: [RD, BK]
-#   Yaw ESC Power Cable:
+#   Yaw and Thrust ESC Power Cable:
 #     <<: *ESC_cable_template
 #   Thrust ESC Power Cable:
 #     <<: *ESC_cable_template
@@ -166,22 +195,38 @@ cables:
 
 connections:
 # High power from battery
+  # -
+    # - Battery: [1,2]
+    # - Battery Distribution Cable: [1,2]
+    # - 5VRegulator: [Vin,GND]
+  - 
+    - Mid ESC Power: [1-2]
+    - Mid ESC Power Cable: [1-2]
+    - solder
+  - 
+    - Rear ESC Power: [1-2]
+    - Rear ESC Power Cable: [1-2]
+    - solder
+  - 
+    - Rear ESC Power: [1-2]
+    - Rear ESC Power Cable: [1-2]
+    - solder
   -
     - Battery: [1,2]
-    - Battery Distribution Cable: [1,2]
-    - 5VRegulator: [Vin,GND]
-  -
-    - Battery: [1,2]
-    - Battery Distribution Cable: [1,2]
+    - Battery Distribution Cable 1: [1,2]
     - Lift ESC Power: [Vbatt,GND]
   -
     - Battery: [1,2]
-    - Battery Distribution Cable: [1,2]
-    - Yaw ESC Power: [Vbatt,GND]
+    - Battery Distribution Cable 1: [1,2]
+    - Yaw and Thrust ESC Power: [Vbatt,GND]
   -
     - Battery: [1,2]
-    - Battery Distribution Cable: [1,2]
-    - Thrust ESC Power: [Vbatt,GND]
+    - Battery Distribution Cable 2: [1,2]
+    - Battery-Reg: [Vbatt,GND]
+  -
+    - Reg-Power: [1,2]
+    - Regulator to Battery Cable: [1-2]
+    - 5VRegulator: [Vin,GND]
   
 #ESC signals - do not connect grounds, can create dangerous ground loop
   -

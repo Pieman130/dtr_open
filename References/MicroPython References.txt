@@ -1,0 +1,3 @@
+Here's some references that might be helpful:
+
+Timers: https://docs.openmv.io/openmvcam/quickref.html#timers

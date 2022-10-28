@@ -78,6 +78,7 @@ def main() -> None:
 
     while(True):
 
+        start = time.time_ns()
         time.sleep(loopPause)
 
         logger.log.heartbeat("===============================")
@@ -95,6 +96,10 @@ def main() -> None:
         fltDirector.executeNextStep()
 
         gndStation.sendStatusMessage(missionCmder,fltDirector)
+
+        loopTime = time.time_ns() - start
+
+        logger.log.info('Loop time: ' + str(loopTime/1e9))
 
 
 main()

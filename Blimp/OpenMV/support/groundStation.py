@@ -6,6 +6,21 @@ class GroundStation:
         self.wifi = comms.wifi
         self.hw = hw
 
+    def addToJsonStatusMsg(self,existingData,varName,data):
+        
+        if( isinstance(data,str) ):
+            dataStr = data
+        else:
+            dataStr = str(data)  
+
+        if(existingData != ""):
+            existingData = existingData + ","
+
+        newData = existingData + '"' + varName + '": "' + dataStr + '"'
+
+        return newData
+
+        
     def sendStatusMessage(self,missionCommander,flightDirector):
         global wifiInfo    
         
@@ -33,6 +48,31 @@ class GroundStation:
         data = data + ',"yawMotor":"' + str(flightDirector.currentManeuver.controls.yaw) + '"'
         data = data + ',"servoDoor":"' + str(flightDirector.currentManeuver.controls.servo) + '"'
         data = data + ',"controlAuthority":"' + dataClasses.config.controlAuthority + '"'
+
+        data = self.addToJsonStatusMsg(data,'p_up',dataClasses.gndStationCmd.p_up)
+        data = self.addToJsonStatusMsg(data,'i_up',dataClasses.gndStationCmd.i_up)
+        data = self.addToJsonStatusMsg(data,'d_up',dataClasses.gndStationCmd.d_up)
+
+        data = self.addToJsonStatusMsg(data,'p_throttle',dataClasses.gndStationCmd.p_throttle)
+        data = self.addToJsonStatusMsg(data,'i_throttle',dataClasses.gndStationCmd.i_throttle)
+        data = self.addToJsonStatusMsg(data,'d_throttle',dataClasses.gndStationCmd.d_throttle)
+
+        data = self.addToJsonStatusMsg(data,'p_yaw',dataClasses.gndStationCmd.p_yaw)
+        data = self.addToJsonStatusMsg(data,'i_yaw',dataClasses.gndStationCmd.i_yaw)
+        data = self.addToJsonStatusMsg(data,'d_yaw',dataClasses.gndStationCmd.d_yaw)
+
+        data = self.addToJsonStatusMsg(data,'scalar_up',dataClasses.gndStationCmd.scalar_up)
+        data = self.addToJsonStatusMsg(data,'scalar_yaw',dataClasses.gndStationCmd.scalar_yaw)
+        data = self.addToJsonStatusMsg(data,'scalar_throttle',dataClasses.gndStationCmd.scalar_throttle)
+
+
+        data = self.addToJsonStatusMsg(data,'isMicroPython',dataClasses.config.isMicroPython)
+
+
+
+
+
+
 
 
         logs = logger.log.getLogsForServerAndClear()

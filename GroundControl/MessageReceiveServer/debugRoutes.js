@@ -18,6 +18,33 @@ router.route('/status/')
     var yawMotor = req.body.yawMotor;
     var servoDoor = req.body.servoDoor;
     var controlAuthority = req.body.controlAuthority;
+    
+    var p_up = req.body.p_up;
+    var i_up = req.body.i_up;
+    var d_up = req.body.d_up;
+
+    var p_throttle = req.body.p_throttle;
+    var i_throttle = req.body.i_throttle;
+    var d_throttle = req.body.d_throttle;
+
+    var p_yaw = req.body.p_yaw;
+    var i_yaw = req.body.i_yaw;
+    var d_yaw = req.body.d_yaw;
+
+
+    var scalar_up = req.body.scalar_up;
+    var scalar_yaw = req.body.scalar_yaw;
+    var scalar_throttle = req.body.scalar_throttle;
+
+
+
+    var isMicroPython = req.body.isMicroPython;
+
+    if(isMicroPython === 'False'){
+        isMicroPython = 0;
+    }else{
+        isMicroPython = 1;
+    }
 
     var logLines = req.body.logs;
 
@@ -33,7 +60,8 @@ router.route('/status/')
                  " , throttleMotor = " + throttleMotor + 
                  " , yawMotor = " + yawMotor + 
                  " , servoDoor = " + servoDoor + 
-                 " , controlAuthority = '" + controlAuthority + "'"
+                 " , controlAuthority = '" + controlAuthority + "'" 
+                 
 
     sqlTools.sqlRequestPromise(sqlStr)
     .then(function(){
@@ -42,8 +70,10 @@ router.route('/status/')
         return sqlTools.sqlRequestPromise(sqlStr);
     })
     .then(function(){
-        var valueStr = sqlTools.makeValuesStr(lastHeartbeat,irSensorDetection,lidarDistance,upMotor,throttleMotor,yawMotor,servoDoor)
-        sqlStr = " INSERT INTO dataLogs(logTime,lidarDistance,irSensor,upMotor,throttleMotor,yawMotor,servoDoor) " + valueStr;
+        var valueStr = sqlTools.makeValuesStr(lastHeartbeat,irSensorDetection,lidarDistance,upMotor,throttleMotor,yawMotor,servoDoor,isMicroPython,
+            p_up,i_up,d_up,p_throttle,i_throttle,d_throttle,p_yaw,i_yaw,d_yaw,scalar_up,scalar_yaw,scalar_throttle)
+        sqlStr = " INSERT INTO dataLogs(logTime,lidarDistance,irSensor,upMotor,throttleMotor,yawMotor,servoDoor,isMicroPython," +
+                    "p_up,i_up,d_up,p_throttle,i_throttle,d_throttle,p_yaw,i_yaw,d_yaw,scalar_up,scalar_yaw,scalar_throttle) " + valueStr;
         return sqlTools.sqlRequestPromise(sqlStr);
     })
     .then(function(){

@@ -14,7 +14,7 @@ angular.module('mainModel',[])
                     logTime: '',
                 },
                 numLogLoopsToView: 1,
-                intervalTimeMs: 1000,                 
+                intervalTimeMs: 10,                 
                 requests:{
                         up: null,
                         throttle: null,

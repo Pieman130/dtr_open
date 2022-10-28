@@ -67,6 +67,12 @@ class GroundStationCommand:
         self.scalar_up = 1
         self.scalar_yaw = 1
         self.scalar_throttle = 1
+        self.error_rounding_up = 0
+        self.error_scaling_up = 1
+        self.error_rounding_yaw = 0
+        self.error_scaling_yaw = 1
+        self.pid_min_up = -0.2
+        self.pid_min_yaw = -1.0
         self.controlAuthority = ''
         self.manualHeight = 100000
         self.resetOpenMVforFTPtsfr = 0

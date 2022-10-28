@@ -14,6 +14,9 @@ class Controller():
         self.imax = imax        
         self.pid = pid.PID(p=self.p,i=self.i,d=self.d,imax=self.imax)
         #TODO Need output clipping for each PID
+        self.error_scaling = 100
+        self.error_rounding = 1
+        self.pid_minimum = -1
 
 
     def set_pid_gains(self,**kwargs):
@@ -35,7 +38,8 @@ class Controller():
         if(scaler == None):
             logger.log.warning('Scaler is none in get_pid')
             return 0
-        
+        error = round(error/self.error_scaling,self.error_rounding)
+
         output = self.pid.get_pid(error,scaler)
         if output > 1:
             output = 1
@@ -43,6 +47,9 @@ class Controller():
         elif output < -1:
             output = -1
             self.reset_i() #prevent integrator windup
+
+        if output < self.pid_minimum:
+            output = self.pid_minimum
         return output
 
 

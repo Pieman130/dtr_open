@@ -134,7 +134,11 @@ class FlightAction:
         if self.data.lidarDistance != None:   
 
             if ( dataClasses.config.isMicroPython):                
-                self.pid_up.set_pid_gains(p = dataClasses.gndStationCmd.p_up)    
+                self.pid_up.set_pid_gains(p = dataClasses.gndStationCmd.p_up)
+                self.pid_up.error_rounding_up = dataClasses.gndStationCmd.error_roung_up
+                self.pid_up.error_scaling_up = dataClasses.gndStationCmd.error_scaling_up
+                self.pid_up.pid_minimum = dataClasses.gndStationCmd.pid_min_up
+ 
             else:
                 p = dataClasses.gndStationCmd.p_up
                 self.pid_up.set_pid_gains(p)  

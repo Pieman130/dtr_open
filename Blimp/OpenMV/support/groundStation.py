@@ -145,3 +145,8 @@ class GroundStation:
 
         dataClasses.gndStationCmd.resetOpenMVforFTPtsfr = jsonDict['resetOpenMVforFTPtsfr']
 
+        dataClasses.gndStationCmd.error_rounding_up = jsonDict['error_rounding_up']
+        dataClasses.gndStationCmd.error_scaling_up = jsonDict['error_scaling_up']
+        dataClasses.gndStationCmd.pid_min_up = jsonDict['pid_min_up']
+ 
+

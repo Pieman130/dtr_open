@@ -160,7 +160,7 @@ class MavLink():
     def send_set_servo_cmd(self,servo,pwm):
         '''Send command messsage to set values of individual servos'''
         cmd = self._build_msg_cmd_long(183,params=self._build_frame_cmd_do_set_servo(servo,pwm))
-        cmd = self._build_msg_cmd_long(184,params=self._build_frame_cmd_do_repeat_servo(servo,pwm))
+        #cmd = self._build_msg_cmd_long(184,params=self._build_frame_cmd_do_repeat_servo(servo,pwm))
         self._uart.write(cmd)
 
 

@@ -40,7 +40,7 @@ router.route('/getLastControlRequestedValues/')
                  " p_up, i_up, d_up, scalar_up," +
                  " p_throttle, i_throttle, d_throttle, scalar_throttle," +
                  " p_yaw, i_yaw, d_yaw, scalar_yaw, " +
-                 " control " + 
+                 " control, pid_min_up, error_scaling_up, error_rounding_up " + 
                  " FROM maneuverToExecute " 
     sqlTools.run(sqlStr,res);
 })
@@ -82,6 +82,11 @@ router.route('/sendConfigValues/')
     var i_yaw = req.body.pid.yaw.i;
     var d_yaw = req.body.pid.yaw.d;
 
+
+    var error_rounding_up = req.body.pid.up.error_rounding_up;
+    var error_scaling_up = req.body.pid.up.error_scaling_up;
+    var pid_min_up = req.body.pid.up.pid_min_up;
+
     var scalar_up = req.body.scalar.up;
     var scalar_yaw = req.body.scalar.yaw;
     var scalar_throttle = req.body.scalar.throttle;
@@ -100,7 +105,12 @@ router.route('/sendConfigValues/')
                                              ", scalar_up = " + scalar_up + 
                                              ", scalar_yaw = " + scalar_yaw +
                                              ", scalar_throttle = " + scalar_throttle +
-                                             ", requestedState = '" + requestedState + "'"
+                                             ", requestedState = '" + requestedState + "'" +
+                                             ", error_rounding_up = " + error_rounding_up +
+                                             ", error_scaling_up = " + error_scaling_up +
+                                             ", pid_min_up = " + pid_min_up;
+
+
     sqlTools.run(sqlStr,res);
 })
 

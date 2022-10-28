@@ -26,7 +26,10 @@ angular.module('mainModel',[])
                         up: {
                             p: null,
                             i: null,
-                            d: null
+                            d: null,
+                            error_rounding_up: null,
+                            error_scaling_up: null,
+                            pid_min_up: null
                         },
                         throttle: {
                             p: null,
@@ -37,14 +40,15 @@ angular.module('mainModel',[])
                             p: null,
                             i: null,
                             d: null
-                        }
+                        }                        
                     },
                     scalar: {
                         up: null,
                         throttle: null,
                         yaw: null
                     },
-                    requestedState: ''
+                    requestedState: '',
+                    
                 },                
                 sendRequests(){
                     return new Promise(function(resolve,reject){
@@ -101,6 +105,10 @@ angular.module('mainModel',[])
                                 obj.config.scalar.up = d.scalar_up;
                                 obj.config.scalar.throttle = d.scalar_throttle;
                                 obj.config.scalar.yaw = d.scalar_yaw;
+
+                                obj.config.pid.up.error_rounding_up = d.error_rounding_up;
+                                obj.config.pid.up.error_scaling_up = d.error_scaling_up;
+                                obj.config.pid.up.pid_min_up = d.pid_min_up;
 
                                 obj.control = d.control;
 

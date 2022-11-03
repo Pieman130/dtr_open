@@ -8,9 +8,10 @@ import time
 
 try:
     import hardware
-    import comms
+    import comms    
     import logger
     isMicroPython = True
+    
 
 except Exception as e:
     print(str(e))
@@ -39,24 +40,38 @@ except Exception as e:
         print(".")
 
 import logger
-
 #logger.log.setLevel_info()
 logger.log.setLevel_verbose()
 #logger.log.setLevel_debugOnly()
 
 
 import dataClasses
+dataClasses.config.isMicroPython = isMicroPython
+
+
+import processing
 
 dataClasses.rawData.lidar = 120 #HACK
 
 
 logger.log.info('is micropython: ' + str(isMicroPython))
-dataClasses.config.isMicroPython = isMicroPython
+
 
 import sensors
 import missionCommander
 import flightDirector
 import groundStation
+
+# DEBUGGING ###########################
+class DebugControls:
+    def __init__(self):
+        self.yaw = 0  # -1 to 1
+        self.up = 0  # -1 to 1
+        self.throttle = 0  # -1 to 1
+        self.servo = 0  # 0 for OFF. 1 for ON.
+ctrl = DebugControls()
+ctrl.up = 0.5
+# END DEBUG ###########################
 
 
 def main() -> None:
@@ -75,31 +90,81 @@ def main() -> None:
     missionCmder = missionCommander.MissionCommander(fltDirector)
     
 
-
+    LOOP_TIME_FIXED = 0.15
+    
     while(True):
 
         start = time.time_ns()
-        time.sleep(loopPause)
-
-        logger.log.heartbeat("===============================")
-        logger.log.heartbeat("Top of loop")
-        logger.log.heartbeat("===============================")
-
-        sensorsObj.collectData()
         
-        missionCmder.determineControlAuthority()
 
-        missionCmder.updateState()
+        # DEBUGGING #####################
+       
 
-        fltDirector.getNextStep()
+        print('CONTROL AUTHORITY: ' + dataClasses.gndStationCmd.controlAuthority)
 
-        fltDirector.executeNextStep()
+        if(dataClasses.gndStationCmd.controlAuthority == 'manualRemote'):
+            pass
+        elif(dataClasses.gndStationCmd.controlAuthority != 'manualWeb'):
+
+            hackSetPoint = dataClasses.gndStationCmd.error_scaling_up
+            logger.log.verbose("up set point: " + str(hackSetPoint))
+            ctrl.up = dumbPid(hackSetPoint,dataClasses.rawData.lidar)
+            #ctrl.up = ctrl.up * -1 #toggle motor vals
+            comm.mavlink.setControls(ctrl) 
+            logger.log.verbose("lidarVal: " + str(dataClasses.rawData.lidar) )
+            logger.log.verbose("Up val: " + str(ctrl.up))
+        
+        else:
+            ctrl.up = 0
+            comm.mavlink.setControls(ctrl)
+
+
+
+        # END DEBUG #####################
+
+
+
+        #logger.log.heartbeat("===============================")
+        #logger.log.heartbeat("Top of loop")
+        #logger.log.heartbeat("===============================")
+        
+        sensorsObj.collectData()
+        processing.parseSensorData()
+            
+        #missionCmder.determineControlAuthority()
+
+        #missionCmder.updateState()
+
+        #fltDirector.getNextStep()
+
+        #fltDirector.executeNextStep()
 
         gndStation.sendStatusMessage(missionCmder,fltDirector)
+  
+       
 
-        loopTime = time.time_ns() - start
+        loopTime = (time.time_ns() - start)/1e9
+        loopPause = LOOP_TIME_FIXED - loopTime
+        if(loopPause >0):
+            time.sleep(loopPause)
 
-        logger.log.info('Loop time: ' + str(loopTime/1e9))
 
+        loopTime = (time.time_ns() - start)/1e9
+        logger.log.info('Loop time: ' + str(loopTime))
+
+       # logger.log.getLogsForServerAndClear()
+
+def dumbPid(setVal,lidar):
+    if(setVal >= lidar):
+        up = 0
+    else:
+        distanceToGoUp = lidar-setVal
+        if distanceToGoUp > 100:
+            up = 1
+        elif distanceToGoUp > 50:
+            up = 0.5
+        else:
+            up = 0.3
+    return up
 
 main()

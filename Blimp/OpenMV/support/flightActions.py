@@ -134,7 +134,7 @@ class FlightAction:
         if self.data.lidarDistance != None:   
 
             if ( dataClasses.config.isMicroPython):                
-                self.pid_up.set_pid_gains(p = dataClasses.gndStationCmd.p_up)
+                self.pid_up.set_pid_gains(dataClasses.gndStationCmd.p_up)
                 self.pid_up.error_rounding_up = dataClasses.gndStationCmd.error_rounding_up
                 self.pid_up.error_scaling_up = dataClasses.gndStationCmd.error_scaling_up
                 self.pid_up.pid_minimum = dataClasses.gndStationCmd.pid_min_up
@@ -143,6 +143,7 @@ class FlightAction:
                 p = dataClasses.gndStationCmd.p_up
                 self.pid_up.set_pid_gains(p)  
 
+            logger.log.verbose("right before get pid")
             self.controls.up = self.pid_up.get_pid(self.data.lidarDistance-height,scaler= dataClasses.gndStationCmd.scalar_up)             
             logger.log.info("Executing Assisted Altitude.  PID Up Value: {}".format(self.controls.up) )
             

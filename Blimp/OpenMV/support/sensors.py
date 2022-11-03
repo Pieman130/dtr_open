@@ -64,10 +64,10 @@ class Sensors:
         mavlinkTimeNs = time.time_ns() - start
         mavlinkTime = mavlinkTimeNs/1e9
         
-        maxTime = 0.4
-        delayTime = maxTime - mavlinkTime
-        logger.log.info('MAVLINK TIME: ' + str(mavlinkTime))          
-        time.sleep(delayTime)
+       # maxTime = 0.4
+       # delayTime = maxTime - mavlinkTime
+        logger.log.info('MAVLINK TOTAL TIME: ' + str(mavlinkTime))          
+        #time.sleep(delayTime)
 
             
         

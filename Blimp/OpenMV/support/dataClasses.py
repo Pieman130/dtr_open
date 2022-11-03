@@ -1,12 +1,12 @@
 class Configuration:
     def __init__(self):
         self.isMicroPython = None
-        self.controlAuthority = None
+        self.controlAuthority = 'autonomous'
 
 class RawData:
     def __init__(self):
         self.img = None
-        self.irSensor = None
+        self.irSensor = False
         self.imu_yaw = 0
         self.imu_pitch = 0
         self.imu_roll = 0
@@ -25,7 +25,8 @@ class RawData:
 
 class ProcessedData:
     def __init__(self):
-        self.irData = None
+        self.irData = 0 
+        self.colorDetected = ''
         self.goalColorChoice = None
         self.goalColorDetected = None
         self.isBallDetected = None
@@ -73,7 +74,7 @@ class GroundStationCommand:
         self.error_scaling_yaw = 1
         self.pid_min_up = -0.2
         self.pid_min_yaw = -1.0
-        self.controlAuthority = ''
+        self.controlAuthority = 'autonomous'
         self.manualHeight = 100000
         self.resetOpenMVforFTPtsfr = 0
 

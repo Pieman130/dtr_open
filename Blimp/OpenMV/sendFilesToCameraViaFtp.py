@@ -13,9 +13,6 @@ myPath = s.getPath()
 
 myFTP = ftplib.FTP(server) #, username, password)
 
-#myFTP.sendcmd('doTestPrint')
-
-
 def uploadThis(path):
     files = os.listdir(path)
     os.chdir(path)

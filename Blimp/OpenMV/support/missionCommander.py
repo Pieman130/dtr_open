@@ -57,7 +57,7 @@ class MissionCommander:
 
     def determineControlAuthority(self):
 
-        processing.parseSensorData()
+       
         processing.parseRCSwitchPositions()
 
         if dataClasses.data.sw_door_control is not None:

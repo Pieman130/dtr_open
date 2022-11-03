@@ -179,7 +179,7 @@ class MavLink():
             msg[5] = message type 
             msg[6:6+n] = payload n = message payload length
             msg[6+n:6+n+3] = checksum'''
-        result = self._uart.read(256)
+        result = self._uart.read(64)
        
         if result == None:
             return None
@@ -297,8 +297,13 @@ class MavLink():
 
     def getSensors(self):
         '''Returns dict where key = Sensor_type, value = most recent value received via mavlink'''
+        start = time.time_ns()
         msg_list = self._read_uart()     
+        uartReadTime = (time.time_ns() - start)/1e9
+        logger.log.verbose('mavlink uart read: ' + str(uartReadTime))
         
+
+
         if(msg_list == None):
             logger.log.warning(">>>>>>>>>>>>>>>>>>") 
             logger.log.warning("MAVLINK LINK FAIL")

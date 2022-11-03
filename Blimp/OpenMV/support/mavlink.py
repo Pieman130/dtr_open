@@ -139,6 +139,15 @@ class MavLink():
         '''
         return [servo_ch,value,float('NaN'),float('NaN'),float('NaN'),float('NaN'),float('NaN')]
 
+    def _build_frame_cmd_do_repeat_servo(self,servo_ch,value):
+        '''Set params for mav_cmd_do_repeat_servo #184
+        servo_ch= servo channel number
+        value = PWM value (us)
+        cycle_count = count
+        cycle_time = time_in_seconds (some discussion that maybe this is really in ms)
+        '''
+        return [servo_ch,value,1,0.5,float('NaN'),float('NaN'),float('NaN')]
+
 
     def send_set_msg_interval_cmd(self,msg_id,interval):
         '''Send cmd message #511 to set desired publish rate of msg.
@@ -151,6 +160,7 @@ class MavLink():
     def send_set_servo_cmd(self,servo,pwm):
         '''Send command messsage to set values of individual servos'''
         cmd = self._build_msg_cmd_long(183,params=self._build_frame_cmd_do_set_servo(servo,pwm))
+        #cmd = self._build_msg_cmd_long(184,params=self._build_frame_cmd_do_repeat_servo(servo,pwm))
         self._uart.write(cmd)
         logger.log.verbose('Sent motor command -- SERVO:' + str(servo) + ' PWM: ' + str(pwm))
 

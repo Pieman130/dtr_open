@@ -44,6 +44,8 @@ class FlightAction:
         self.pid_yaw = Controller()
         self.pid_up = Controller()
         self.pid_throttle = Controller()
+        self.ema_alpha = 0.875 #Ema for smoothing LIDAR distance
+        self.lidar_ema = 0.0
 
     def reset(self):
         self.startTime = None
@@ -143,8 +145,10 @@ class FlightAction:
                 p = dataClasses.gndStationCmd.p_up
                 self.pid_up.set_pid_gains(p)  
 
-            logger.log.verbose("right before get pid")
-            self.controls.up = self.pid_up.get_pid(self.data.lidarDistance-height,scaler= dataClasses.gndStationCmd.scalar_up)             
+            #logger.log.verbose("right before get pid")
+            #self.controls.up = self.pid_up.get_pid(self.data.lidarDistance-height,scaler= dataClasses.gndStationCmd.scalar_up)             
+            self.lidar_ema = self.ema_alpha * self.lidar_ema + (1 - self.ema_alpha) * self.data.lidarDistance
+            self.controls.up = self.pid_up.get_pid(self.lidar_ema-height,scaler= dataClasses.gndStationCmd.scalar_up)             
             logger.log.info("Executing Assisted Altitude.  PID Up Value: {}".format(self.controls.up) )
             
 

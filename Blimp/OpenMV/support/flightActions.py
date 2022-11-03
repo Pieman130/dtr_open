@@ -56,7 +56,8 @@ class FlightAction:
             self.startTime = time.time()
         else:
             self.timeClock = time.time() - self.startTime
-
+    def executeNoop(self):
+        pass
     def execute(self):
 
         self.updateTime()

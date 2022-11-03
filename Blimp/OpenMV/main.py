@@ -97,52 +97,25 @@ def main() -> None:
         start = time.time_ns()
         
 
-        # DEBUGGING #####################
-       
-
-        print('CONTROL AUTHORITY: ' + dataClasses.gndStationCmd.controlAuthority)
-
-        if(dataClasses.gndStationCmd.controlAuthority == 'manualRemote'):
-            pass
-        elif(dataClasses.gndStationCmd.controlAuthority != 'manualWeb'):
-
-            hackSetPoint = dataClasses.gndStationCmd.error_scaling_up
-            logger.log.verbose("up set point: " + str(hackSetPoint))
-            ctrl.up = dumbPid(hackSetPoint,dataClasses.rawData.lidar)
-            #ctrl.up = ctrl.up * -1 #toggle motor vals
-            comm.mavlink.setControls(ctrl) 
-            logger.log.verbose("lidarVal: " + str(dataClasses.rawData.lidar) )
-            logger.log.verbose("Up val: " + str(ctrl.up))
-        
-        else:
-            ctrl.up = 0
-            comm.mavlink.setControls(ctrl)
-
-
-
-        # END DEBUG #####################
-
-
-
-        #logger.log.heartbeat("===============================")
-        #logger.log.heartbeat("Top of loop")
-        #logger.log.heartbeat("===============================")
+        logger.log.heartbeat("===============================")
+        logger.log.heartbeat("Top of loop")
+        logger.log.heartbeat("===============================")
         
         sensorsObj.collectData()
         processing.parseSensorData()
             
-        #missionCmder.determineControlAuthority()
+        missionCmder.determineControlAuthority()
 
-        #missionCmder.updateState()
+        missionCmder.updateState()
 
-        #fltDirector.getNextStep()
+        fltDirector.getNextStep()
 
-        #fltDirector.executeNextStep()
+        fltDirector.executeNextStep()
 
         gndStation.sendStatusMessage(missionCmder,fltDirector)
   
        
-
+        # make loop time fixed
         loopTime = (time.time_ns() - start)/1e9
         loopPause = LOOP_TIME_FIXED - loopTime
         if(loopPause >0):

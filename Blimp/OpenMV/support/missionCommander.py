@@ -132,7 +132,7 @@ class MissionCommander:
 
     def updateStateManualRemote(self):
          
-        self.flightDirector.currentState = self.currentState
+        self.flightDirector.currentState = None # self.currentState
 
     
 

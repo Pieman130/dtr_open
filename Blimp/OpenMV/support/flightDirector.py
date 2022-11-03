@@ -28,6 +28,7 @@ class FlightDirector:
     def getNextStep(self):
         
         if(self.currentState == None):
+            self.currentManeuver = self.blimpManeuvers.doNothing 
             return
         else:
 

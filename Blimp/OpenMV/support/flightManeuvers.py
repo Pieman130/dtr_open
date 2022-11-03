@@ -15,6 +15,7 @@ class BlimpManeuvers():
         controls = flightActions.Controls()
 
         doNothing = flightActions.FlightAction("Do nothing.",controls,exitCriteria,self.comms,self.hw)
+        doNothing.execute = doNothing.executeNoop
         return doNothing
 
     def initForward(self,throttle = 0.5):

@@ -70,7 +70,7 @@ router.route('/status/')
         return sqlTools.sqlRequestPromise(sqlStr);
     })
     .then(function(){
-        var valueStr = sqlTools.makeValuesStr(lastHeartbeat,irSensorDetection,lidarDistance,upMotor,throttleMotor,yawMotor,servoDoor,isMicroPython,
+        var valueStr = sqlTools.makeValuesStr(lastHeartbeat,lidarDistance,irSensorDetection,upMotor,throttleMotor,yawMotor,servoDoor,isMicroPython,
             p_up,i_up,d_up,p_throttle,i_throttle,d_throttle,p_yaw,i_yaw,d_yaw,scalar_up,scalar_yaw,scalar_throttle)
         sqlStr = " INSERT INTO dataLogs(logTime,lidarDistance,irSensor,upMotor,throttleMotor,yawMotor,servoDoor,isMicroPython," +
                     "p_up,i_up,d_up,p_throttle,i_throttle,d_throttle,p_yaw,i_yaw,d_yaw,scalar_up,scalar_yaw,scalar_throttle) " + valueStr;

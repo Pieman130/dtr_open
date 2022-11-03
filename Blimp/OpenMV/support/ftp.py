@@ -24,7 +24,7 @@ import gc
 def send_list_data(path, dataclient, full):
     try:  # whether path is a directory name
         for fname in sorted(uos.listdir(path), key=str.lower):
-            dataclient.sendall(make_description(path, fname, full))
+            dataclient.send(make_description(path, fname, full))
     except:  # path may be a file name or pattern
         pattern = path.split("/")[-1]
         path = path[:-(len(pattern) + 1)]
@@ -32,7 +32,7 @@ def send_list_data(path, dataclient, full):
             path = "/"
         for fname in sorted(uos.listdir(path), key=str.lower):
             if fncmp(fname, pattern):
-                dataclient.sendall(make_description(path, fname, full))
+                dataclient.send(make_description(path, fname, full))
 
 
 def make_description(path, fname, full):
@@ -53,16 +53,32 @@ def send_file_data(path, dataclient):
     with open(path, "rb") as file:
         chunk = file.read(512)
         while len(chunk) > 0:
-            dataclient.sendall(chunk)
+            dataclient.send(chunk)
             chunk = file.read(512)
 
 
 def save_file_data(path, dataclient):
     with open(path, "wb") as file:
+        print(path + " opened successfully.")
         chunk = dataclient.recv(512)
-        while len(chunk) > 0:
+        print("first chunk received")
+        keepGoing = 1        
+        while (len(chunk) > 0 ) and keepGoing:         
+            print("nonzero chunk received")
             file.write(chunk)
-            chunk = dataclient.recv(512)
+            print("file write chunk succeeded")
+
+            if(len(chunk) < 512):
+                keepGoing = 0
+                print("quitting")
+            else:
+                chunk = dataclient.recv(512)
+                print("file read N + 1 completed")
+            
+        
+        print("save file done")
+
+        
 
 
 def get_absolute_path(cwd, payload):
@@ -111,8 +127,12 @@ def fncmp(fname, pattern):
     else:
         return False
 
-
-def ftpserver(port=21, timeout=None):
+def printCurrDir():
+    test = uos.listdir(uos.getcwd())
+    print("files in current dir:")
+    for x in test:
+        print(x)
+def ftpserver(port=21, timeout=None,wlan=None):
 
     DATA_PORT = 13333
 
@@ -133,7 +153,7 @@ def ftpserver(port=21, timeout=None):
     msg_250_OK = '250 OK\r\n'
     msg_550_fail = '550 Failed\r\n'
     # check for an active interface, STA first
-    wlan = network.WLAN(network.STA_IF)
+    #wlan = network.WLAN(network.STA_IF)
     if wlan.active():
         addr = wlan.ifconfig()[0]
     else:
@@ -155,7 +175,7 @@ def ftpserver(port=21, timeout=None):
             cwd = '/'
             try:
                 # print("FTP connection from:", remote_addr)
-                cl.sendall("220 Hello, this is the ESP8266/ESP32.\r\n")
+                cl.send("220 Hello, this is the ESP8266/ESP32.\r\n")
                 while True:
                     gc.collect()
                     data = cl.readline().decode("utf-8").rstrip("\r\n")
@@ -166,46 +186,47 @@ def ftpserver(port=21, timeout=None):
 
                     command = data.split(" ")[0].upper()
                     payload = data[len(command):].lstrip()
+                    
+                    path = get_absolute_path(cwd, payload)                   
 
-                    path = get_absolute_path(cwd, payload)
 
                     print("Command={}, Payload={}".format(command, payload))
 
                     if command == "USER":
-                        cl.sendall("230 Logged in.\r\n")
+                        cl.send("230 Logged in.\r\n")
                     elif command == "SYST":
-                        cl.sendall("215 UNIX Type: L8\r\n")
+                        cl.send("215 UNIX Type: L8\r\n")
                     elif command == "NOOP":
-                        cl.sendall("200 OK\r\n")
+                        cl.send("200 OK\r\n")
                     elif command == "FEAT":
-                        cl.sendall("211 no-features\r\n")
+                        cl.send("211 no-features\r\n")
                     elif command == "PWD" or command == "XPWD":
-                        cl.sendall('257 "{}"\r\n'.format(cwd))
+                        cl.send('257 "{}"\r\n'.format(cwd))
                     elif command == "CWD" or command == "XCWD":
                         try:
                             files = uos.listdir(path)
                             cwd = path
-                            cl.sendall(msg_250_OK)
+                            cl.send(msg_250_OK)
                         except:
-                            cl.sendall(msg_550_fail)
+                            cl.send(msg_550_fail)
                     elif command == "CDUP":
                         cwd = get_absolute_path(cwd, "..")
-                        cl.sendall(msg_250_OK)
+                        cl.send(msg_250_OK)
                     elif command == "TYPE":
                         # probably should switch between binary and not
-                        cl.sendall('200 Transfer mode set\r\n')
+                        cl.send('200 Transfer mode set\r\n')
                     elif command == "SIZE":
                         try:
                             size = uos.stat(path)[6]
-                            cl.sendall('213 {}\r\n'.format(size))
+                            cl.send('213 {}\r\n'.format(size))
                         except:
-                            cl.sendall(msg_550_fail)
+                            cl.send(msg_550_fail)
                     elif command == "QUIT":
-                        cl.sendall('221 Bye.\r\n')
+                        cl.send('221 Bye.\r\n')
                         do_run = False
                         break
                     elif command == "PASV":
-                        cl.sendall('227 Entering Passive Mode ({},{},{}).\r\n'.
+                        cl.send('227 Entering Passive Mode ({},{},{}).\r\n'.
                                    format(addr.replace('.', ','), DATA_PORT >> 8,
                                           DATA_PORT % 256))
                         dataclient, data_addr = datasocket.accept()
@@ -225,109 +246,121 @@ def ftpserver(port=21, timeout=None):
                             dataclient.settimeout(10)
                             dataclient.connect((data_addr, DATA_PORT))
                             print("FTP Data connection with:", data_addr)
-                            cl.sendall('200 OK\r\n')
+                            cl.send('200 OK\r\n')
                             active = True
                         else:
-                            cl.sendall('504 Fail\r\n')
+                            cl.send('504 Fail\r\n')
                     elif command == "LIST" or command == "NLST":
                         if not payload.startswith("-"):
                             place = path
                         else:
                             place = cwd
                         try:
-                            cl.sendall("150 Here comes the directory listing.\r\n")
+                            cl.send("150 Here comes the directory listing.\r\n")
                             send_list_data(place, dataclient,
                                            command == "LIST" or payload == "-l")
-                            cl.sendall("226 Listed.\r\n")
+                            cl.send("226 Listed.\r\n")
                         except:
-                            cl.sendall(msg_550_fail)
+                            cl.send(msg_550_fail)
                         if dataclient is not None:
                             dataclient.close()
                             dataclient = None
                     elif command == "RETR":
                         try:
-                            cl.sendall("150 Opening data connection.\r\n")
+                            cl.send("150 Opening data connection.\r\n")
                             send_file_data(path, dataclient)
-                            cl.sendall("226 Transfer complete.\r\n")
+                            cl.send("226 Transfer complete.\r\n")
                         except:
-                            cl.sendall(msg_550_fail)
+                            cl.send(msg_550_fail)
                         if dataclient is not None:
                             dataclient.close()
                             dataclient = None
                     elif command == "STOR":
                         try:
-                            cl.sendall("150 Ok to send data.\r\n")
+                            cl.send("150 Ok to send data.\r\n")
+                            print("ready to save file to path: " + path)
+                            print(dataclient)                            
                             save_file_data(path, dataclient)
-                            cl.sendall("226 Transfer complete.\r\n")
-                        except:
-                            cl.sendall(msg_550_fail)
-                        if dataclient is not None:
+                            cl.send("226 Transfer complete.\r\n")
+                            print("226 transfer complete.")                        
+                        except Exception as err:
+                            print('EXCEPTION 0')
+                            print(err)
+                            cl.send(msg_550_fail)
+                        if dataclient is not None:                            
                             dataclient.close()
                             dataclient = None
+                            print('STOR client finished without errors.')
                     elif command == "DELE":
                         try:
                             uos.remove(path)
-                            cl.sendall(msg_250_OK)
+                            cl.send(msg_250_OK)
                         except:
-                            cl.sendall(msg_550_fail)
+                            cl.send(msg_550_fail)
                     elif command == "RMD" or command == "XRMD":
                         try:
                             uos.rmdir(path)
-                            cl.sendall(msg_250_OK)
+                            cl.send(msg_250_OK)
                         except:
-                            cl.sendall(msg_550_fail)
+                            cl.send(msg_550_fail)
                     elif command == "MKD" or command == "XMKD":
                         try:
                             uos.mkdir(path)
-                            cl.sendall(msg_250_OK)
+                            cl.send(msg_250_OK)
                         except:
-                            cl.sendall(msg_550_fail)
+                            cl.send(msg_550_fail)
                     elif command == "RNFR":
                             fromname = path
-                            cl.sendall("350 Rename from\r\n")
+                            cl.send("350 Rename from\r\n")
                     elif command == "RNTO":
                             if fromname is not None:
                                 try:
                                     uos.rename(fromname, path)
-                                    cl.sendall(msg_250_OK)
+                                    cl.send(msg_250_OK)
                                 except:
-                                    cl.sendall(msg_550_fail)
+                                    cl.send(msg_550_fail)
                             else:
-                                cl.sendall(msg_550_fail)
+                                cl.send(msg_550_fail)
                             fromname = None
                     elif command == "MDTM":
                         try:
                             tm=localtime(uos.stat(path)[8])
-                            cl.sendall('213 {:04d}{:02d}{:02d}{:02d}{:02d}{:02d}\r\n'.format(*tm[0:6]))
+                            cl.send('213 {:04d}{:02d}{:02d}{:02d}{:02d}{:02d}\r\n'.format(*tm[0:6]))
                         except:
-                            cl.sendall('550 Fail\r\n')
+                            cl.send('550 Fail\r\n')
                     elif command == "STAT":
                         if payload == "":
-                            cl.sendall("211-Connected to ({})\r\n"
+                            cl.send("211-Connected to ({})\r\n"
                                        "    Data address ({})\r\n"
                                        "211 TYPE: Binary STRU: File MODE:"
                                        " Stream\r\n".format(
                                            remote_addr[0], addr))
                         else:
-                            cl.sendall("213-Directory listing:\r\n")
+                            cl.send("213-Directory listing:\r\n")
                             send_list_data(path, cl, True)
-                            cl.sendall("213 Done.\r\n")
+                            cl.send("213 Done.\r\n")
                     else:
-                        cl.sendall("502 Unsupported command.\r\n")
+                        cl.send("502 Unsupported command.\r\n")
                         print("Unsupported command {} with payload {}".format(
                             command, payload))
+
             except Exception as err:
+                print('EXCEPTION 1')
                 print(err)
+                printCurrDir()
 
             finally:
                 cl.close()
                 cl = None
     except Exception as e:
+        print('EXCEPTION 2')
         print(e)
     finally:
+        print('last finally')
         datasocket.close()
         ftpsocket.close()
         if dataclient is not None:
+            print('close data client')
             dataclient.close()
 
 

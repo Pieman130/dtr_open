@@ -68,6 +68,11 @@ class GroundStation:
 
         data = self.addToJsonStatusMsg(data,'isMicroPython',dataClasses.config.isMicroPython)
 
+           
+        data = self.addToJsonStatusMsg(data,'error_rounding_up',dataClasses.gndStationCmd.error_rounding_up)
+        data = self.addToJsonStatusMsg(data,'error_scaling_up',dataClasses.gndStationCmd.error_scaling_up)
+        data = self.addToJsonStatusMsg(data,'pid_min_up',dataClasses.gndStationCmd.pid_min_up)
+
 
 
 

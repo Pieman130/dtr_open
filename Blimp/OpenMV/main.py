@@ -90,7 +90,7 @@ def main() -> None:
     missionCmder = missionCommander.MissionCommander(fltDirector)
     
 
-    LOOP_TIME_FIXED = 0.15
+    LOOP_TIME_FIXED = 0.2
     
     while(True):
 
@@ -120,6 +120,9 @@ def main() -> None:
         loopPause = LOOP_TIME_FIXED - loopTime
         if(loopPause >0):
             time.sleep(loopPause)
+            logger.log.verbose('loop pause added: ' + str(loopPause))
+
+        
 
 
         loopTime = (time.time_ns() - start)/1e9

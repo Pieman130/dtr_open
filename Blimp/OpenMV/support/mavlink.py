@@ -1,14 +1,18 @@
 import struct, time
 import logger
 
-THROTTLE_SERVO = 1
+UART_READ_SIZE = 128 #64, 128, 256
+
+THROTTLE_SERVO = 1  
 YAW_SERVO = 2
 UP_SERVO = 3
-MSG_RATE = 200000 #5Hz messaging rate
+MSG_RATE = 50000 #20Hz messaging rate
+MSG_RATE_LIDAR = 50000
 RCCH = 35
 ATTITUDE = 30
 SERVO = 36
 LIDAR = 132
+
 
 
 class MavLink():
@@ -25,7 +29,7 @@ class MavLink():
         self.send_set_msg_interval_cmd(RCCH,MSG_RATE) #RC_Channels_Raw
         self.send_set_msg_interval_cmd(ATTITUDE,MSG_RATE) #Attitude
         self.send_set_msg_interval_cmd(SERVO,MSG_RATE) #Servo Channels
-        self.send_set_msg_interval_cmd(LIDAR,MSG_RATE) #LIDAR
+        self.send_set_msg_interval_cmd(LIDAR,MSG_RATE_LIDAR) #LIDAR
 
 
     def __get_ps(self):
@@ -189,7 +193,8 @@ class MavLink():
             msg[5] = message type 
             msg[6:6+n] = payload n = message payload length
             msg[6+n:6+n+3] = checksum'''
-        result = self._uart.read(64)
+        logger.log.verbose('bytes in uart: ' + str(self._uart.any()))
+        result = self._uart.read(UART_READ_SIZE)
        
         if result == None:
             return None
@@ -328,24 +333,26 @@ class MavLink():
                     result = self.__parse_attitude_msg(msg[1])
                     if result != None:
                         sensors['Attitude'] = result
+                        logger.log.info("mavlink 1 - new attitude data!")
                 elif msg[0] == RCCH:
                     result = self.__parse_rc_ch_msg(msg[1])
                     if result != None:
                         sensors['RCCH'] = result
+                        logger.log.info("mavlink 2 - new rcch data!")
                 elif msg[0] == SERVO:
                     result = self.__parse_servo_output_msg(msg[1])
                     if result != None:
                         sensors['Servo'] = result
+                        logger.log.info("mavlink 3 - new servo data!")
                 elif msg[0] == LIDAR:
                     result = self.__parse_lidar_msg(msg[1])  
                    # logger.log.verbose('^^^^^^^^LIDAR^^^^^^^^^^^^^^^^')  
                     #logger.log.verbose(result)
                     #logger.log.debugOnly('lidar value = ' + str(result))                    
                    # logger.log.verbose('^^^^^^^^^^^^^^^^^^^^^^^^')               
-                    if result != None:
-                       
-                        
+                    if result != None:                                               
                         sensors['Lidar'] = result
+                        logger.log.info("mavlink 4 - new lidar data!")
 
         return sensors #Any sensor that is not updated will return 'None'
 

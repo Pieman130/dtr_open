@@ -152,6 +152,7 @@ class MavLink():
         '''Send command messsage to set values of individual servos'''
         cmd = self._build_msg_cmd_long(183,params=self._build_frame_cmd_do_set_servo(servo,pwm))
         self._uart.write(cmd)
+        logger.log.verbose('Sent motor command -- SERVO:' + str(servo) + ' PWM: ' + str(pwm))
 
 
     def __cntl_to_pwm(self,value):
@@ -161,6 +162,7 @@ class MavLink():
 
     def setControls(self,controls):
         '''Send corresponding mavlink message to set servo values based on current settings of controls object'''
+
         self.send_set_servo_cmd(YAW_SERVO,self.__cntl_to_pwm(controls.yaw)) #YAW Servo Channel 2
         self.send_set_servo_cmd(THROTTLE_SERVO,self.__cntl_to_pwm(controls.throttle)) #THROTTLE Servo Channel 1
         self.send_set_servo_cmd(UP_SERVO,self.__cntl_to_pwm(controls.up)) #UP Servo Channel 3

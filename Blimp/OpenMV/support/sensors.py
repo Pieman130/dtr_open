@@ -57,9 +57,20 @@ class Sensors:
         #dataClasses.rawData.imu_yaw = sensors.imuSensor.getPitch()
         #dataClasses.rawData.imu_roll = sensors.imuSensor.getYaw()
         dataClasses.rawData.irSensor = self.irSensor.value()    
+        
 
-        logger.log.verbose("right before get mavlink data")
-        current_raw_sensor_data = self.mavlink.getSensors()        
+        start = time.time_ns()
+        current_raw_sensor_data = self.mavlink.getSensors()  
+        mavlinkTimeNs = time.time_ns() - start
+        mavlinkTime = mavlinkTimeNs/1e9
+        
+        maxTime = 0.4
+        delayTime = maxTime - mavlinkTime
+        logger.log.info('MAVLINK TIME: ' + str(mavlinkTime))          
+        time.sleep(delayTime)
+
+            
+        
 
         if current_raw_sensor_data['Attitude'] != None:
             dataClasses.rawData.imu_yaw = current_raw_sensor_data['Attitude']['yaw']

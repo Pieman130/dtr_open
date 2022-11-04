@@ -85,11 +85,13 @@ connectors:
     <<: *Batt_PH_F_template 
   Catch Servo:
     <<: *DP_SERVO_template
+    pinlabels: [GND,5V,PWM]
     type: JST 1.25
     subtype: male
     image:
       src: JST 1.25 3 Pos Pin ID.png
       width: 200
+    notes: Ignore cable colors in image. 
   
 cables:
 # Power distribution cables

@@ -155,7 +155,26 @@ class FlightAction:
             #self.controls.up = self.pid_up.get_pid(self.lidar_ema-height,scaler= dataClasses.gndStationCmd.scalar_up)             
 
             logger.log.info("Executing Assisted Altitude.  PID Up Value: {}".format(self.controls.up) )
-            
+       
+
+    def execute_yaw_control(self, desired_yaw_rate):
+        '''take in desired yaw_rate from attitude message
+        and maintain a pid controlled yaw'''
+        logger.log.info("executing yaw rate control.  Desired yaw rate: " + str(yaw_rate))
+        if self.data.imu_yaw_rate != None:
+
+                if (dataClasses.config.isMicroPython):                
+                self.pid_yaw.set_pid_gains(p = dataClasses.gndStationCmd.p_yaw)
+                self.pid_yaw.error_rounding_up = dataClasses.gndStationCmd.error_rounding_yaw
+                self.pid_yaw.error_scaling_up = dataClasses.gndStationCmd.error_scaling_yaw
+                self.pid_yaw.pid_minimum = dataClasses.gndStationCmd.pid_min_yaw
+ 
+            else:
+                p = dataClasses.gndStationCmd.p_yaw
+                self.pid_yaw.set_pid_gains(p)  
+
+            self.controls.yaw = self.pid_yaw.get_pid(self.data.imu_yaw_rate-desired_yaw_rate,scaler=dataClasses.gndStationCmd.scalar_yaw)
+            logger.log.info("Executing Yaw Rate Control.  PID Yaw Value: {}".format(self.controls.yaw) )
 
 class Controls:
     def __init__(self):

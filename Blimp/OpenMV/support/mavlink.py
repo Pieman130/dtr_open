@@ -1,14 +1,20 @@
 import struct, time
 import logger
 
-THROTTLE_SERVO = 1
+UART_READ_SIZE = 128 #64, 128, 256
+
+THROTTLE_SERVO = 1  
 YAW_SERVO = 2
 UP_SERVO = 3
-MSG_RATE = 200000 #5Hz messaging rate
+MSG_RATE = 50000 #20Hz messaging rate
+MSG_RATE_LIDAR = 50000
 RCCH = 35
 ATTITUDE = 30
 SERVO = 36
 LIDAR = 132
+
+SUPPRESS_MSG = -1
+
 
 
 class MavLink():
@@ -22,10 +28,15 @@ class MavLink():
 
         time.sleep(0.25) #Allow UART to initialize before sending messages MAYBE NOT NEEDED
 
+        reject_msg = [74,65,1,42,227,22,253,125,27,24,241,0,146,2,165,163,168,233,116,172,193]
+        for msg in reject_msg:
+            self.send_set_msg_interval_cmd(msg,SUPPRESS_MSG)
+            time.sleep(0.25)
+
         self.send_set_msg_interval_cmd(RCCH,MSG_RATE) #RC_Channels_Raw
         self.send_set_msg_interval_cmd(ATTITUDE,MSG_RATE) #Attitude
         self.send_set_msg_interval_cmd(SERVO,MSG_RATE) #Servo Channels
-        self.send_set_msg_interval_cmd(LIDAR,MSG_RATE) #LIDAR
+        self.send_set_msg_interval_cmd(LIDAR,MSG_RATE_LIDAR) #LIDAR
 
 
     def __get_ps(self):
@@ -139,6 +150,15 @@ class MavLink():
         '''
         return [servo_ch,value,float('NaN'),float('NaN'),float('NaN'),float('NaN'),float('NaN')]
 
+    def _build_frame_cmd_do_repeat_servo(self,servo_ch,value):
+        '''Set params for mav_cmd_do_repeat_servo #184
+        servo_ch= servo channel number
+        value = PWM value (us)
+        cycle_count = count
+        cycle_time = time_in_seconds (some discussion that maybe this is really in ms)
+        '''
+        return [servo_ch,value,1,0.5,float('NaN'),float('NaN'),float('NaN')]
+
 
     def send_set_msg_interval_cmd(self,msg_id,interval):
         '''Send cmd message #511 to set desired publish rate of msg.
@@ -151,7 +171,9 @@ class MavLink():
     def send_set_servo_cmd(self,servo,pwm):
         '''Send command messsage to set values of individual servos'''
         cmd = self._build_msg_cmd_long(183,params=self._build_frame_cmd_do_set_servo(servo,pwm))
+        #cmd = self._build_msg_cmd_long(184,params=self._build_frame_cmd_do_repeat_servo(servo,pwm))
         self._uart.write(cmd)
+        logger.log.verbose('Sent motor command -- SERVO:' + str(servo) + ' PWM: ' + str(pwm))
 
 
     def __cntl_to_pwm(self,value):
@@ -161,6 +183,7 @@ class MavLink():
 
     def setControls(self,controls):
         '''Send corresponding mavlink message to set servo values based on current settings of controls object'''
+
         self.send_set_servo_cmd(YAW_SERVO,self.__cntl_to_pwm(controls.yaw)) #YAW Servo Channel 2
         self.send_set_servo_cmd(THROTTLE_SERVO,self.__cntl_to_pwm(controls.throttle)) #THROTTLE Servo Channel 1
         self.send_set_servo_cmd(UP_SERVO,self.__cntl_to_pwm(controls.up)) #UP Servo Channel 3
@@ -177,7 +200,8 @@ class MavLink():
             msg[5] = message type 
             msg[6:6+n] = payload n = message payload length
             msg[6+n:6+n+3] = checksum'''
-        result = self._uart.read(256)
+        #logger.log.verbose('bytes in uart: ' + str(self._uart.any()))
+        result = self._uart.read(UART_READ_SIZE)
        
         if result == None:
             return None
@@ -214,11 +238,11 @@ class MavLink():
             _mav_put_uint8_t(buf, 12, orientation);
             _mav_put_uint8_t(buf, 13, covariance);
         '''
-        #try:
-        return struct.unpack('<1H',msg[8:10])[0] #current_distance
+        try:
+            return struct.unpack('<1H',msg[8:10])[0] #current_distance
   
-        #except ValueError:
-         #   return None
+        except ValueError:
+            return None
 
 
     def __parse_attitude_msg(self,msg):
@@ -295,8 +319,13 @@ class MavLink():
 
     def getSensors(self):
         '''Returns dict where key = Sensor_type, value = most recent value received via mavlink'''
+        start = time.time_ns()
         msg_list = self._read_uart()     
+        uartReadTime = (time.time_ns() - start)/1e9
+        logger.log.verbose('mavlink uart read: ' + str(uartReadTime))
         
+
+
         if(msg_list == None):
             logger.log.warning(">>>>>>>>>>>>>>>>>>") 
             logger.log.warning("MAVLINK LINK FAIL")
@@ -311,24 +340,26 @@ class MavLink():
                     result = self.__parse_attitude_msg(msg[1])
                     if result != None:
                         sensors['Attitude'] = result
+                        logger.log.info("mavlink 1 - new attitude data!")
                 elif msg[0] == RCCH:
                     result = self.__parse_rc_ch_msg(msg[1])
                     if result != None:
                         sensors['RCCH'] = result
+                        logger.log.info("mavlink 2 - new rcch data!")
                 elif msg[0] == SERVO:
                     result = self.__parse_servo_output_msg(msg[1])
                     if result != None:
                         sensors['Servo'] = result
+                        logger.log.info("mavlink 3 - new servo data!")
                 elif msg[0] == LIDAR:
                     result = self.__parse_lidar_msg(msg[1])  
                    # logger.log.verbose('^^^^^^^^LIDAR^^^^^^^^^^^^^^^^')  
                     #logger.log.verbose(result)
                     #logger.log.debugOnly('lidar value = ' + str(result))                    
                    # logger.log.verbose('^^^^^^^^^^^^^^^^^^^^^^^^')               
-                    if result != None:
-                       
-                        
+                    if result != None:                                               
                         sensors['Lidar'] = result
+                        logger.log.info("mavlink 4 - new lidar data!")
 
         return sensors #Any sensor that is not updated will return 'None'
 

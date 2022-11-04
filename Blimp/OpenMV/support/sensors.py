@@ -23,10 +23,6 @@ class Sensors:
         time.sleep(0.5)
         
 
-    def getDataFake(self):
-        return 144
-
-
     def swInitializeCamera(self):         
 
         self.camera = self.hw.camera
@@ -61,9 +57,20 @@ class Sensors:
         #dataClasses.rawData.imu_yaw = sensors.imuSensor.getPitch()
         #dataClasses.rawData.imu_roll = sensors.imuSensor.getYaw()
         dataClasses.rawData.irSensor = self.irSensor.value()    
+        
 
-        logger.log.verbose("right before get mavlink data")
-        current_raw_sensor_data = self.mavlink.getSensors()        
+        start = time.time_ns()
+        current_raw_sensor_data = self.mavlink.getSensors()  
+        mavlinkTimeNs = time.time_ns() - start
+        mavlinkTime = mavlinkTimeNs/1e9
+        
+       # maxTime = 0.4
+       # delayTime = maxTime - mavlinkTime
+        logger.log.info('MAVLINK TOTAL TIME: ' + str(mavlinkTime))          
+        #time.sleep(delayTime)
+
+            
+        
 
         if current_raw_sensor_data['Attitude'] != None:
             dataClasses.rawData.imu_yaw = current_raw_sensor_data['Attitude']['yaw']
@@ -84,13 +91,14 @@ class Sensors:
             dataClasses.rawData.motor_up = current_raw_sensor_data['Servo']['servo3'] 
 
         if current_raw_sensor_data['Lidar'] != None:
-            dataClasses.rawData.lidar_cm = current_raw_sensor_data['Lidar']
+            dataClasses.rawData.lidar = current_raw_sensor_data['Lidar']
             
-            logger.log.verbose("&&&&&&&&&&&")
-            logger.log.verbose(dataClasses.rawData.lidar_cm)
+            logger.log.info("lidar distance: " + str(dataClasses.rawData.lidar))
 
 
         dataClasses.rawData.door_position = self.hw.servo.angle()
-
-
+            
+        
+        logger.log.debugOnly("lidar = " + str(dataClasses.data.lidarDistance))
+        logger.log.verbose("motor up value = " + str(dataClasses.rawData.motor_up))       
       

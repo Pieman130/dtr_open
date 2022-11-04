@@ -7,14 +7,15 @@ class NetworkMock:
         logger.log.info("network mock")
 
     def connect(self,ssid,key):
-        logger.log.info("mock connecting to: " + ssid + ", " + key)
+        pass
+        #logger.log.info("mock connecting to: " + ssid + ", " + key)
 
     def ifconfig(self):
         logger.log.info("mock if config")
 
 class ServoMock:
     def __init__(self):
-        logger.log.info("servo mock");
+        logger.log.info("servo mock")
     def angle(self):
         return 0
 
@@ -36,7 +37,8 @@ class UartMock:
         logger.log.info("uart mock")
     
     def write(self,msg):
-        logger.log.verbose("uart mock send: " + str(msg))
+        pass
+       # logger.log.verbose("uart mock send: " + str(msg))
 
     def read(self,val):
         logger.log.verbose("uart read")

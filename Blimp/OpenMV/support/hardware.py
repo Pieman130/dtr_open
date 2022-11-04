@@ -7,7 +7,7 @@ import logger
 
 
 UART_BAUDRATE = 115200
-UART_TIMEOUT = 1000
+UART_TIMEOUT = 50
 HW_UART = 3
 IR_DETECT_PIN = 'P6'
 SERVO_PWM_ID = 3 #1-3, corresponding to P7-P9. P7-P8 used by wifi

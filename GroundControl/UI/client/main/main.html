@@ -1,60 +1,201 @@
-<h2>Last Blimp Heartbeat:</h2>
-<h4>{{m.status.blimpLastHeartbeat}}</h4> 
-<p></p>
 
-
-
-<div class="card"> 
-    <h5 class="card-header">Autonomous Information:</h5>
-    <div class="card-body">  
-        <h4>Mode: {{m.status.state_description}}</h4>
-        <h4>Target: {{m.status.state_target}}</h4>
-        <h4>Action: {{m.status.state_action}}</h4>
-        <h4>Maneuever: {{m.status.currentManeuver}}</h4>
+<div class="card-group">
+    <div class="card" style="width: 30rem;"> 
+        <h2>Last Blimp Heartbeat:</h2>
+        <h4>{{m.status.blimpLastHeartbeat}}</h4> 
+        <p></p>
+    </div>
+    <div class="card" style="width: 30rem;">      
+        <h4 class="card-header" >Control:</h4>
+        <form>            
+            <div class="form-row">
+                <div class="form-group col-md-2">    
+                    <label>
+                        <input type="radio" ng-model = "m.control" value="autonomous" ng-change="m.sendControlChange()"> Autonomous
+                    </label>
+                </div>  
+                <div class="form-group col-md-2">    
+                    <label>
+                        <input type="radio" ng-model = "m.control" value="auto-assisted" ng-change="m.sendControlChange()"> Auto-Assisted
+                    </label>
+                </div>
+                <div class="form-group col-md-2">                                    
+                    <label>
+                        <input type="radio" ng-model = "m.control" value="manualWeb" ng-change="m.sendControlChange()"> Manual web control
+                    </label>
+                </div>
+                <div class="form-group col-md-2">                                    
+                    <label>
+                        <input type="radio" ng-model = "m.control" value="manualRemote" ng-change="m.sendControlChange()"> Manual Remote
+                    </label>
+                </div>                
+            </div>
+        </form>
+        <p></p>
     </div>
 </div>
 
+<div class="card-group">
+    <div class="card" style="width: 30rem;"> 
+        <h5 class="card-header" >System Information:</h5>
+        <div class="card-body">  
+            <h4>Control Authority: {{m.status.controlAuthority}}</h4>
+            <h4>Mode: {{m.status.state_description}}</h4>
+            <h4>Target: {{m.status.state_target}}</h4>
+            <h4>Action: {{m.status.state_action}}</h4>
+            <h4>Maneuever: {{m.status.currentManeuver}}</h4>
+        </div>
+    </div>   
+    <div class="card" style="width: 30rem;"> 
+        <h5 class="card-header">Sensor Information:</h5>
 
-
-<div class="card"> 
-    <h5 class="card-header">Sensor Information:</h5>
+        <h4>Camera detection string: {{m.status.cameraDetectionStr}}</h4>    
+        <h4>Ir Sensor Detection: {{m.status.isIrSensorDetection}}</h4>            
+        <h4>Lidar Distance (cm): {{m.status.lidarDistance}}</h4>        
     
-    <h4>{{m.status.cameraDetectionStr}}</h4>
-    <h3>Camera detection string:</h3>
+    </div>
+    <div class="card text-white bg-success" style="width: 15rem;">      
+        <h5 class="card-header">Active Values</h5>
+        
+        <h5>Up: {{m.status.upMotor}}</h5>
+        <h5>Throttle: {{m.status.throttleMotor}}</h5>
+        <h5>Yaw: {{m.status.yawMotor}}</h5>
+        <h5>Servo Door: {{m.status.servoDoor}}</h5>
+        
+    </div>
 
-    <h3>Ir Sensor Detection:</h3>
-    <h4>{{m.status.isIrSensorDetection}}</h4>
-
-    <h3>Lidar Distance(ft):</h3>
-    <h4>{{m.status.lidarDistance_ft}}</h4>
+    <div class="card border-primary text-primary" style="width: 30rem;" >      
+        <h5 class="card-header">Manual Control Requests</h5>
+        
+        <label>Up</label><input type = "number" ng-model = "m.requests.up" style="width: 75px;" >  
+    
+        <label>Throttle</label>
+        <input type = "number" ng-model = "m.requests.throttle" style="width: 75px;" >  
+    
+        <label>Yaw</label>
+        <input type = "number" ng-model = "m.requests.yaw" style="width: 75px;" >  
+    
+        <label>Door open</label>
+        <input type = "number" ng-model = "m.requests.doorOpen" style="width: 75px;" >  
+        <button type="button" style="width: 150px;" class="btn btn-primary" ng-click="m.sendRequests()">Send</button>                                         
+    </div>
 
 </div>
 
 
-<!--
-<div class="card"> 
-    <h5 class="card-header">Manual Control:</h5>
+
+<div class="card-group">
+
+    <div class="card text-white bg-dark mb-3" style="width: 40rem;">     
+        <h5 class="card-header">Log printouts {{m.logs.logTime}}</h5>
+        <label>Num log loops to view: </label>    
+        <input type = "number" ng-model = "m.numLogLoopsToView" style="width: 75px;" >  
     
-    <label>Up</label>
-    <input type = "number" ng-model = "m.input.up" style="width: 75px;" >  
+        <p></p>
+        <textarea class="text-white bg-dark mb-3" ng-model="m.logs.lines" rows="25"></textarea>
+    </div>
 
-    <label>Throttle</label>
-    <input type = "number" ng-model = "m.input.throttle" style="width: 75px;" >  
+    
+    <div class="card">
+        <h5 class="card-header">Plotting</h5>
+        <div class="card-body">
+            <nvd3 options="m.plotting.options" data="m.plotting.data" config="{refreshDataOnly: false,deepWatchData: true,
+                deepWatchDataDepth: 0}"  >
+            </nvd3> 
+        </div>    
+    </div>
 
-    <label>Yaw</label>
-    <input type = "number" ng-model = "m.input.yaw" style="width: 75px;" >  
 
-    <label>Door open</label>
-    <input type = "number" ng-model = "m.input.doorOpen" style="width: 75px;" >  
+    <div class="card border-primary text-secondary" style="width: 30rem;" >    
+
+        <h5 class="card-header">Configuration Values</h5>
+        <form>            
+            <div class="form-row">
+                <div class="form-group col-md-2">    
+                    <h4>Up</h4>
+                </div>
+                <div class="form-group col-md-2">    
+                    <label>P</label>                
+                    <input type = "number" class="form-control" ng-model = "m.config.pid.up.p" >              
+                </div>
+                <div class="form-group col-md-2">    
+                    <label>I</label>                
+                    <input type = "number" class="form-control" ng-model = "m.config.pid.up.i" >  
+                </div>
+                <div class="form-group col-md-2">    
+                    <label>D</label>                
+                    <input type = "number" class="form-control" ng-model = "m.config.pid.up.d" >  
+                </div>         
+                <div class="form-group col-md-2">    
+                    <label>Scalar</label>                
+                    <input type = "number" class="form-control" ng-model = "m.config.scalar.up" >  
+                </div>                    
+            </div>
+        
+            <div class="form-row">
+                <div class="form-group col-md-2">    
+                    <h4>Throttle</h4>
+                </div>
+                <div class="form-group col-md-2">    
+                    <label>P</label>                
+                    <input type = "number" class="form-control" ng-model = "m.config.pid.throttle.p" >              
+                </div>
+                <div class="form-group col-md-2">    
+                    <label>I</label>                
+                    <input type = "number" class="form-control" ng-model = "m.config.pid.throttle.i" >  
+                </div>
+                <div class="form-group col-md-2">    
+                    <label>D</label>                
+                    <input type = "number" class="form-control" ng-model = "m.config.pid.throttle.d" >  
+                </div>       
+                <div class="form-group col-md-2">    
+                    <label>Scalar</label>                
+                    <input type = "number" class="form-control" ng-model = "m.config.scalar.throttle" >  
+                </div>                      
+            </div>
 
 
-    <h4>{{m.status.cameraDetectionStr}}</h4>
-    <h3>Camera detection string:</h3>
+            <div class="form-row">
+                <div class="form-group col-md-2">    
+                    <h4>Yaw</h4>
+                </div>
+                <div class="form-group col-md-2">    
+                    <label>P</label>                
+                    <input type = "number" class="form-control" ng-model = "m.config.pid.yaw.p" >              
+                </div>
+                <div class="form-group col-md-2">    
+                    <label>I</label>                
+                    <input type = "number" class="form-control" ng-model = "m.config.pid.yaw.i" >  
+                </div>
+                <div class="form-group col-md-2">    
+                    <label>D</label>                
+                    <input type = "number" class="form-control" ng-model = "m.config.pid.yaw.d" >  
+                </div>         
+                <div class="form-group col-md-2">    
+                    <label>Scalar</label>                
+                    <input type = "number" class="form-control" ng-model = "m.config.scalar.yaw" >  
+                </div>             
+            </div>   
+            
 
-    <h3>Ir Sensor Detection:</h3>
-    <h4>{{m.status.isIrSensorDetection}}</h4>
+            <div class="form-row">
+                <div class="form-group col-md-2">    
+                    <label>Rounding Up</label>
+                    <input type = "number" class="form-control" ng-model = "m.config.pid.up.error_rounding_up" >  
+                </div>
+                <div class="form-group col-md-2">    
+                    <label>Scaling Up</label>                
+                    <input type = "number" class="form-control" ng-model = "m.config.pid.up.error_scaling_up" >              
+                </div>
+                <div class="form-group col-md-2">    
+                    <label>Min Up</label>                
+                    <input type = "number" class="form-control" ng-model = "m.config.pid.up.pid_min_up" >  
+                </div>                          
+            </div>   
+
+        </form>
+         
+        <button type="button" style="width: 150px;" class="btn btn-secondary" ng-click="m.sendConfig()">Send</button>                                         
+    </div>
 
 </div>
-
--->
-

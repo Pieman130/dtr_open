@@ -19,6 +19,7 @@ def doTestPrint():
     print('=======TEST=======')
 
 interface.register_callback(doTestPrint)
+interface.loop()
 
 while(True):
     time.sleep(0.5)

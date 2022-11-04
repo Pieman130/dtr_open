@@ -55,8 +55,7 @@ class MissionCommander:
     def updateState(self): #to be redefined by which control authority is selected
         pass
 
-    def determineControlAuthority(self):
-
+    def determineControlAuthority(self):        
        
         processing.parseRCSwitchPositions()
 

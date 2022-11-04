@@ -39,6 +39,7 @@ except Exception as e:
         print(e)
         print(".")
 
+import ftp
 import logger
 #logger.log.setLevel_info()
 logger.log.setLevel_verbose()
@@ -93,10 +94,10 @@ def main() -> None:
     LOOP_TIME_FIXED = 0.2
     
     while(True):
-
+        
         start = time.time_ns()
         
-
+        
         logger.log.heartbeat("===============================")
         logger.log.heartbeat("Top of loop")
         logger.log.heartbeat("===============================")
@@ -113,22 +114,31 @@ def main() -> None:
         fltDirector.executeNextStep()
 
         gndStation.sendStatusMessage(missionCmder,fltDirector)
-  
        
+        if(dataClasses.gndStationCmd.doFtpLoadAndReset):
+            ftpLoadAndReset(hw,comm)
+
         # make loop time fixed
         loopTime = (time.time_ns() - start)/1e9
         loopPause = LOOP_TIME_FIXED - loopTime
         if(loopPause >0):
             time.sleep(loopPause)
-            logger.log.verbose('loop pause added: ' + str(loopPause))
-
-        
-
+            logger.log.verbose('loop pause added: ' + str(loopPause))        
 
         loopTime = (time.time_ns() - start)/1e9
         logger.log.info('Loop time: ' + str(loopTime))
 
        # logger.log.getLogsForServerAndClear()
+
+def ftpLoadAndReset(hw,comm):
+    port = 21
+    timeout=None
+    #logger.log.info("Waiting " + str(timeout) + " sec for new files then reboot.")
+    logger.log.getLogsForServerAndClear()
+    ftp.ftpserver(port,timeout,comm.wifi.wlan)
+    
+    hw.led.turnOn('cyan')
+    #hw.pyb.hard_reset()
 
 def dumbPid(setVal,lidar):
     if(setVal >= lidar):

@@ -193,7 +193,7 @@ class MavLink():
             msg[5] = message type 
             msg[6:6+n] = payload n = message payload length
             msg[6+n:6+n+3] = checksum'''
-        logger.log.verbose('bytes in uart: ' + str(self._uart.any()))
+        #logger.log.verbose('bytes in uart: ' + str(self._uart.any()))
         result = self._uart.read(UART_READ_SIZE)
        
         if result == None:

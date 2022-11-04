@@ -58,25 +58,42 @@ def send_file_data(path, dataclient):
 
 
 def save_file_data(path, dataclient):
+    print('in save_file_data')
     with open(path, "wb") as file:
         print(path + " opened successfully.")
-        chunk = dataclient.recv(512)
-        print("first chunk received")
-        keepGoing = 1        
-        while (len(chunk) > 0 ) and keepGoing:         
-            print("nonzero chunk received")
-            file.write(chunk)
-            print("file write chunk succeeded")
+        keepGoing = 1
+        chunk = 'test'
+        while(keepGoing):
+            try:
+                chunk = dataclient.recv(1)
+                #if(len(chunk)>0):
+                 #   file.write(chunk)
+            except:
+                print("no more data")
 
-            if(len(chunk) < 512):
-                keepGoing = 0
-                print("quitting")
-            else:
-                chunk = dataclient.recv(512)
-                print("file read N + 1 completed")
+
+       # chunk = dataclient.recv(512)
+       # chunk = 'stuff'
+       # print(chunk)
+      #  totalBytes = 0        
+      #  chunkLen = len(chunk)
+      #  print('chunkLen: ' + str(chunkLen))
+       # while (len(chunk) > 0 ):            
+        #    print("in save file data while loop")
+            #file.write(chunk) # no actual writing to file
+         #   print("saved file data")
+          #  totalBytes = totalBytes + len(chunk)            
+          #  print("file write chunk succeeded")
+           # try:
+             #   chunk = dataclient.recv(512)     
+             #   print("read chunk succeeded")
+            #    print('chunkLen: ' + str(chunkLen))
+            #except:        
+             #   print("no more data to read")
+
             
         
-        print("save file done")
+        print("save file done") # + str(totalBytes))
 
         
 
@@ -170,6 +187,7 @@ def ftpserver(port=21, timeout=None,wlan=None):
         fromname = None
         do_run = True
         while do_run:
+            print("do run!")
             cl, remote_addr = ftpsocket.accept()
             cl.settimeout(300)
             cwd = '/'
@@ -278,8 +296,7 @@ def ftpserver(port=21, timeout=None,wlan=None):
                     elif command == "STOR":
                         try:
                             cl.send("150 Ok to send data.\r\n")
-                            print("ready to save file to path: " + path)
-                            print(dataclient)                            
+                            print("ready to save file to path: " + path)                                                
                             save_file_data(path, dataclient)
                             cl.send("226 Transfer complete.\r\n")
                             print("226 transfer complete.")                        

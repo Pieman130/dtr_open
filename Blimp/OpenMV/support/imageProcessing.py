@@ -95,13 +95,13 @@ def find_ball(img):
                 rect_ema[3].update(r[3])
             if (rect_ema[2].get_value() != 0):
                 dist_ball = 22/(math.tan((rect_ema[2].get_value() * .22125)/2)) #rect_ema[2].getvalue() gives ball width, use equation for pixel width to meters away
-            #img.draw_rectangle(blob.rect())
-            img.draw_rectangle([round(ema.get_value()) for ema in rect_ema], 2)
-            img.draw_string(round(rect_ema[0].get_value()),round(rect_ema[1].get_value()), " Ball", [0, 0, 255], mono_space = False)
-            #img.draw_cross(blob.cx(), blob.cy())
-            img.draw_cross(round(x_ema.get_value()), round(y_ema.get_value()), 2)
-            ball_xerror = round(x_ema.get_value()) - 160
-            ball_yerror = round(y_ema.get_value()) - 120
+    #img.draw_rectangle(blob.rect())
+    img.draw_rectangle([round(ema.get_value()) for ema in rect_ema], 2)
+    img.draw_string(round(rect_ema[0].get_value()),round(rect_ema[1].get_value()), " Ball", [0, 0, 255], mono_space = False)
+    #img.draw_cross(blob.cx(), blob.cy())
+    img.draw_cross(round(x_ema.get_value()), round(y_ema.get_value()), 2)
+    ball_xerror = round(x_ema.get_value()) - 160
+    ball_yerror = round(y_ema.get_value()) - 120
 
 def find_yellow_goal(img):
     blobs = img.find_blobs([thresholds[0]], pixels_threshold=3, area_threshold=12, merge=True, margin=10)

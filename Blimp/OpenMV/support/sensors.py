@@ -85,6 +85,11 @@ class Sensors:
             dataClasses.rawData.rc_sw_flt_mode = current_raw_sensor_data['RCCH']['ch6'] 
             dataClasses.rawData.rc_sw_st_cntl = current_raw_sensor_data['RCCH']['ch5'] 
 
+            logger.log.verbose("Raw data states:")
+            logger.log.verbose("DR_CTRL:\t " + str(dataClasses.rawData.rc_sw_door))
+            logger.log.verbose("FLT_MDE:\t " + str(dataClasses.rawData.rc_sw_flt_mode))
+            logger.log.verbose("ST_CNTL:\t " + str(dataClasses.rawData.rc_sw_st_cntl))
+
         if current_raw_sensor_data['Servo'] != None:
             dataClasses.rawData.motor_throttle = current_raw_sensor_data['Servo']['servo1'] 
             dataClasses.rawData.motor_yaw = current_raw_sensor_data['Servo']['servo2'] 

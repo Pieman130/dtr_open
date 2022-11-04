@@ -85,8 +85,11 @@ def parseRCSwitchPositions():
     if currentValue is not None:
         # Iterate over states, setting state appropriately
         # Split up range evenly
+        logger.log.verbose("Beginning Switch Processing")
+        logger.log.verbose("Processing door control")
         currentDelta = 500 / (len(dataClasses.DoorControlState()) - 1)
         for state in dataClasses.DoorControlState():
+            logger.log.verbose(str(currentValue) + " " + state[0] + " " + state[1])
             if state[0] + currentDelta >= currentValue and state[0] - currentDelta <= currentValue:
                 dataClasses.data.sw_door_control = state[1]
                 break
@@ -95,13 +98,19 @@ def parseRCSwitchPositions():
 
     currentValue = dataClasses.rawData.rc_sw_flt_mode
     if currentValue is not None:
+        logger.log.verbose("Processing flight mode switch")
         currentDelta = 500 / (len(dataClasses.FlightModeState()) - 1)
         for state in dataClasses.FlightModeState():
+            logger.log.verbose(str(currentValue) + " " + state[0] + " " + state[1])
             if state[0] + currentDelta >= currentValue and state[0] - currentDelta <= currentValue:
                 dataClasses.data.sw_flight_mode = state[1]
                 break
         else:
             dataClasses.data.sw_flight_mode = None
+
+    logger.log.verbose("Processed data states:")
+    logger.log.verbose("DR_CTRL:\t " + str(dataClasses.data.sw_door_control))
+    logger.log.verbose("FLT_MDE:\t " + str(dataClasses.data.sw_flight_mode))
 
     # There's no switch for this in ProcessedData.
     # currentValue = dataClasses.rawData.rc_sw_st_cntl

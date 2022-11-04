@@ -19,14 +19,14 @@ class Controller():
         self.pid_minimum = -1
 
 
-    def set_pid_gains(self,**kwargs):
-        if 'p' in kwargs:
-            self.pid._kp = kwargs['p']        
-        if 'i' in kwargs:
-            self.pid._ki = kwargs['i']
-        if 'd' in kwargs:
-            self.pid._kd = kwargs['d']
-
+    def set_pid_gains(self,p=None,i=None,d=None):
+        if p != None:
+            self.pid._kp = p
+        if i != None:
+            self.pid._ki = i
+        if d != None:
+            self.pid._kd = d
+      
 
     def get_pid_gains(self):
         return {'p':self.pid.up_pid.up_p, 

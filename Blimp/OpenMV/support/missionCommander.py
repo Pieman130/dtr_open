@@ -59,30 +59,48 @@ class MissionCommander:
        
         processing.parseRCSwitchPositions()
 
-        if dataClasses.data.sw_door_control is not None:
-            logger.log.verbose("DoorSwitch: " + dataClasses.data.sw_door_control)
-        if dataClasses.data.sw_flight_mode is not None:
-            logger.log.verbose("FlightMode: " + dataClasses.data.sw_flight_mode)
+        
+        #logger.log.verbose('sw flight mode: ' + str(dataClasses.rawData.rc_sw_flt_mode))
+        #logger.log.verbose('sw flight mode: ' + str(dataClasses.data.sw_flight_mode ))
+        #logger.log.verbose('sw door control: ' + str(dataClasses.data.sw_door_control))
 
-
-        if (dataClasses.gndStationCmd.controlAuthority == CONTROL_AUTHORITY_AUTO):   
-            logger.log.verbose("CONTROL AUTHORITY: Auto")                  
-            self.updateState = self.updateStateAuto
-            
-        elif (dataClasses.gndStationCmd.controlAuthority == CONTROL_AUTHORITY_AUTO_ASSISTED):
-            logger.log.verbose("CONTROL AUTHORITY: Auto assisted")             
-            self.updateState = self.updateStateAutoAssisted
-
-        elif (dataClasses.gndStationCmd.controlAuthority == CONTROL_AUTHORITY_MANUAL_WEB):
-            logger.log.verbose("CONTROL AUTHORITY: Manual Web")
-            self.updateState = self.updateStateManualWeb
-
-        elif (dataClasses.gndStationCmd.controlAuthority == CONTROL_AUTHORITY_MANUAL_REMOTE):
-            logger.log.verbose("CONTROL AUTHORITY: Manual Remote")  
+        if(dataClasses.data.sw_flight_mode == 'manual'):
             self.updateState = self.updateStateManualRemote
-        else:
-            dataClasses.gndStationCmd.controlAuthority = CONTROL_AUTHORITY_AUTO
-            self.updateState = self.updateStateAuto
+
+        elif(dataClasses.data.sw_flight_mode == 'auto'):
+             self.updateState = self.updateStateAuto
+
+        elif(dataClasses.data.sw_flight_mode == 'assisted'):
+            if (dataClasses.gndStationCmd.controlAuthority == CONTROL_AUTHORITY_AUTO_ASSISTED):
+                logger.log.verbose("CONTROL AUTHORITY: Auto assisted")             
+                self.updateState = self.updateStateAutoAssisted
+
+            elif (dataClasses.gndStationCmd.controlAuthority == CONTROL_AUTHORITY_MANUAL_WEB):
+                logger.log.verbose("CONTROL AUTHORITY: Manual Web")
+                self.updateState = self.updateStateManualWeb
+
+            else:
+                dataClasses.gndStationCmd.controlAuthority = CONTROL_AUTHORITY_AUTO
+                self.updateState = self.updateStateAuto
+            
+
+       # if dataClasses.data.sw_door_control is not None:
+       #     logger.log.verbose("DoorSwitch: " + dataClasses.data.sw_door_control)
+       # if dataClasses.data.sw_flight_mode is not None:
+       #     logger.log.verbose("FlightMode: " + dataClasses.data.sw_flight_mode)
+
+
+       # if (dataClasses.gndStationCmd.controlAuthority == CONTROL_AUTHORITY_AUTO):   
+        #    logger.log.verbose("CONTROL AUTHORITY: Auto")                  
+         #   self.updateState = self.updateStateAuto
+            
+        
+
+        #elif (dataClasses.gndStationCmd.controlAuthority == CONTROL_AUTHORITY_MANUAL_REMOTE):
+         #   logger.log.verbose("CONTROL AUTHORITY: Manual Remote")  
+          #  self.updateState = self.updateStateManualRemote
+        #else:
+           
 
 
         dataClasses.config.controlAuthority = dataClasses.gndStationCmd.controlAuthority

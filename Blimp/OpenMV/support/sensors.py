@@ -82,8 +82,8 @@ class Sensors:
 
         if current_raw_sensor_data['RCCH'] != None:
             dataClasses.rawData.rc_sw_door = current_raw_sensor_data['RCCH']['ch7'] 
-            dataClasses.rawData.rc_sw_flt_mode = current_raw_sensor_data['RCCH']['ch6'] 
-            dataClasses.rawData.rc_sw_st_cntl = current_raw_sensor_data['RCCH']['ch5'] 
+            dataClasses.rawData.rc_sw_flt_mode = current_raw_sensor_data['RCCH']['ch5'] 
+            dataClasses.rawData.rc_sw_st_cntl = current_raw_sensor_data['RCCH']['ch6'] 
 
             logger.log.verbose("Raw data states:")
             logger.log.verbose("DR_CTRL:\t " + str(dataClasses.rawData.rc_sw_door))

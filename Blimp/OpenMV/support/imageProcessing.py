@@ -82,14 +82,14 @@ def find_ball(img):
         current = [blob.cx(), blob.cy(), blob.rect()[2], blob.rect()[3]]
         if current[2] > biggest[2]:
             biggest = current
-    r = blob.rect()
+            r = blob.rect()
     if x_ema == None:
-        x_ema = EMA(current[0], ball_alpha)
+        x_ema = EMA(biggest[0], ball_alpha)
         rect_ema = [EMA(r[0], alpha_rect), EMA(r[1], alpha_rect), EMA(r[2], alpha_rect), EMA(r[3], alpha_rect)]
-        y_ema = EMA(current[1], ball_alpha)
+        y_ema = EMA(biggest[1], ball_alpha)
     else:
-        x_ema.update(current[0])
-        y_ema.update(current[1])
+        x_ema.update(biggest[0])
+        y_ema.update(biggest[1])
         rect_ema[0].update(r[0])
         rect_ema[1].update(r[1])
         rect_ema[2].update(r[2])

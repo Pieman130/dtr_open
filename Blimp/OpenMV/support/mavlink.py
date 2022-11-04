@@ -28,10 +28,10 @@ class MavLink():
 
         time.sleep(0.25) #Allow UART to initialize before sending messages MAYBE NOT NEEDED
 
-        reject_msg = [74,65,1,42,227,22,253,125,27,24,241,0,146,2,165,163,168,233,116,172,193]
-        for msg in reject_msg:
-            self.send_set_msg_interval_cmd(msg,SUPPRESS_MSG)
-            time.sleep(0.25)
+     #   reject_msg = [74,65,1,42,227,22,253,125,27,24,241,0,146,2,165,163,168,233,116,172,193]
+     #   for msg in reject_msg:
+      #      self.send_set_msg_interval_cmd(msg,SUPPRESS_MSG)
+       #     time.sleep(0.25)
 
         self.send_set_msg_interval_cmd(RCCH,MSG_RATE) #RC_Channels_Raw
         self.send_set_msg_interval_cmd(ATTITUDE,MSG_RATE) #Attitude

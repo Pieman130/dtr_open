@@ -19,6 +19,7 @@ import socket
 import network
 import uos
 import gc
+import time
 
 
 def send_list_data(path, dataclient, full):
@@ -49,27 +50,27 @@ def make_description(path, fname, full):
     return description
 
 
-def send_file_data(path, dataclient):
+def send_file_dataTheirs(path, dataclient):
     with open(path, "rb") as file:
         chunk = file.read(512)
         while len(chunk) > 0:
             dataclient.send(chunk)
             chunk = file.read(512)
 
-
 def save_file_data(path, dataclient):
     print('in save_file_data')
     with open(path, "wb") as file:
         print(path + " opened successfully.")
-        keepGoing = 1
-        chunk = 'test'
-        while(keepGoing):
-            try:
-                chunk = dataclient.recv(1)
-                #if(len(chunk)>0):
-                 #   file.write(chunk)
-            except:
-                print("no more data")
+        keepGoing = 1                
+        
+        while(keepGoing):            
+            print("about to read")
+            chunk = dataclient.read(512)
+            if(chunk):
+                file.write(chunk)
+            else:
+                keepGoing = 0
+          
 
 
        # chunk = dataclient.recv(512)
@@ -296,10 +297,14 @@ def ftpserver(port=21, timeout=None,wlan=None):
                     elif command == "STOR":
                         try:
                             cl.send("150 Ok to send data.\r\n")
-                            print("ready to save file to path: " + path)                                                
-                            save_file_data(path, dataclient)
-                            cl.send("226 Transfer complete.\r\n")
-                            print("226 transfer complete.")                        
+                            print("ready to save file to path: " + path) 
+                            if dataclient is not None:                                               
+                                save_file_data(path, dataclient)
+                                cl.send("226 Transfer complete.\r\n")
+                                print("226 transfer complete.")  
+                                time.sleep(3)    
+                            else:
+                                print("no data client socket!")                  
                         except Exception as err:
                             print('EXCEPTION 0')
                             print(err)

@@ -89,7 +89,7 @@ def parseRCSwitchPositions():
         logger.log.verbose("Processing door control")
         currentDelta = 500 / (len(dataClasses.DoorControlState()) - 1)
         for state in dataClasses.DoorControlState():
-            logger.log.verbose(str(currentValue) + " " + state[0] + " " + state[1])
+            logger.log.verbose(str(currentValue) + " " + str(state[0]) + " " + str(state[1]))
             if state[0] + currentDelta >= currentValue and state[0] - currentDelta <= currentValue:
                 dataClasses.data.sw_door_control = state[1]
                 break
@@ -101,7 +101,7 @@ def parseRCSwitchPositions():
         logger.log.verbose("Processing flight mode switch")
         currentDelta = 500 / (len(dataClasses.FlightModeState()) - 1)
         for state in dataClasses.FlightModeState():
-            logger.log.verbose(str(currentValue) + " " + state[0] + " " + state[1])
+            logger.log.verbose(str(currentValue) + " " + str(state[0]) + " " + str(state[1]))
             if state[0] + currentDelta >= currentValue and state[0] - currentDelta <= currentValue:
                 dataClasses.data.sw_flight_mode = state[1]
                 break

@@ -114,6 +114,11 @@ def main() -> None:
         fltDirector.executeNextStep()
 
         gndStation.sendStatusMessage(missionCmder,fltDirector)
+
+
+        logger.log.verbose('sw flight mode: ' + str(dataClasses.rawData.rc_sw_flt_mode))
+        logger.log.verbose('sw flight mode: ' + str(dataClasses.data.sw_flight_mode ))
+        logger.log.verbose('sw door control: ' + str(dataClasses.data.sw_door_control))
        
         if(dataClasses.gndStationCmd.doFtpLoadAndReset):
             ftpLoadAndReset(hw,comm)

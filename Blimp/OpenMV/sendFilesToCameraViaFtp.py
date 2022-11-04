@@ -8,13 +8,14 @@ username = ''
 password = ''
 
 s = supportDirectory.SupportDirectory()
-myPath = s.getPath()
-#myPath = 'c:\\Users\\timothy.woodbridge\\Desktop\\sillyTest\\'
+#myPath = s.getPath()
+myPath = 'c:\\Users\\timothy.woodbridge\\Desktop\\sillyTest\\'
 
 
 myFTP = ftplib.FTP(server) #, username, password)
 
 def uploadThis(path):
+    #myFTP.sendcmd("PASV")
     files = os.listdir(path)
     os.chdir(path)
 

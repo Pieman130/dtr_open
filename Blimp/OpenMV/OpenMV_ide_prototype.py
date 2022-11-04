@@ -9,9 +9,9 @@ ledIR = pyb.LED(4)
 threshold_index = 1
 auto_mode = True
 
-thresholds = [(60, 82, -48, -11, -128, 127), #yellow 0
+thresholds = [(64, 100, -36, -11, 8, 127), #yellow 0
               (0, 70, -59, -12, -10, 54), #green 1
-              (17, 100, 14, 70, 34, 127)] #orange 2
+              (35, 62, 29, 93, 35, 98)] #orange 2
 
 sensor.reset()
 sensor.set_pixformat(sensor.RGB565)

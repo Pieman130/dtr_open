@@ -139,7 +139,7 @@ def find_yellow_goal(img):
     img.draw_cross(round(goalx_ema.get_value()), round(goaly_ema.get_value()), color=[0,0,0])
     dataClasses.data.goal_yellow_xerror = 160 - round(goalx_ema.get_value())
     dataClasses.data.goal_yellow_goal_yerror = round(goaly_ema.get_value()) - 120
-
+    return
 def find_orange_goal(img):
     blobs = img.find_blobs([thresholds[2]], pixels_threshold=3, area_threshold=12, merge=True, margin=10)
     biggest = [160,120,0,0] #[cx, cy, width, height]
@@ -173,6 +173,7 @@ def find_orange_goal(img):
     img.draw_cross(round(goalx_ema.get_value()), round(goaly_ema.get_value()), color=[0,0,0])
     dataClasses.data.goal_orange_xerror = 160 - round(goalx_ema.get_value())
     dataClasses.data.goal_orange_goal_yerror = round(goaly_ema.get_value()) - 120
+    return
 
 
 

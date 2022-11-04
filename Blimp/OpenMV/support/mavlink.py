@@ -13,6 +13,8 @@ ATTITUDE = 30
 SERVO = 36
 LIDAR = 132
 
+SUPPRESS_MSG = -1
+
 
 
 class MavLink():
@@ -25,6 +27,15 @@ class MavLink():
         self.ser_buf = bytearray()
 
         time.sleep(0.25) #Allow UART to initialize before sending messages MAYBE NOT NEEDED
+
+        reject_msg = [74,65,1,42,227,77,22,253,125,27,24,241,0,146,2,165,163,168,233,116,172,193]
+        for msg in reject_msg:
+            self.send_set_msg_interval_cmd(msg,SUPPRESS_MSG)
+
+        self.send_set_msg_interval_cmd(RCCH,MSG_RATE) #RC_Channels_Raw
+        self.send_set_msg_interval_cmd(ATTITUDE,MSG_RATE) #Attitude
+        self.send_set_msg_interval_cmd(SERVO,MSG_RATE) #Servo Channels
+        self.send_set_msg_interval_cmd(LIDAR,MSG_RATE) #LIDAR
 
         self.send_set_msg_interval_cmd(RCCH,MSG_RATE) #RC_Channels_Raw
         self.send_set_msg_interval_cmd(ATTITUDE,MSG_RATE) #Attitude

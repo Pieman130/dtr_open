@@ -163,8 +163,8 @@ class FlightAction:
         logger.log.info("executing yaw rate control.  Desired yaw rate: " + str(yaw_rate))
         if self.data.imu_yaw_rate != None:
 
-                if (dataClasses.config.isMicroPython):                
-                self.pid_yaw.set_pid_gains(p = dataClasses.gndStationCmd.p_yaw)
+            if (dataClasses.config.isMicroPython):                
+                self.pid_yaw.set_pid_gains(dataClasses.gndStationCmd.p_yaw)
                 self.pid_yaw.error_rounding_up = dataClasses.gndStationCmd.error_rounding_yaw
                 self.pid_yaw.error_scaling_up = dataClasses.gndStationCmd.error_scaling_yaw
                 self.pid_yaw.pid_minimum = dataClasses.gndStationCmd.pid_min_yaw

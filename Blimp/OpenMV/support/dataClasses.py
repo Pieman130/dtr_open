@@ -30,10 +30,7 @@ class ProcessedData:
         self.goalColorChoice = None
         self.goalColorDetected = None
         self.isBallDetected = None
-        self.ballx = None
-        self.bally = None
-        self.goalx = None
-        self.goaly = None
+              
         self.goalskew = None
         self.distanceToBall = None
         self.aprilTagFound = None
@@ -43,6 +40,15 @@ class ProcessedData:
         self.sw_door_control = 'open'
         self.sw_flight_mode = 'manual'
 
+        self.goal_yellow_xerror = None
+        self.goal_yellow_goal_yerror = None
+        self.goal_orange_xerror = None
+        self.goal_orange_goal_yerror = None
+        
+        self.ball_xerror = None
+        self.ball_yerror = None  
+        self.ballIsFound = None
+        
 
 class GroundStationCommand:
     def __init__(self):

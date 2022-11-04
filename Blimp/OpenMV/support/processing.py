@@ -19,8 +19,14 @@ def parseSensorData():  # https://github.com/mavlink/c_library_v1/blob/master/ch
     logger.log.verbose("parsing sensor data")
 
     parseIrSensorData()
-    dataClasses.data.colorDetected = imageProcessing.colorDetectedByCamera(
-        dataClasses.rawData.img)
+    dataClasses.data.colorDetected = 'green'
+    
+    imageProcessing.find_ball(dataClasses.rawData.img)
+    #imageProcessing.find_yellow_goal(dataClasses.rawData.img)
+    #imageProcessing.find_orange_goal(dataClasses.rawData.img)
+
+    #imageProcessing.colorDetectedByCamera(
+     #   dataClasses.rawData.img)
 
     logger.log.verbose("color detected: " + dataClasses.data.colorDetected)
 

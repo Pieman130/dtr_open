@@ -36,3 +36,6 @@ __pycache__/
 *.autosave
 #Mac OS crap
 *.icloud
+
+# VSCode crap
+.vscode/

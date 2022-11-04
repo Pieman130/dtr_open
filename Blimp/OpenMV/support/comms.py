@@ -8,7 +8,10 @@ class WiFi:
         self.key = 'GoBigRed'
         self.ip = '192.168.1.100'
         self.wlan = hw.wlan
+        logger.log.verbose("right before connect to wifi")
         self.connect()
+        logger.log.verbose("right after connect to wifi")
+        
 
     def connect(self):
         self.wlan.connect(self.ssid,self.key)

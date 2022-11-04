@@ -1,0 +1,16 @@
+Success 11.4.22 hover
+
+
+P = 0.5
+I = 0
+D = 0.02
+Min Up = 0
+Rounding up = 1
+Scaling Up = 1
+
+
+---
+Mavlink:
+UART_READ_SIZE = 128
+MSG_RATE = 50000 # 20Hz
+READ BUFFER = 64

@@ -95,13 +95,14 @@ def find_ball(img):
                 rect_ema[3].update(r[3])
             if (rect_ema[2].get_value() != 0):
                 dist_ball = 22/(math.tan((rect_ema[2].get_value() * .22125)/2)) #rect_ema[2].getvalue() gives ball width, use equation for pixel width to meters away
-    #img.draw_rectangle(blob.rect())
-    img.draw_rectangle([round(ema.get_value()) for ema in rect_ema], 2)
-    img.draw_string(round(rect_ema[0].get_value()),round(rect_ema[1].get_value()), " Ball", [0, 0, 255], mono_space = False)
-    #img.draw_cross(blob.cx(), blob.cy())
-    img.draw_cross(round(x_ema.get_value()), round(y_ema.get_value()), 2)
-    ball_xerror = round(x_ema.get_value()) - 160
-    ball_yerror = round(y_ema.get_value()) - 120
+            #img.draw_rectangle(blob.rect())
+            img.draw_rectangle([round(ema.get_value()) for ema in rect_ema], 2)
+            img.draw_string(round(rect_ema[0].get_value()),round(rect_ema[1].get_value()), " Ball", [0, 0, 255], mono_space = False)
+            #img.draw_cross(blob.cx(), blob.cy())
+            img.draw_cross(round(x_ema.get_value()), round(y_ema.get_value()), 2)
+            dataClasses.data.ball_xerror = round(x_ema.get_value()) - 160
+            dataClasses.data.ball_yerror = round(y_ema.get_value()) - 120
+   # dataClasses.data.ballIsFound = len(blob)
 
 def find_yellow_goal(img):
     blobs = img.find_blobs([thresholds[0]], pixels_threshold=3, area_threshold=12, merge=True, margin=10)
@@ -134,8 +135,8 @@ def find_yellow_goal(img):
     if (biggest[3] != 0):
         dist_goal = 42 / math.tan((biggest[3] * .23166/2)) # change parameters to determine distance from goal with known values, biggest[3] is height of goal
     img.draw_cross(round(goalx_ema.get_value()), round(goaly_ema.get_value()), color=[0,0,0])
-    goal_xerror = 160 - round(goalx_ema.get_value())
-    goal_yerror = round(goaly_ema.get_value()) - 120
+    dataClasses.data.goal_yellow_xerror = 160 - round(goalx_ema.get_value())
+    dataClasses.data.goal_yellow_goal_yerror = round(goaly_ema.get_value()) - 120
 
 def find_orange_goal(img):
     blobs = img.find_blobs([thresholds[2]], pixels_threshold=3, area_threshold=12, merge=True, margin=10)
@@ -168,8 +169,8 @@ def find_orange_goal(img):
     if (biggest[3] != 0):
         dist_goal = 42 / math.tan((biggest[3] * .23166/2)) # change parameters to determine distance from goal with known values, biggest[3] is height of goal
     img.draw_cross(round(goalx_ema.get_value()), round(goaly_ema.get_value()), color=[0,0,0])
-    goal_xerror = 160 - round(goalx_ema.get_value())
-    goal_yerror = round(goaly_ema.get_value()) - 120
+    dataClasses.data.goal_orange_xerror = 160 - round(goalx_ema.get_value())
+    dataClasses.data.goal_orange_goal_yerror = round(goaly_ema.get_value()) - 120
 
 
 

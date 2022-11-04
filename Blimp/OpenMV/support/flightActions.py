@@ -2,7 +2,16 @@ import dataClasses
 import time
 import mavlink
 import logger
-from pid import Controller
+if ( dataClasses.config.isMicroPython):
+    from pidModule import Controller
+else:
+    class Controller:
+        def __init__(self):
+            pass
+        def get_pid(self,val,scaler):
+            return 0
+        def set_pid_gains(self,val):
+            pass
 
 
 class ExitCriteria:
@@ -35,6 +44,8 @@ class FlightAction:
         self.pid_yaw = Controller()
         self.pid_up = Controller()
         self.pid_throttle = Controller()
+        self.ema_alpha = 0.875 #Ema for smoothing LIDAR distance
+        self.lidar_ema = 0.0
 
     def reset(self):
         self.startTime = None
@@ -45,27 +56,15 @@ class FlightAction:
             self.startTime = time.time()
         else:
             self.timeClock = time.time() - self.startTime
-
+    def executeNoop(self):
+        pass
     def execute(self):
+
         self.updateTime()
         logger.log.verbose(self.description + " -  Maneuver")
         logger.log.verbose("\ttime: " + str(self.timeClock))
 
-        if dataClasses.data.sw_flight_mode == "manual":
-            # Is there a way to dynamically program the mavlink to do this on its own?
-            # TODO: Implement raw passthrough
-            self.mavlink.setControls(self.controls)4
-
-        elif dataClasses.data.sw_flight_mode == "assisted":
-            # Altitude hold and yaw stability ?
-            # TODO: Implement actual altitude hold and yaw controls
-            self.mavlink.setControls(self.controls)
-
-        else:
-            # This is the autonomous section - where the code controls the blimp
-            # What should go here? I'm just putting in this code as a boilerplate.
-            # TODO: Implement actual autonomous controls.
-            self.mavlink.setControls(self.controls)
+        self.mavlink.setControls(self.controls)
 
         if dataClasses.data.sw_door_control == "closed":
             self.hw.closeDoor()
@@ -127,13 +126,55 @@ class FlightAction:
         else:
             return getattr(self.data, name)
 
+    def assistedAltitudeWebControlled(self):
+        logger.log.info("TRYING TO HOVER AT ALTITUDE: " + str(dataClasses.gndStationCmd.manualHeight) + " cm")
+        self.execute_assisted_altitude(dataClasses.gndStationCmd.manualHeight)
+
     def execute_assisted_altitude(self, height):
         '''take in desired distance to ceiling (height)
         maintain a pid controlled hover about that distance'''
-        if height != None:
-            self.controls.up = self.pid_up.get_pid(height-self.data.lidarDistance)
-            logger.log.info("Executing Assisted Altitude.  PID Up Value: {}".format(self.controls.up))
+        logger.log.info("executing assisted altitude to height: " + str(height))
+        if self.data.lidarDistance != None:   
 
+            if ( dataClasses.config.isMicroPython):                
+                self.pid_up.set_pid_gains(p = dataClasses.gndStationCmd.p_up)
+                self.pid_up.error_rounding_up = dataClasses.gndStationCmd.error_rounding_up
+                self.pid_up.error_scaling_up = dataClasses.gndStationCmd.error_scaling_up
+                self.pid_up.pid_minimum = dataClasses.gndStationCmd.pid_min_up
+ 
+            else:
+                p = dataClasses.gndStationCmd.p_up
+                self.pid_up.set_pid_gains(p)  
+
+            #logger.log.verbose("right before get pid")
+            self.controls.up = self.pid_up.get_pid(self.data.lidarDistance-height,scaler= dataClasses.gndStationCmd.scalar_up)   
+                                  
+           # self.lidar_ema = self.ema_alpha * self.lidar_ema + (1 - self.ema_alpha) * self.data.lidarDistance
+
+           # logger.log.verbose("ema alpha: " + str(self.ema_alpha) + ", lidarEma: " + str(self.lidar_ema))
+            #self.controls.up = self.pid_up.get_pid(self.lidar_ema-height,scaler= dataClasses.gndStationCmd.scalar_up)             
+
+            logger.log.info("Executing Assisted Altitude.  PID Up Value: {}".format(self.controls.up) )
+       
+
+    def execute_yaw_control(self, desired_yaw_rate):
+        '''take in desired yaw_rate from attitude message
+        and maintain a pid controlled yaw'''
+        logger.log.info("executing yaw rate control.  Desired yaw rate: " + str(yaw_rate))
+        if self.data.imu_yaw_rate != None:
+
+            if (dataClasses.config.isMicroPython):                
+                self.pid_yaw.set_pid_gains(dataClasses.gndStationCmd.p_yaw)
+                self.pid_yaw.error_rounding_up = dataClasses.gndStationCmd.error_rounding_yaw
+                self.pid_yaw.error_scaling_up = dataClasses.gndStationCmd.error_scaling_yaw
+                self.pid_yaw.pid_minimum = dataClasses.gndStationCmd.pid_min_yaw
+ 
+            else:
+                p = dataClasses.gndStationCmd.p_yaw
+                self.pid_yaw.set_pid_gains(p)  
+
+            self.controls.yaw = self.pid_yaw.get_pid(self.data.imu_yaw_rate-desired_yaw_rate,scaler=dataClasses.gndStationCmd.scalar_yaw)
+            logger.log.info("Executing Yaw Rate Control.  PID Yaw Value: {}".format(self.controls.yaw) )
 
 class Controls:
     def __init__(self):

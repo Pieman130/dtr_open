@@ -19,8 +19,14 @@ def parseSensorData():  # https://github.com/mavlink/c_library_v1/blob/master/ch
     logger.log.verbose("parsing sensor data")
 
     parseIrSensorData()
-    dataClasses.data.colorDetected = imageProcessing.colorDetectedByCamera(
-        dataClasses.rawData.img)
+    dataClasses.data.colorDetected = 'green'
+    
+    imageProcessing.find_ball(dataClasses.rawData.img)
+    #imageProcessing.find_yellow_goal(dataClasses.rawData.img)
+    #imageProcessing.find_orange_goal(dataClasses.rawData.img)
+
+    #imageProcessing.colorDetectedByCamera(
+     #   dataClasses.rawData.img)
 
     logger.log.verbose("color detected: " + dataClasses.data.colorDetected)
 
@@ -49,15 +55,19 @@ def parseLidarData():
     logger.log.verbose('>>>>>>>>>>>>>>>')
     logger.log.verbose('LIDAR DATA')
     logger.log.verbose('>>>>>>>>>>>>>>>')
-    logger.log.verbose(dataClasses.rawData.lidar_cm )
-    if (dataClasses.rawData.lidar_cm != None):
-        rawDist_ft = dataClasses.rawData.lidar_cm / 30.48
+    logger.log.verbose(dataClasses.rawData.lidar )
+    if (dataClasses.rawData.lidar != None):
+        rawDist = dataClasses.rawData.lidar 
         correctedDist_ft = attitudeCorrectDistance(
-            rawDist_ft, dataClasses.rawData.imu_roll, dataClasses.rawData.imu_pitch)
-        #correctedDist_ft = rawDist_ft
+            rawDist, dataClasses.rawData.imu_roll, dataClasses.rawData.imu_pitch)
+        #correctedDist_ft = rawDist
+        dataClasses.data.lidarDistance = dataClasses.rawData.lidar
         
-        logger.log.debugOnly('lidar value = ' + str(rawDist_ft) + ', lidar corr = ' + str(correctedDist_ft) + ',imu_roll = ' + str(dataClasses.rawData.imu_roll) + ', imu_pitch =' + str(dataClasses.rawData.imu_pitch))
-        dataClasses.data.lidarDistance_ft = correctedDist_ft
+        if(dataClasses.data.lidarDistance > 1600):
+            dataClasses.data.lidarDistance = 1600 #trimming bogus lidar values
+
+        logger.log.verbose('lidar value = ' + str(rawDist) + ', lidar corr = ' + str(correctedDist_ft) + ',imu_roll = ' + str(dataClasses.rawData.imu_roll) + ', imu_pitch =' + str(dataClasses.rawData.imu_pitch))
+        
         logger.log.verbose('lidar distance (ft): ' + str(correctedDist_ft))
 
 
@@ -77,37 +87,47 @@ def parseDoorPosition():
 
 
 def parseRCSwitchPositions():
-    currentValue = dataClasses.rawData.rc_sw_door
+    currentValue = dataClasses.rawData.rc_sw_flt_mode
     if currentValue is not None:
         # Iterate over states, setting state appropriately
         # Split up range evenly
-        currentDelta = 500 / (len(dataClasses.DoorControlState()) - 1)
-        for state in dataClasses.DoorControlState():
-            if state[0] + currentDelta >= currentValue and state[0] - currentDelta <= currentValue:
-                dataClasses.data.sw_door_control = state[1]
-                break
-        else:   # I hate for/else loops but this is a good way of handling an unexpected error
-            dataClasses.data.sw_door_control = None
+        logger.log.verbose("Beginning Switch Processing")
+        logger.log.verbose("Processing door control")
+        currentDelta = 250  # Splits things evenly
 
-    currentValue = dataClasses.rawData.rc_sw_flt_mode
-    if currentValue is not None:
-        currentDelta = 500 / (len(dataClasses.FlightModeState()) - 1)
-        for state in dataClasses.FlightModeState():
-            if state[0] + currentDelta >= currentValue and state[0] - currentDelta <= currentValue:
-                dataClasses.data.sw_flight_mode = state[1]
-                break
+        flightModes = dataClasses.FlightModeState()
+
+        # If the current value is within +- currentDelta of a mode, set the mode variable to that mode.
+        if flightModes.Auto[0] + currentDelta >= currentValue and flightModes.Auto[0] - currentDelta <= currentValue:
+            dataClasses.data.sw_flight_mode = flightModes.Auto[1]
+        elif flightModes.Assisted[0] + currentDelta >= currentValue and flightModes.Assisted[0] - currentDelta <= currentValue:
+            dataClasses.data.sw_flight_mode = flightModes.Assisted[1]
+        elif flightModes.Manual[0] + currentDelta >= currentValue and flightModes.Manual[0] - currentDelta <= currentValue:
+            dataClasses.data.sw_flight_mode = flightModes.Manual[1]
         else:
-            dataClasses.data.sw_flight_mode = None
+            dataClasses.data.sw_flight_mode = "None"
 
-    # There's no switch for this in ProcessedData.
-    # currentValue = dataClasses.rawData.rc_sw_st_cntl
-    # currentDelta = 500 / (len(dataClasses.AutonomousModeState()) - 1)
-    # for state in dataClasses.AutonomousModeState():
-    #     if state[0] + currentDelta >= currentValue and state[0] - currentDelta <= currentValue:
-    #         pass
-    #         break
-    # else:
-    #     pass
+
+    currentValue = dataClasses.rawData.rc_sw_door
+    if currentValue is not None:
+        logger.log.verbose("Processing flight mode switch")
+
+        doorStates = dataClasses.DoorControlState()
+        currentDelta = 250  # Splits things evenly
+
+        if doorStates.Auto[0] + currentDelta >= currentValue and doorStates.Auto[0] - currentDelta <= currentValue:
+            dataClasses.data.sw_door_control = doorStates.Auto[1]
+        elif doorStates.Open[0] + currentDelta >= currentValue and doorStates.Open[0] - currentDelta <= currentValue:
+            dataClasses.data.sw_door_control = doorStates.Open[1]
+        elif doorStates.Closed[0] + currentDelta >= currentValue and doorStates.Closed[0] - currentDelta <= currentValue:
+            dataClasses.data.sw_door_control = doorStates.Closed[1]
+        else:
+            dataClasses.data.sw_door_control = "None"
+
+
+    logger.log.verbose("Processed data states:")
+    logger.log.verbose("DR_CTRL:\t " + str(dataClasses.data.sw_door_control))
+    logger.log.verbose("FLT_MDE:\t " + str(dataClasses.data.sw_flight_mode))
 
 
 # def distanceToBall():

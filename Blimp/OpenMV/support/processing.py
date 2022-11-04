@@ -81,46 +81,47 @@ def parseDoorPosition():
 
 
 def parseRCSwitchPositions():
-    currentValue = dataClasses.rawData.rc_sw_door
+    currentValue = dataClasses.rawData.rc_sw_flt_mode
     if currentValue is not None:
         # Iterate over states, setting state appropriately
         # Split up range evenly
         logger.log.verbose("Beginning Switch Processing")
         logger.log.verbose("Processing door control")
-        currentDelta = 500 / (len(dataClasses.DoorControlState()) - 1)
-        for state in dataClasses.DoorControlState():
-            logger.log.verbose(str(currentValue) + " " + str(state[0]) + " " + str(state[1]))
-            if state[0] + currentDelta >= currentValue and state[0] - currentDelta <= currentValue:
-                dataClasses.data.sw_door_control = state[1]
-                break
-        else:   # I hate for/else loops but this is a good way of handling an unexpected error
-            dataClasses.data.sw_door_control = None
+        currentDelta = 250  # Splits things evenly
 
-    currentValue = dataClasses.rawData.rc_sw_flt_mode
+        flightModes = dataClasses.FlightModeState()
+
+        # If the current value is within +- currentDelta of a mode, set the mode variable to that mode.
+        if flightModes.Auto[0] + currentDelta >= currentValue and flightModes.Auto[0] - currentDelta <= currentValue:
+            dataClasses.data.sw_flight_mode = flightModes.Auto[1]
+        elif flightModes.Assisted[0] + currentDelta >= currentValue and flightModes.Assisted[0] - currentDelta <= currentValue:
+            dataClasses.data.sw_flight_mode = flightModes.Assisted[1]
+        elif flightModes.Manual[0] + currentDelta >= currentValue and flightModes.Manual[0] - currentDelta <= currentValue:
+            dataClasses.data.sw_flight_mode = flightModes.Manual[1]
+        else:
+            dataClasses.data.sw_flight_mode = "None"
+
+
+    currentValue = dataClasses.rawData.rc_sw_door
     if currentValue is not None:
         logger.log.verbose("Processing flight mode switch")
-        currentDelta = 500 / (len(dataClasses.FlightModeState()) - 1)
-        for state in dataClasses.FlightModeState():
-            logger.log.verbose(str(currentValue) + " " + str(state[0]) + " " + str(state[1]))
-            if state[0] + currentDelta >= currentValue and state[0] - currentDelta <= currentValue:
-                dataClasses.data.sw_flight_mode = state[1]
-                break
+
+        doorStates = dataClasses.DoorControlState()
+        currentDelta = 250  # Splits things evenly
+
+        if doorStates.Auto[0] + currentDelta >= currentValue and doorStates.Auto[0] - currentDelta <= currentValue:
+            dataClasses.data.sw_door_control = doorStates.Auto[1]
+        elif doorStates.Open[0] + currentDelta >= currentValue and doorStates.Open[0] - currentDelta <= currentValue:
+            dataClasses.data.sw_door_control = doorStates.Open[1]
+        elif doorStates.Closed[0] + currentDelta >= currentValue and doorStates.Closed[0] - currentDelta <= currentValue:
+            dataClasses.data.sw_door_control = doorStates.Closed[1]
         else:
-            dataClasses.data.sw_flight_mode = None
+            dataClasses.data.sw_door_control = "None"
+
 
     logger.log.verbose("Processed data states:")
     logger.log.verbose("DR_CTRL:\t " + str(dataClasses.data.sw_door_control))
     logger.log.verbose("FLT_MDE:\t " + str(dataClasses.data.sw_flight_mode))
-
-    # There's no switch for this in ProcessedData.
-    # currentValue = dataClasses.rawData.rc_sw_st_cntl
-    # currentDelta = 500 / (len(dataClasses.AutonomousModeState()) - 1)
-    # for state in dataClasses.AutonomousModeState():
-    #     if state[0] + currentDelta >= currentValue and state[0] - currentDelta <= currentValue:
-    #         pass
-    #         break
-    # else:
-    #     pass
 
 
 # def distanceToBall():

@@ -1,5 +1,4 @@
 import http_get
-import http_update
 import hardware
 import comms
 import time
@@ -11,28 +10,25 @@ comm = comms.Comms(hw)
 #path = '/'
 
 host = '192.168.1.100:7071'
-path = '/updater/file/'
-#filename = 'test45.txt'
+
 
 print("connected!")
 
-
-filename = 'groundStationTEST.py'
-http_get.http_get(host,path,filename)
-print('got ground station test')
-
-filename = 'test4.txt'
-http_get.http_get(host,path,filename)
-print('got test4')
+path = '/updater/supportFiles'
+resp = http_get.http_getFolderList(host,path)
 
 
-filename = 'test45.txt'
-http_get.http_get(host,path,filename)
-print('got test4')
+path = '/updater/file/'
+for filename in resp:
+    print(filename)
+    http_get.http_get(host,path,filename)
+
 
 print("DONE - RESETTING!")
 time.sleep(5)
 hw.pybReset()
+
+
 
 
 

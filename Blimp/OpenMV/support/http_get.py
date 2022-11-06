@@ -6,9 +6,10 @@ def http_getFolderList(host,path):
     fullPath = 'http://%s%s' %(host, path)
     print("path: " + fullPath)
     response = urequests.get(fullPath)
+    jsonResp = response.json()
     print("response success")
-    #response = 'test'
-    return response
+
+    return jsonResp
 
 def http_get(host, path, filename):
     print("in http get")

@@ -25,5 +25,10 @@ angular.module('mainToServer',[])
     mainFactory.triggerOpenMVcodeUpload = function(){
         return $http.post('/status/triggerOpenMVcodeUpload/');
     }
+
+    mainFactory.getUploaderStatus = function(){
+        return $http.get('/status/getUploaderStatus/');
+    }
+
     return mainFactory;
 })

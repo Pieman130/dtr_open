@@ -21,6 +21,7 @@ angular.module('mainModel',[])
                         yaw: null,
                         doorOpen: 0                                            
                 },
+                updateOpenMvCodeStatus:{},
                 config: {
                     pid: {
                         up: {
@@ -80,6 +81,15 @@ angular.module('mainModel',[])
                         })
                     })
                 },
+                getUploaderStatus(){
+                    return new Promise(function(resolve,reject){
+                        MainToServer.getUploaderStatus().then(function(ret){
+                            var d = ret.data[0];
+                            obj.updateOpenMvCodeStatus = d;
+                            resolve();
+                        })
+                    })
+                },
                 sendConfig(){
                     return new Promise(function(resolve,reject){
                         MainToServer.sendConfigValues(obj.config).then(function(){
@@ -130,6 +140,7 @@ angular.module('mainModel',[])
                 },
                 getStatus(){
                     return new Promise(function(resolve,reject){
+                        
                         MainToServer.getStatus(obj.numLogLoopsToView).then(function(ret){
                             obj.status = ret.data.systemStatus;
                             obj.logs.lines = obj.parseLogLines(ret.data.logger);
@@ -141,11 +152,14 @@ angular.module('mainModel',[])
                             var yVar = "irSensor";
                             var plotData = D3factory.convertDbDataToChartReadySeriesData(dbData,seriesNames,seriesColors,xVar,yVar);
                             $timeout(function(){
-                                obj.plotting.data  = plotData;
-                                resolve();
+                                obj.plotting.data  = plotData;                                
                             })
-                            
-                        })          
+                            return obj.getUploaderStatus();                            
+                        })        
+                        .then(function(){
+                            resolve();
+                        })  
+                        
                     })
                               
                 },

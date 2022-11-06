@@ -73,6 +73,13 @@ router.route('/triggerOpenMVcodeUpload/')
     sqlTools.run(sqlStr,res);
 })
 
+router.route('/getUploaderStatus/')
+.get(function(req,res){
+    var sqlStr = "SELECT convert(varchar(50),datetimeLastUpload,13) as datetimeLastUpload, lastRunTimeError,updateStatus  FROM blimpCodeUploader "
+    sqlTools.run(sqlStr,res);
+})
+
+
 router.route('/sendConfigValues/')
 .post(function(req,res){
     

@@ -19,15 +19,20 @@ import time
 host = '192.168.1.100:7071'
 isRunTimeFail = False
 
+
+
 def main() -> None:
     try:
-        
+
+        hw = hardware.Hardware()
+        comm = comms.Comms(hw)        
+
+        postUploadStatus('')
         mainWorker.run()
 
         print(" NEW UPLOAD CODE REQUEST")                
 
-        hw = hardware.Hardware()
-        comm = comms.Comms(hw)
+        
                
         runUpdater(hw)
 
@@ -74,13 +79,14 @@ def runUpdater(hw):
     path = '/updater/file/'
     
     print("about to update status")
-    #status = "Found " + len(resp) + " files in /support folder.  Beginning upload!"
-    postUploadStatus('Upload started.')
+    status = "Found " + str(len(resp)) + " files in /support folder.  Beginning upload!"
+    postUploadStatus(status)
 
+    
     for filename in resp:
-        print(filename)
-       # 
-        openMvSwUpdater.getAndUpdateFile(host,path,filename)
+        print(filename)       
+        openMvSwUpdater.getAndUpdateFile(host,path,filename)        
+       
 
     postUploadStatus('Upload complete.  Resetting.')    
 

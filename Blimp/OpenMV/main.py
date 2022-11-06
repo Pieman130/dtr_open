@@ -1,148 +1,90 @@
-# Untitled - By: timothy.woodbridge - Fri May 20 2022
-    # POWERED UP initializing = 'purple'
-    # OK, connected to ground station = 'green'
-    # OK, Not connected to gnd station = 'lightGreen'         
-    # FAIL 'red'
+# Main - By: timothy.woodbridge - Fri May 20 2022
 
+# POWERED UP initializing = 'purple'
+# OK, connected to ground station = 'green'
+# OK, Not connected to gnd station = 'lightGreen'         
+# FAIL 'red'
+
+import sys
+import os
+import io
+import mainWorker
+
+import openMvSwUpdater
+import hardware
+import comms
 import time
 
-try:
-    import hardware
-    import comms    
-    import logger
-    isMicroPython = True
-    
-
-except Exception as e:
-    print(str(e))
-    isMicroPython = False
-    import sys
-    import pathlib
-
-    try:
-        baseDir = pathlib.Path(__file__).parent # Get directory of main
-        unitDir = (baseDir / "unitTest/").resolve()
-        supportDir = (baseDir / "support/").resolve()
-        print(unitDir, supportDir)
-
-        sys.path.append(str(unitDir))
-        sys.path.append(str(supportDir))
-
-        import hardwareMock
-        hardware = hardwareMock
-
-        import commsMock
-        comms = commsMock
-
-    except Exception as e:
-        #this is for upython.
-        print(e)
-        print(".")
-
-import logger
-#logger.log.setLevel_info()
-logger.log.setLevel_verbose()
-#logger.log.setLevel_debugOnly()
-
-
-import dataClasses
-dataClasses.config.isMicroPython = isMicroPython
-
-
-import processing
-
-dataClasses.rawData.lidar = 120 #HACK
-
-
-logger.log.info('is micropython: ' + str(isMicroPython))
-
-
-import sensors
-import missionCommander
-import flightDirector
-import groundStation
-
-# DEBUGGING ###########################
-class DebugControls:
-    def __init__(self):
-        self.yaw = 0  # -1 to 1
-        self.up = 0  # -1 to 1
-        self.throttle = 0  # -1 to 1
-        self.servo = 0  # 0 for OFF. 1 for ON.
-ctrl = DebugControls()
-ctrl.up = 0.5
-# END DEBUG ###########################
-
+host = '192.168.1.100:7071'
 
 def main() -> None:
-    loopPause = 0
+    try:
+        mainWorker.run()
 
-    hw = hardware.Hardware()
+        print(" NEW UPLOAD CODE REQUEST")
+        hw = hardware.Hardware()
+        comm = comms.Comms(hw)
 
-    comm = comms.Comms(hw)
-
-    sensorsObj = sensors.Sensors(hw,comm)
-
-    gndStation = groundStation.GroundStation(comm,hw)
-
-    fltDirector = flightDirector.FlightDirector(comm, hw)
-
-    missionCmder = missionCommander.MissionCommander(fltDirector)
-    
-
-    LOOP_TIME_FIXED = 0.2
-    
-    while(True):
-        
-        start = time.time_ns()
-        
-        
-        logger.log.heartbeat("===============================")
-        logger.log.heartbeat("Top of loop")
-        logger.log.heartbeat("===============================")
-        
-        sensorsObj.collectData()
-        processing.parseSensorData()
-            
-        missionCmder.determineControlAuthority()
-
-        missionCmder.updateState()
-
-        fltDirector.getNextStep()
-
-        fltDirector.executeNextStep()
-
-        gndStation.sendStatusMessage(missionCmder,fltDirector)
-
+        runUpdater(hw)
        
-        if(dataClasses.gndStationCmd.doFtpLoadAndReset):
-            ftpLoadAndReset(hw,comm)
 
-        # make loop time fixed
-        loopTime = (time.time_ns() - start)/1e9
-        loopPause = LOOP_TIME_FIXED - loopTime
-        if(loopPause >0):
-            time.sleep(loopPause)
-            logger.log.verbose('loop pause added: ' + str(loopPause))        
+    except Exception as e:            
 
-        loopTime = (time.time_ns() - start)/1e9
-        logger.log.info('Loop time: ' + str(loopTime))
+        #buf = io.StringIO()
+        #sys.print_exception(e, buf)
+        #val = buf.getvalue()
+        val = get_exception(e)
+        print(type(val))
+        #print("I CAUGHT THE ERROR!" + val)
 
-       # logger.log.getLogsForServerAndClear()
+        #print(dir(e))
+        #print('err no: ' + e.errno)
+        print("Error trying to run main worker: {}".format(e))
+
+    finally:                
+
+        while(True):                    
+            time.sleep(1)
+            print("Code broken.  Waiting for command to upload fixed code")
 
 
+def get_exception(err) -> str:
+        buf = io.StringIO()
+        sys.print_exception(err, buf)
+        return buf.getvalue()
 
-def dumbPid(setVal,lidar):
-    if(setVal >= lidar):
-        up = 0
-    else:
-        distanceToGoUp = lidar-setVal
-        if distanceToGoUp > 100:
-            up = 1
-        elif distanceToGoUp > 50:
-            up = 0.5
-        else:
-            up = 0.3
-    return up
+def runUpdater(hw):
+    path = '/updater/supportFiles'
+    resp = openMvSwUpdater.http_getFolderList(host,path)
+
+    path = '/updater/file/'
+    
+    print("about to update status")
+    #status = "Found " + len(resp) + " files in /support folder.  Beginning upload!"
+    postUploadStatus('Upload started.')
+
+    for filename in resp:
+        print(filename)
+       # 
+        openMvSwUpdater.getAndUpdateFile(host,path,filename)
+
+    postUploadStatus('Upload complete.  Resetting.')    
+
+
+    print("DONE - RESETTING!")
+    time.sleep(5)
+    hw.pybReset()
+
+
+def postUploadStatus(status):
+    print("in post upload status fcn")
+    pathUpdateStatus = '/updater/updateStatus/'       
+    openMvSwUpdater.updateStatus(host,pathUpdateStatus,status)
 
 main()
+
+
+
+
+
+

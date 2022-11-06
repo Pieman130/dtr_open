@@ -31,9 +31,34 @@ router.route('/supportFiles/')
         console.log(err);
         res.send('');
     });
+})
 
 
+router.route('/updateStatus/')
+.post(function(req,res){
+    var updateStatus = req.body.updateStatus;    
+    var sqlStr = "UPDATE blimpCodeUploader SET updateStatus = '" + updateStatus + "'";
+    sqlTools.run(sqlStr,res);
+})
 
+router.route('/updateComplete/')
+.post(function(req,res){    
+    var dt = sqlTools.makeDateForSqlServer();
+    var sqlStr = "UPDATE blimpCodeUploader SET datetimeLastUploaded = '" + dt + "'; UPDATE maneuverToExecute SET doFtpLoadAndReset = 0";    
+    sqlTools.run(sqlStr,res);
+})
+
+router.route('/openMvRuntimeError/')
+.post(function(req,res){
+    var runTimeError = req.body.runTimeError;    
+    var sqlStr = "UPDATE blimpCodeUploader SET runTimeError = '" + runTimeError + "'";
+    sqlTools.run(sqlStr,res);
+})
+
+router.route('/isUploadReqeuested/')
+.get(function(req,res){
+    var sqlStr = "SELECT isUploadRequested FROM blimpCodeUploader"
+    sqlTools.run(sqlStr,res);
 })
 
 module.exports = router;

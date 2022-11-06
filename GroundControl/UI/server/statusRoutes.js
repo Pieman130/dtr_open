@@ -67,6 +67,12 @@ router.route('/sendControlRequest/')
     sqlTools.run(sqlStr,res);
 })
 
+router.route('/triggerOpenMVcodeUpload/')
+.post(function(req,res){
+    var sqlStr = "UPDATE blimpCodeUploader SET isUploadRequested = 1; UPDATE maneuverToExecute SET doFtpLoadAndReset = 1"
+    sqlTools.run(sqlStr,res);
+})
+
 router.route('/sendConfigValues/')
 .post(function(req,res){
     

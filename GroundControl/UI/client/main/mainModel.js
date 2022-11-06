@@ -73,6 +73,13 @@ angular.module('mainModel',[])
                         })
                     })
                 },
+                triggerOpenMVcodeUpload(){
+                    return new Promise(function(resolve,reject){
+                        MainToServer.triggerOpenMVcodeUpload().then(function(){
+                            resolve();
+                        })
+                    })
+                },
                 sendConfig(){
                     return new Promise(function(resolve,reject){
                         MainToServer.sendConfigValues(obj.config).then(function(){

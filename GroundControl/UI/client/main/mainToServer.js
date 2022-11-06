@@ -22,5 +22,8 @@ angular.module('mainToServer',[])
     mainFactory.sendControlChange = function(info){
         return $http.post('/status/sendControlChange/',info);
     }
+    mainFactory.triggerOpenMVcodeUpload = function(){
+        return $http.post('/status/triggerOpenMVcodeUpload/');
+    }
     return mainFactory;
 })

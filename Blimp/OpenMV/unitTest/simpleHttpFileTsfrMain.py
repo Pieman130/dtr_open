@@ -1,4 +1,4 @@
-import http_get
+import openMvSwUpdater
 import hardware
 import comms
 import time
@@ -15,13 +15,13 @@ host = '192.168.1.100:7071'
 print("connected!")
 
 path = '/updater/supportFiles'
-resp = http_get.http_getFolderList(host,path)
+resp = openMvSwUpdater.http_getFolderList(host,path)
 
 
 path = '/updater/file/'
 for filename in resp:
     print(filename)
-    http_get.http_get(host,path,filename)
+    openMvSwUpdater.http_get(host,path,filename)
 
 
 print("DONE - RESETTING!")

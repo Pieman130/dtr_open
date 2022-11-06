@@ -2,8 +2,7 @@
 
 import time
 
-def run():
-   # asdf
+def run():      
     try:
         import hardware
         import comms    

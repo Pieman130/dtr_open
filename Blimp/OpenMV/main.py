@@ -54,17 +54,25 @@ def main() -> None:
         print(errStr)
 
         postRuntimeError(errStr)
-        
+        toggle = 0        
         while(True):                    
             time.sleep(1)
             print("Code broken.  Waiting for command to upload fixed code")
             r = isUploadRequested()
             print(r)
-                        
+            
+
+            if(toggle):
+                toggle = 0
+                hw.led.turnOn('lightGreen')
+            else:
+                toggle = 1
+                hw.led.turnOn('red')
+            
             if(r['isUploadRequested']):      
                 print("request for code update!")      
                 runUpdater(hw)
-        
+      
 
 
 def get_exception(err) -> str:

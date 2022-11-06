@@ -30,7 +30,7 @@ def main() -> None:
         comm = comms.Comms(hw)
                
         runUpdater(hw)
-        
+
     except Exception as e:            
 
         hw = hardware.Hardware()
@@ -100,7 +100,7 @@ def postRuntimeError(runTimeError):
     openMvSwUpdater.postRuntimeError(host,pathUpdateStatus,runTimeError)
 
 def isUploadRequested():
-    pathIsUploadRequested = '/updater/updateComplete/'
+    pathIsUploadRequested = '/updater/isUploadRequested/'
     r = openMvSwUpdater.isUploadRequested(host,pathIsUploadRequested)
     return r
 

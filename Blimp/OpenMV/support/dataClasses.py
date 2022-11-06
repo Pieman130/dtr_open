@@ -38,7 +38,7 @@ class ProcessedData:
         self.lidarDistance = None
         self.door_state = None
         self.sw_door_control = 'open'
-        self.sw_flight_mode = 'manual'
+        self.sw_flight_mode = 'assisted'
 
         self.goal_yellow_xerror = None
         self.goal_yellow_goal_yerror = None

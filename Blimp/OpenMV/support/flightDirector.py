@@ -34,6 +34,7 @@ class FlightDirector:
 
             logger.log.verbose(" FLIGHT DIRECTOR CURRENT MODE: " + self.currentState.description)     
 
+            yawRate = 1
             # if(dataClasses.gndStationCmd.p_up != None):
                 #   pass
                 # logger.log.debugOnly("Pid Up.  P: " + str(dataClasses.gndStationCmd.p_up))
@@ -65,7 +66,17 @@ class FlightDirector:
                 self.currentManeuver = self.blimpManeuvers.hover
                 self.blimpManeuvers.hover.assistedAltitudeWebControlled()
 
-          
+            elif(self.currentState.description == 'hoverYaw'):
+                self.currentManeuver = self.blimpManeuvers.hoverYaw
+                self.blimpManeuvers.hoverYaw.assistedAltitudeWebControlled()
+                self.blimpManeuvers.hoverYaw.execute_yaw_control(yawRate)
+
+            
+            elif(self.currentState.description == 'yaw'):   
+                self.currentManeuver = self.blimpManeuvers.yaw             
+                self.blimpManeuvers.yaw.execute_yaw_control(yawRate)
+                
+            
 
             elif(self.currentState.description == 'lookForBall'):
                 self.currentManeuver = self.blimpManeuvers.three60

@@ -39,7 +39,6 @@ except Exception as e:
         print(e)
         print(".")
 
-import ftp
 import logger
 #logger.log.setLevel_info()
 logger.log.setLevel_verbose()
@@ -131,15 +130,7 @@ def main() -> None:
 
        # logger.log.getLogsForServerAndClear()
 
-def ftpLoadAndReset(hw,comm):
-    port = 21
-    timeout=None
-    #logger.log.info("Waiting " + str(timeout) + " sec for new files then reboot.")
-    logger.log.getLogsForServerAndClear()
-    ftp.ftpserver(port,timeout,comm.wifi.wlan)
-    
-    hw.led.turnOn('cyan')
-    #hw.pyb.hard_reset()
+
 
 def dumbPid(setVal,lidar):
     if(setVal >= lidar):

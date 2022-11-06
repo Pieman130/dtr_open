@@ -25,6 +25,9 @@ class SystemState:
 
 startup = SystemState("startup","none","none")
 hover = SystemState("hover","nothing","nothing")
+hoverYaw = SystemState("hoverYaw","nothing","nothing")
+yaw = SystemState("yaw","nothing","nothing")
+
 lookForBall = SystemState("lookForBall",TARGET_BALL,ACTION_LOOK)
 moveToBall = SystemState("moveToBall",TARGET_BALL,ACTION_MOVE)
 captureBall = SystemState("captureBall", TARGET_BALL,ACTION_CAPTURE)
@@ -112,6 +115,12 @@ class MissionCommander:
         if(requestedState == hover.description):
             self.currentState = hover
 
+        elif(requestedState == hoverYaw.description):
+            self.currentState = hoverYaw
+
+        elif(requestedState == yaw.description):
+            self.currentState = yaw
+            
         elif(requestedState == lookForBall.description):
             logger.log.verbose("changed to look for ball")
             self.currentState = lookForBall                

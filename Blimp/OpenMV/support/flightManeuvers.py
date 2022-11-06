@@ -9,7 +9,22 @@ class BlimpManeuvers():
         self.three60 = self.init360()
         self.hover = self.initHover()     
         self.doNothing = self.initDoNothing()
+        self.yaw = self.initYaw()
+        self.hoverYaw = self.initHoverYaw()
 
+    def initYaw(self):
+        exitCriteria = flightActions.ExitCriteria()
+        controls = flightActions.Controls()
+
+        actions = flightActions.FlightAction("yaw",controls,exitCriteria,self.comms,self.hw)
+        return actions
+    def initHoverYaw(self):
+        exitCriteria = flightActions.ExitCriteria()
+        controls = flightActions.Controls()
+
+        actions = flightActions.FlightAction("hoverYaw",controls,exitCriteria,self.comms,self.hw)
+        return actions
+        
     def initDoNothing(self):
         exitCriteria = flightActions.ExitCriteria()
         controls = flightActions.Controls()

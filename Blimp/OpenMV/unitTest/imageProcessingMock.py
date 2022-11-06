@@ -12,3 +12,12 @@ def lookForAprilTag(img):
 def family_name(tag):
     logger.log.verbose("family name")    
     return "TAG16H5"
+
+def find_ball(img):
+    pass
+
+def find_yellow_goal(img):
+    pass
+
+def find_orange_goal(img):
+    pass

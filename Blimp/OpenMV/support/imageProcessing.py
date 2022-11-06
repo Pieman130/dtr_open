@@ -19,14 +19,6 @@ class EMA:
         return self.value
 
 #Copied from OpenMV_ide_prototype.py, edited to better fit code structure
-import sensor, image, time, math, ustruct, sys, pyb, pid
-from pyb import USB_VCP, Pin, Timer, Servo
-
-ledRed = pyb.LED(1) # Initiates the red led
-ledGreen = pyb.LED(2) # Initiates the green led
-ledBlue = pyb.LED(3) # Initiates the blue led
-ledIR = pyb.LED(4) # Initiates the IR led
-
 
 thresholds = [(60, 82, -48, -11, -128, 127), #yellow 0
               (0, 70, -59, -12, -10, 54), #green 1
@@ -226,16 +218,16 @@ def lookForAprilTag(img):
 
     return tagsFound
 
-def family_name(tag):
-    if(tag.family() == image.TAG16H5):
-        return "TAG16H5"
-    if(tag.family() == image.TAG25H7):
-        return "TAG25H7"
-    if(tag.family() == image.TAG25H9):
-        return "TAG25H9"
-    if(tag.family() == image.TAG36H10):
-        return "TAG36H10"
-    if(tag.family() == image.TAG36H11):
-        return "TAG36H11"
-    if(tag.family() == image.ARTOOLKIT):
-        return "ARTOOLKIT"  
+#def family_name(tag):
+ #   if(tag.family() == image.TAG16H5):
+  #      return "TAG16H5"
+  #  if(tag.family() == image.TAG25H7):
+  #      return "TAG25H7"
+  #  if(tag.family() == image.TAG25H9):
+  #      return "TAG25H9"
+  #  if(tag.family() == image.TAG36H10):
+  #      return "TAG36H10"
+  #  if(tag.family() == image.TAG36H11):
+  #      return "TAG36H11"
+   # if(tag.family() == image.ARTOOLKIT):
+   #     return "ARTOOLKIT"  

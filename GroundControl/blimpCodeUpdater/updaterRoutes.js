@@ -9,8 +9,7 @@ var supportFolder = path.resolve(__dirname, '../../Blimp/OpenMV/support/');
 
 router.route('/file/:filename')
 .get(function(req,res){     
-    var filename = req.params.filename;
-    console.log("requested file: " + filename)
+    var filename = req.params.filename;    
 
     var fullPathToSend = path.resolve(supportFolder +"\\" + filename);
     res.sendFile(fullPathToSend);  
@@ -41,24 +40,27 @@ router.route('/updateStatus/')
     sqlTools.run(sqlStr,res);
 })
 
-router.route('/updateComplete/')
+router.route('/markUploadComplete/')
 .post(function(req,res){    
     var dt = sqlTools.makeDateForSqlServer();
-    var sqlStr = "UPDATE blimpCodeUploader SET datetimeLastUploaded = '" + dt + "'; UPDATE maneuverToExecute SET doFtpLoadAndReset = 0";    
+    var sqlStr = "UPDATE blimpCodeUploader SET lastRunTimeError = '', datetimeLastUpload = '" + dt + "'; UPDATE maneuverToExecute SET doFtpLoadAndReset = 0";    
     sqlTools.run(sqlStr,res);
 })
 
 router.route('/openMvRuntimeError/')
 .post(function(req,res){
-    var runTimeError = req.body.runTimeError;    
-    var sqlStr = "UPDATE blimpCodeUploader SET runTimeError = '" + runTimeError + "'";
+    var runTimeError = req.body.runTimeError;
+    runTimeError = sqlTools.handleSingleQuote(runTimeError);    
+    var sqlStr = "UPDATE blimpCodeUploader SET lastRunTimeError = '" + runTimeError + "'";
     sqlTools.run(sqlStr,res);
 })
 
-router.route('/isUploadReqeuested/')
+router.route('/isUploadRequested/')
 .get(function(req,res){
-    var sqlStr = "SELECT isUploadRequested FROM blimpCodeUploader"
-    sqlTools.run(sqlStr,res);
+    var sqlStr = "SELECT doFtpLoadAndReset FROM maneuverToExecute"
+    sqlTools.sqlRequestPromise(sqlStr).then(function(ret){
+        res.send({isUploadRequested: ret.recordset[0].doFtpLoadAndReset})
+    })    
 })
 
 module.exports = router;

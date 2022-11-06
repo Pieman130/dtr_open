@@ -9,6 +9,7 @@ import sys
 import os
 import io
 import mainWorker
+import json
 
 import openMvSwUpdater
 import hardware
@@ -16,36 +17,49 @@ import comms
 import time
 
 host = '192.168.1.100:7071'
+isRunTimeFail = False
 
 def main() -> None:
     try:
+        
         mainWorker.run()
 
-        print(" NEW UPLOAD CODE REQUEST")
+        print(" NEW UPLOAD CODE REQUEST")                
+
         hw = hardware.Hardware()
         comm = comms.Comms(hw)
-
+               
         runUpdater(hw)
-       
-
+        
     except Exception as e:            
+
+        hw = hardware.Hardware()
+        comm = comms.Comms(hw)
 
         #buf = io.StringIO()
         #sys.print_exception(e, buf)
         #val = buf.getvalue()
-        val = get_exception(e)
-        print(type(val))
+        #val = get_exception(e)
+       # print(type(val))
         #print("I CAUGHT THE ERROR!" + val)
 
         #print(dir(e))
         #print('err no: ' + e.errno)
-        print("Error trying to run main worker: {}".format(e))
+        errStr = "Error: {}".format(e)
+        print(errStr)
 
-    finally:                
-
+        postRuntimeError(errStr)
+        
         while(True):                    
             time.sleep(1)
             print("Code broken.  Waiting for command to upload fixed code")
+            r = isUploadRequested()
+            print(r)
+                        
+            if(r['isUploadRequested']):      
+                print("request for code update!")      
+                runUpdater(hw)
+        
 
 
 def get_exception(err) -> str:
@@ -70,16 +84,30 @@ def runUpdater(hw):
 
     postUploadStatus('Upload complete.  Resetting.')    
 
+    markUploadComplete()
 
     print("DONE - RESETTING!")
     time.sleep(5)
     hw.pybReset()
 
 
-def postUploadStatus(status):
-    print("in post upload status fcn")
+def postUploadStatus(status):   
     pathUpdateStatus = '/updater/updateStatus/'       
     openMvSwUpdater.updateStatus(host,pathUpdateStatus,status)
+
+def postRuntimeError(runTimeError):
+    pathUpdateStatus = '/updater/openMvRuntimeError/'           
+    openMvSwUpdater.postRuntimeError(host,pathUpdateStatus,runTimeError)
+
+def isUploadRequested():
+    pathIsUploadRequested = '/updater/updateComplete/'
+    r = openMvSwUpdater.isUploadRequested(host,pathIsUploadRequested)
+    return r
+
+def markUploadComplete():
+    print("about to mark upload complete 1")
+    pathUploadComplete = '/updater/markUploadComplete/'
+    openMvSwUpdater.markUploadComplete(host,pathUploadComplete)
 
 main()
 

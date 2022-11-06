@@ -17,7 +17,7 @@ def getAndUpdateFile(host, path, filename):
     file.write(response.content)    
     file.close()
 
-def updateStatus(host,path,filename):
+def updateStatus(host,path,filename):    
     print("in update status sw fcn")
     fullAddress = 'http://%s%s' %(host, path)    
     print("about to post to: " + str(fullAddress))
@@ -26,3 +26,26 @@ def updateStatus(host,path,filename):
     headers = {'Content-Type': 'application/json'}    
     r = urequests.post(fullAddress,data = data,headers = headers)            
     
+def postRuntimeError(host,path,runTimeErrorJson):
+    print("in post runtime eror function")
+    fullAddress = 'http://%s%s' %(host, path)    
+    print("about to post to: " + str(fullAddress))
+    data = '{"runTimeError":"' + runTimeErrorJson + '"}'
+    print("data: " + data)
+    headers = {'Content-Type': 'application/json'}    
+    r = urequests.post(fullAddress,data = data,headers = headers)            
+    
+def isUploadRequested(host,path):
+    fullPath = 'http://%s%s' %(host, path)    
+    response = urequests.get(fullPath)     
+    jsonResp = response.json()       
+    return jsonResp
+
+def markUploadComplete(host,path):
+    print("about to mark upload complete 2")
+    fullAddress = 'http://%s%s' %(host, path)    
+    print("about to post to: " + str(fullAddress))
+    txt = 'nonsense'
+    data = '{"nonsense":"' + txt + '"}'    
+    headers = {'Content-Type': 'application/json'}    
+    r = urequests.post(fullAddress,data = data,headers = headers)     

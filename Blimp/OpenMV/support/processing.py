@@ -101,7 +101,7 @@ def parseYawData():
         elif dataClasses.rawData.imu_yaw < -(PI):
             dataClasses.data.imu_yaw_limited = -(PI)
         else:
-            dataClasses.rawData.imu_yaw = dataClasses.rawData.imu_yaw 
+            dataClasses.data.imu_yaw_limited = dataClasses.rawData.imu_yaw 
 
     if (dataClasses.rawData.imu_yaw_rate != None):
         if dataClasses.rawData.imu_yaw_rate > 2*PI:
@@ -109,7 +109,7 @@ def parseYawData():
         elif dataClasses.data.imu_yaw_rate_limited < -(2*PI):
             dataClasses.data.imu_yaw_rate_limited = 0
         else:
-            dataClasses.rawData.imu_yaw_rate = dataClasses.rawData.imu_yaw_rate 
+            dataClasses.data.imu_yaw_rate_limited = dataClasses.rawData.imu_yaw_rate 
 
 
 def parseDoorPosition():

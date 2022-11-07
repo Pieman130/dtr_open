@@ -6,7 +6,7 @@ import cameraSetup
 import sensor
 
 
-LOOP_TIME_FIXED = 0.2
+LOOP_TIME_FIXED = 0.05
 
 
 camera = cameraSetup.OpenMVcamera(sensor)

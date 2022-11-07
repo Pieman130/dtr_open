@@ -139,8 +139,8 @@ class FlightAction:
 
             if ( dataClasses.config.isMicroPython):                
                 self.pid_up.set_pid_gains(p = dataClasses.gndStationCmd.p_up)
-                self.pid_up.error_rounding_up = dataClasses.gndStationCmd.error_rounding_up
-                self.pid_up.error_scaling_up = dataClasses.gndStationCmd.error_scaling_up
+                self.pid_up.error_rounding = dataClasses.gndStationCmd.error_rounding_up
+                self.pid_up.error_scaling = dataClasses.gndStationCmd.error_scaling_up
                 self.pid_up.pid_minimum = dataClasses.gndStationCmd.pid_min_up
  
             else:
@@ -166,8 +166,8 @@ class FlightAction:
 
             if (dataClasses.config.isMicroPython):                
                 self.pid_yaw.set_pid_gains(p = dataClasses.gndStationCmd.p_yaw)
-                self.pid_yaw.error_rounding_up = dataClasses.gndStationCmd.error_rounding_yaw
-                self.pid_yaw.error_scaling_up = dataClasses.gndStationCmd.error_scaling_yaw
+                self.pid_yaw.error_rounding = dataClasses.gndStationCmd.error_rounding_yaw
+                self.pid_yaw.error_scaling = dataClasses.gndStationCmd.error_scaling_yaw
                 self.pid_yaw.pid_minimum = dataClasses.gndStationCmd.pid_min_yaw
  
             else:
@@ -178,6 +178,7 @@ class FlightAction:
 
             logger.log.verbose("Yaw Error: "+str(er))           
             
+            logger.log.verbose("SCALAR YAW: " + str(dataClasses.gndStationCmd.scalar_yaw))
             yawVal = self.pid_yaw.get_pid(er,scaler=dataClasses.gndStationCmd.scalar_yaw)
             self.controls.yaw = yawVal
             logger.log.info("Executing Yaw Rate Control.  PID Yaw Value: {}".format(self.controls.yaw) )

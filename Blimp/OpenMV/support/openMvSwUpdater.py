@@ -2,6 +2,7 @@ import network
 import usocket
 import urequests
 import sys
+import io
 
 def http_getFolderList(host,path):
     fullPath = 'http://%s%s' %(host, path)    
@@ -60,9 +61,9 @@ def exceptionToStr(e):
     return errStr
 
     #martin changes:
-    
+
     #buf = io.StringIO()
-    #sys.print_exception(err, buf)
+    #sys.print_exception(e, buf)
     #print(buf.getvalue())
     #return buf.getvalue()
 

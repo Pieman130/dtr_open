@@ -24,8 +24,24 @@ class Sensors:
         time.sleep(0.5)
         
 
-    def swInitializeCamera(self):       
-        self.camera = cameraSetup.OpenMVcamera(self.hw.camera)              
+    def swInitializeCamera(self):         
+
+        self.camera = self.hw.camera
+       
+
+        self.camera.reset()
+        
+        self.camera.set_pixformat(self.camera.RGB565)
+        
+        #sensor.set_framesize(sensor.QVGA)
+        self.camera.set_framesize(self.camera.QVGA) 
+        
+        # self.camera.skip_frames(2000)
+
+        # needed for april tag finder
+        self.camera.set_auto_gain(False)  # must turn this off to prevent image washout...
+        
+        self.camera.set_auto_whitebal(True)  # must turn this off to prevent image washout...        
 
     def collectData(self):
 

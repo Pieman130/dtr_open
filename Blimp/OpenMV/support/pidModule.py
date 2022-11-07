@@ -29,9 +29,9 @@ class Controller():
       
 
     def get_pid_gains(self):
-        return {'p':self.pid.up_pid.up_p, 
-               'i':self.pid.up_pid.up_i, 
-               'd':self.pid.up_pid.up_d}
+        return {'p':self.pid._kp, 
+               'i':self.pid._ki, 
+               'd':self.pid._kd}
 
 
     def get_pid(self, error, scaler=1):

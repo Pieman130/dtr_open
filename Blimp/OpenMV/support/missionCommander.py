@@ -132,15 +132,15 @@ class MissionCommander:
     def updateStateAutoAssisted(self):    
             
 
-        self.currentState = yaw                
+        #self.currentState = yaw                
 
-      #  requestedState = dataClasses.gndStationCmd.requestedState     
+        requestedState = dataClasses.gndStationCmd.requestedState     
 
-       # if(requestedState == hover.description):
-        #    self.currentState = hover
+        if(requestedState == hover.description):
+            self.currentState = hover
 
-       # elif(requestedState == hoverYaw.description):
-        #    self.currentState = hoverYaw
+        elif(requestedState == hoverYaw.description):
+            self.currentState = hoverYaw
 
         #elif(requestedState == yaw.description):
          #   self.currentState = yaw

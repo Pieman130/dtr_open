@@ -28,9 +28,9 @@ ledBlue = pyb.LED(3) # Initiates the blue led
 ledIR = pyb.LED(4) # Initiates the IR led
 
 
-thresholds = [(39, 76, -53, -11, 51, 85), #yellow 0
-              (22, 41, -14, -6, 4, 34), #green 1
-              (28, 65, 14, 94, 24, 74)] #orange 2
+thresholds = [(54, 100, -39, -7, 29, 85), #yellow 0
+              (6, 60, -103, -9, -64, 100), #green 1
+              (34, 43, 11, 48, 21, 55)] #orange 2
 
 
 
@@ -74,7 +74,7 @@ dist_ball = 0 # (float)
 dist_goal = 0 # (float)
 
 def find_ball(img):
-    blobs = img.find_blobs([thresholds[1]], pixels_threshold=50, area_threshold=50, merge=True,  margin = 10)
+    blobs = img.find_blobs([thresholds[1]], pixels_threshold=50, area_threshold=20, merge=True,  margin = 10)
     biggest = [(sensor.width()/2),(sensor.height()/2),0,0] #[x, y, width, height]
     r = [0,0,0,0]
     global x_ema
@@ -119,7 +119,7 @@ def find_ball(img):
     return
 
 def find_yellow_goal(img):
-    blobs = img.find_blobs([thresholds[0]], pixels_threshold=7, area_threshold=12, merge=True, margin=10)
+    blobs = img.find_blobs([thresholds[0]], pixels_threshold=4, area_threshold=7, merge=True, margin=10)
     biggest = [int((sensor.width()/2)),int((sensor.height()/2)),0,0] #[cx, cy, width, height]
     r = [0,0,0,0]
     counter = 0
@@ -158,7 +158,7 @@ def find_yellow_goal(img):
     return
 
 def find_orange_goal(img):
-    blobs = img.find_blobs([thresholds[2]], pixels_threshold=7, area_threshold=25, merge=True, margin=10)
+    blobs = img.find_blobs([thresholds[2]], pixels_threshold=9, area_threshold=25, merge=True, margin=10)
     biggest = [int((sensor.width()/2)),int((sensor.height()/2)),0,0] #[cx, cy, width, height]
     r = [0,0,0,0]
     counter = 0

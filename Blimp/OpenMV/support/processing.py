@@ -12,6 +12,7 @@ else:
 
 SERVO_OPEN = 0
 SERVO_CLOSED = 45
+PI = 3.14159
 
 
 def parseSensorData():  # https://github.com/mavlink/c_library_v1/blob/master/checksum.h
@@ -47,6 +48,10 @@ def parseSensorData():  # https://github.com/mavlink/c_library_v1/blob/master/ch
   #  dataClasses.data.isAprilTagDetected = dataClasses.data.aprilTagFound.foundIt
 
     parseLidarData()
+
+    parseYawData() #corrected for extremely large/small erroneous values
+
+
 
     # overwrite for testing purposes the processed info, to test state machine
     # for running on pc.
@@ -87,6 +92,24 @@ def attitudeCorrectDistance(measDist=0.0, roll_rad=0.0, pitch_rad=0.0):
     # correctedDist = math.cos(math.sqrt(roll_rad**2 + pitch_rad**2)) * measDist # Not sure which of these methods will be faster on the uC
     correctedDist = math.cos(roll_rad) * math.cos(pitch_rad) * measDist
     return correctedDist
+
+
+def parseYawData():
+    if (dataClasses.RawData.imu_yaw != None):
+        if dataClasses.RawData.imu_raw > PI:
+            dataClasses.ProcessedData.imu_yaw_limited = PI 
+        elif dataClasses.RawData.imu_yaw < -(PI):
+            dataClasses.ProcessedData.imu_yaw_limited = -(PI)
+        else:
+            dataClasses.ProcessedData.imu_yaw = dataClasses.RawData.imu_yaw 
+
+    if (dataClasses.RawData.imu_yaw_rate != None):
+        if dataClasses.RawData.imu_raw_rate > 2*PI:
+            dataClasses.ProcessedData.imu_yaw_limited = 0 
+        elif dataClasses.rawData.imu_yaw_rate_limited < -(2*PI):
+            dataClasses.ProcessedData.imu_yaw_rate_limited = 0
+        else:
+            dataClasses.ProcessedData.imu_yaw_rate = dataClasses.RawData.imu_yaw_rate 
 
 
 def parseDoorPosition():

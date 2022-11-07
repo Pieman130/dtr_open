@@ -162,7 +162,7 @@ class FlightAction:
         '''take in desired yaw_rate from attitude message
         and maintain a pid controlled yaw'''
         logger.log.info("executing yaw rate control.  Desired yaw rate: " + str(desired_yaw_rate))
-        if self.rawData.imu_yaw_rate != None:
+        if self.dataClasses.ProcessedData.imu_yaw_rate_limited != None:
 
             if (dataClasses.config.isMicroPython):                
                 self.pid_yaw.set_pid_gains(p = dataClasses.gndStationCmd.p_yaw)
@@ -172,12 +172,11 @@ class FlightAction:
  
             else:
                 p = dataClasses.gndStationCmd.p_yaw
-                self.pid_yaw.set_pid_gains(p)  
-
-            yawVal = self.pid_yaw.get_pid(self.rawData.imu_yaw_rate-desired_yaw_rate,scaler=dataClasses.gndStationCmd.scalar_yaw)
-            logger.log.info("Executing Yaw Rate Control.  PID Yaw Value: {}".format(yawVal) )
-            self.controls.yaw = yawVal
+                self.pid_yaw.set_pid_gains(p)             
             
+            yawVal = self.pid_yaw.get_pid(self.dataClasses.ProcessedData.imu_yaw_rate_limited-desired_yaw_rate,scaler=dataClasses.gndStationCmd.scalar_yaw)
+            self.controls.yaw = yawVal
+            logger.log.info("Executing Yaw Rate Control.  PID Yaw Value: {}".format(self.controls.yaw) )
 
 class Controls:
     def __init__(self):

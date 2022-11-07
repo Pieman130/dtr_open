@@ -48,6 +48,9 @@ class ProcessedData:
         self.ball_xerror = None
         self.ball_yerror = None  
         self.ballIsFound = None
+
+        self.imu_yaw_limited = None
+        self.imu_yaw_rate_limited = None
         
 
 class GroundStationCommand:

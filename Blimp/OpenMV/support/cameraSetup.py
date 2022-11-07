@@ -6,7 +6,7 @@ class OpenMVcamera:
 
         self.camera.set_pixformat(self.camera.RGB565)
 
-        self.camera.set_framesize(self.camera.QVGA)
+        self.camera.set_framesize(self.camera.QQVGA)
         #self.camera.set_framesize(self.camera.QQVGA) #needed for april tag detections
 
     # self.camera.skip_frames(2000)

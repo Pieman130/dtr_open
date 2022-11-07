@@ -50,7 +50,11 @@ def main() -> None:
 
         #print(dir(e))
         #print('err no: ' + e.errno)
-        errStr = "Error: {}".format(e)
+
+        print("about to do exception to str")
+        errStr = openMvSwUpdater.exceptionToStr(e)
+        
+        
         print(errStr)
 
         postRuntimeError(errStr)

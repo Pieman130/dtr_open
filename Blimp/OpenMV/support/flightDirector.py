@@ -34,7 +34,7 @@ class FlightDirector:
 
             logger.log.verbose(" FLIGHT DIRECTOR CURRENT MODE: " + self.currentState.description)     
 
-            yawRate = 1
+            yawRate = 0
             # if(dataClasses.gndStationCmd.p_up != None):
                 #   pass
                 # logger.log.debugOnly("Pid Up.  P: " + str(dataClasses.gndStationCmd.p_up))

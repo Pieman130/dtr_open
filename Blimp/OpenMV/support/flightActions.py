@@ -174,8 +174,10 @@ class FlightAction:
                 p = dataClasses.gndStationCmd.p_yaw
                 self.pid_yaw.set_pid_gains(p)  
 
-            self.controls.yaw = self.pid_yaw.get_pid(self.rawData.imu_yaw_rate-desired_yaw_rate,scaler=dataClasses.gndStationCmd.scalar_yaw)
-            logger.log.info("Executing Yaw Rate Control.  PID Yaw Value: {}".format(self.controls.yaw) )
+            yawVal = self.pid_yaw.get_pid(self.rawData.imu_yaw_rate-desired_yaw_rate,scaler=dataClasses.gndStationCmd.scalar_yaw)
+            logger.log.info("Executing Yaw Rate Control.  PID Yaw Value: {}".format(yawVal) )
+            self.controls.yaw = yawVal
+            
 
 class Controls:
     def __init__(self):

@@ -202,21 +202,21 @@ class TagInfo:
 tagsFound = TagInfo()
     
 
-def lookForAprilTag(img):
-    logger.log.verbose("in look for april tag")
+#def lookForAprilTag(img):
+ #   logger.log.verbose("in look for april tag")
 
-    foundIt = 0
+  #  foundIt = 0
     
-    for tag in img.find_apriltags(): # defaults to TAG36H11 without "families".        
-        tagsFound.foundIt = 1 
-        tagsFound.tags = tag 
-        tagsFound.rotation = (180 * tag.rotation()) / math.pi    
-        print_args = (family_name(tag), tag.id(), (180 * tag.rotation()) / math.pi)
-        logger.log.verbose("Tag Family %s, Tag ID %d, rotation %f (degrees)" % print_args)
+   # for tag in img.find_apriltags(): # defaults to TAG36H11 without "families".        
+    #    tagsFound.foundIt = 1 
+    #    tagsFound.tags = tag 
+    #    tagsFound.rotation = (180 * tag.rotation()) / math.pi    
+    #    print_args = (family_name(tag), tag.id(), (180 * tag.rotation()) / math.pi)
+    #    logger.log.verbose("Tag Family %s, Tag ID %d, rotation %f (degrees)" % print_args)
 
-    logger.log.verbose("found april tag?: " + str(tagsFound.foundIt))
+    #logger.log.verbose("found april tag?: " + str(tagsFound.foundIt))
 
-    return tagsFound
+    #return tagsFound
 
 #def family_name(tag):
  #   if(tag.family() == image.TAG16H5):

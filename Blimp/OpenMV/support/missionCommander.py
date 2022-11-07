@@ -23,6 +23,7 @@ class SystemState:
         self.target = target
         self.action = action    
 
+
 startup = SystemState("startup","none","none")
 hover = SystemState("hover","nothing","nothing")
 hoverYaw = SystemState("hoverYaw","nothing","nothing")
@@ -36,6 +37,7 @@ moveToGoal = SystemState("moveToGoal", TARGET_GOAL,ACTION_MOVE)
 scoreGoal = SystemState("scoreGoal",TARGET_GOAL,ACTION_RELEASE)
 
 manualTesting = SystemState("manualTesting",TARGET_GOAL,ACTION_RELEASE) # direct control of motors
+rcControl = SystemState("manual","none","none") # direct control of motors
 
 
     
@@ -43,6 +45,7 @@ CONTROL_AUTHORITY_AUTO = "autonomous"
 CONTROL_AUTHORITY_AUTO_ASSISTED = "auto-assisted"
 CONTROL_AUTHORITY_MANUAL_WEB = "manualWeb"
 CONTROL_AUTHORITY_MANUAL_REMOTE = "manualRemote"
+CONTROL_AUTHORITY_RC_REMOTE_CONTROL = "manual"
 class MissionCommander:   
     '''    Mission commander:
            Goal: 
@@ -59,7 +62,6 @@ class MissionCommander:
         pass
 
     def determineControlAuthority(self):        
-       
         processing.parseRCSwitchPositions()
 
         
@@ -67,24 +69,35 @@ class MissionCommander:
         #logger.log.verbose('sw flight mode: ' + str(dataClasses.data.sw_flight_mode ))
         #logger.log.verbose('sw door control: ' + str(dataClasses.data.sw_door_control))
 
-        if(dataClasses.data.sw_flight_mode == 'manual'):
+        logger.log.verbose("FLIGHT MODE:")
+        logger.log.verbose(dataClasses.data.sw_flight_mode)
+
+       # dataClasses.data.sw_flight_mode = CONTROL_AUTHORITY_RC_REMOTE_CONTROL
+        controlAuthority = ''
+
+        if(dataClasses.data.sw_flight_mode == CONTROL_AUTHORITY_RC_REMOTE_CONTROL):
             self.updateState = self.updateStateManualRemote
+            controlAuthority = 'rc remote control'
 
         elif(dataClasses.data.sw_flight_mode == 'auto'):
              self.updateState = self.updateStateAuto
+             controlAuthority = 'auto'
 
         elif(dataClasses.data.sw_flight_mode == 'assisted'):
             if (dataClasses.gndStationCmd.controlAuthority == CONTROL_AUTHORITY_AUTO_ASSISTED):
                 logger.log.verbose("CONTROL AUTHORITY: Auto assisted")             
                 self.updateState = self.updateStateAutoAssisted
+                controlAuthority = dataClasses.gndStationCmd.controlAuthority
 
             elif (dataClasses.gndStationCmd.controlAuthority == CONTROL_AUTHORITY_MANUAL_WEB):
                 logger.log.verbose("CONTROL AUTHORITY: Manual Web")
                 self.updateState = self.updateStateManualWeb
+                controlAuthority = dataClasses.gndStationCmd.controlAuthority
 
             else:
                 dataClasses.gndStationCmd.controlAuthority = CONTROL_AUTHORITY_AUTO
                 self.updateState = self.updateStateAuto
+                controlAuthority = 'auto'
             
 
        # if dataClasses.data.sw_door_control is not None:
@@ -106,7 +119,7 @@ class MissionCommander:
            
 
 
-        dataClasses.config.controlAuthority = dataClasses.gndStationCmd.controlAuthority
+        dataClasses.config.controlAuthority = controlAuthority
    
 
     def updateStateAutoAssisted(self):        
@@ -158,7 +171,7 @@ class MissionCommander:
 
     def updateStateManualRemote(self):
          
-        self.flightDirector.currentState = None # self.currentState
+        self.flightDirector.currentState = rcControl # self.currentState
 
     
 

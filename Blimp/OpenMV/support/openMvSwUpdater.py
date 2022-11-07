@@ -57,15 +57,22 @@ def markUploadComplete(host,path):
     r = urequests.post(fullAddress,data = data,headers = headers)   
 
 def exceptionToStr(e):
-    errStr = "Error: {}".format(e)
-    return errStr
+    buf = io.StringIO()
+    sys.print_exception(e, buf)
+    print(buf.getvalue())
+    ret = buf.getvalue()
+    ret = ret.replace('"','')
+    ret = ret.replace('\n','')
+    return ret
+
+    #errStr = "Error: {}".format(e)
+
+    
+    #return errStr
 
     #martin changes:
 
-    #buf = io.StringIO()
-    #sys.print_exception(e, buf)
-    #print(buf.getvalue())
-    #return buf.getvalue()
+    
 
 
 

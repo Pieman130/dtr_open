@@ -95,21 +95,21 @@ def attitudeCorrectDistance(measDist=0.0, roll_rad=0.0, pitch_rad=0.0):
 
 
 def parseYawData():
-    if (dataClasses.RawData.imu_yaw != None):
-        if dataClasses.RawData.imu_raw > PI:
-            dataClasses.ProcessedData.imu_yaw_limited = PI 
-        elif dataClasses.RawData.imu_yaw < -(PI):
-            dataClasses.ProcessedData.imu_yaw_limited = -(PI)
+    if (dataClasses.rawData.imu_yaw != None):
+        if dataClasses.rawData.imu_yaw > PI:
+            dataClasses.data.imu_yaw_limited = PI 
+        elif dataClasses.rawData.imu_yaw < -(PI):
+            dataClasses.data.imu_yaw_limited = -(PI)
         else:
-            dataClasses.ProcessedData.imu_yaw = dataClasses.RawData.imu_yaw 
+            dataClasses.rawData.imu_yaw = dataClasses.rawData.imu_yaw 
 
-    if (dataClasses.RawData.imu_yaw_rate != None):
-        if dataClasses.RawData.imu_raw_rate > 2*PI:
-            dataClasses.ProcessedData.imu_yaw_limited = 0 
-        elif dataClasses.rawData.imu_yaw_rate_limited < -(2*PI):
-            dataClasses.ProcessedData.imu_yaw_rate_limited = 0
+    if (dataClasses.rawData.imu_yaw_rate != None):
+        if dataClasses.rawData.imu_yaw_rate > 2*PI:
+            dataClasses.data.imu_yaw_limited = 0 
+        elif dataClasses.data.imu_yaw_rate_limited < -(2*PI):
+            dataClasses.data.imu_yaw_rate_limited = 0
         else:
-            dataClasses.ProcessedData.imu_yaw_rate = dataClasses.RawData.imu_yaw_rate 
+            dataClasses.rawData.imu_yaw_rate = dataClasses.rawData.imu_yaw_rate 
 
 
 def parseDoorPosition():

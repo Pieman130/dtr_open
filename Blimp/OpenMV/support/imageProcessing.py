@@ -137,7 +137,7 @@ def find_yellow_goal(img):
     if (biggest[3] != 0):
         dist_goal = 42 / math.tan((biggest[3] * .23166/2)) # change parameters to determine distance from goal with known values, biggest[3] is height of goal
     img.draw_cross(round(goalx_ema.get_value()), round(goaly_ema.get_value()), color=[0,0,0])
-    dataClasses.data.goal_yellow_xerror = 160 - round(goalx_ema.get_value())
+    dataClasses.data.goal_yellow_xerror = round(goalx_ema.get_value()) - 160
     dataClasses.data.goal_yellow_goal_yerror = round(goaly_ema.get_value()) - 120
     return
 def find_orange_goal(img):
@@ -171,7 +171,7 @@ def find_orange_goal(img):
     if (biggest[3] != 0):
         dist_goal = 42 / math.tan((biggest[3] * .23166/2)) # change parameters to determine distance from goal with known values, biggest[3] is height of goal
     img.draw_cross(round(goalx_ema.get_value()), round(goaly_ema.get_value()), color=[0,0,0])
-    dataClasses.data.goal_orange_xerror = 160 - round(goalx_ema.get_value())
+    dataClasses.data.goal_orange_xerror = round(goalx_ema.get_value()) -160
     dataClasses.data.goal_orange_goal_yerror = round(goaly_ema.get_value()) - 120
     return
 

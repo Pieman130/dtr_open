@@ -70,6 +70,8 @@ class FlightAction:
             self.hw.closeDoor()
         elif dataClasses.data.sw_door_control == "open":
             self.hw.openDoor()
+        elif dataClasses.data.sw_door_control == "None":
+            pass
         else:
             # TODO: Implement proper autonomous door control
             if self.controls.servo == 1:

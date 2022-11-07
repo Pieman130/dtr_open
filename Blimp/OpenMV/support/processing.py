@@ -134,8 +134,6 @@ def parseRCSwitchPositions():
 
 # def distanceToCeiling():
 
-
 # def distanceToFloor(): #may not actually ever do this one.
-
 
 # def distanceToGoal():

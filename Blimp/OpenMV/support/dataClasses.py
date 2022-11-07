@@ -80,7 +80,7 @@ class GroundStationCommand:
         self.scalar_throttle = 1
         self.error_rounding_up = 0
         self.error_scaling_up = 1
-        self.error_rounding_yaw = 0
+        self.error_rounding_yaw = 4
         self.error_scaling_yaw = 1
         self.pid_min_up = -0.2
         self.pid_min_yaw = -1.0

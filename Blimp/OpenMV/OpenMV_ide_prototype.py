@@ -18,7 +18,7 @@ sensor.set_pixformat(sensor.RGB565)
 sensor.set_framesize(sensor.QVGA)
 sensor.skip_frames(time = 200)
 sensor.set_auto_gain(False) # must be turned off for color tracking
-sensor.set_auto_whitebal(auto_mode) # must be turned off for color tracking (I ignored this and kept it on)
+sensor.set_auto_whitebal(True) # must be turned off for color tracking (I ignored this and kept it on)
 clock = time.clock()
 
 class EMA:

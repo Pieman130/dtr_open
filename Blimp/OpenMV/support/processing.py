@@ -106,7 +106,7 @@ def parseYawData():
     if (dataClasses.rawData.imu_yaw_rate != None):
         if dataClasses.rawData.imu_yaw_rate > 2*PI:
             dataClasses.data.imu_yaw_limited = 0 
-        elif dataClasses.data.imu_yaw_rate_limited < -(2*PI):
+        elif dataClasses.rawData.imu_yaw_rate < -(2*PI):
             dataClasses.data.imu_yaw_rate_limited = 0
         else:
             dataClasses.data.imu_yaw_rate_limited = dataClasses.rawData.imu_yaw_rate 

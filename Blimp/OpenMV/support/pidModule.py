@@ -40,8 +40,7 @@ class Controller():
             logger.log.warning('Scaler is none in get_pid')
             return 0
         error = round(error/self.error_scaling,self.error_rounding)
-
-        print("????")
+    
         logger.log.verbose('Error: ' + str(error))
         output = self.pid.get_pid(error,scaler)
         if output > 1:

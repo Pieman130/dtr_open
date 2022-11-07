@@ -32,6 +32,7 @@ class FlightDirector:
             return
         else:
 
+        
             logger.log.verbose(" FLIGHT DIRECTOR CURRENT MODE: " + self.currentState.description)     
 
             yawRate = 0

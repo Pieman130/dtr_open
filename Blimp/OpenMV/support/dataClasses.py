@@ -23,6 +23,7 @@ class RawData:
         self.door_position = None
 
 
+
 class ProcessedData:
     def __init__(self):
         self.irData = 0 
@@ -83,6 +84,7 @@ class GroundStationCommand:
         self.controlAuthority = 'autonomous'
         self.manualHeight = 100000
         self.resetOpenMVforFTPtsfr = 0
+        self.doFtpLoadAndReset = 0
 
 
         self.requestedState = None

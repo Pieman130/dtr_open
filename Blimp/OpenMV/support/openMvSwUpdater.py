@@ -58,6 +58,16 @@ def markUploadComplete(host,path):
 def exceptionToStr(e):
     errStr = "Error: {}".format(e)
     return errStr
+
+    #martin changes:
+    
+    #buf = io.StringIO()
+    #sys.print_exception(err, buf)
+    #print(buf.getvalue())
+    #return buf.getvalue()
+
+
+
     #errStr = sys.print_exception(e)
     #print(errStr)
     #print("after print")

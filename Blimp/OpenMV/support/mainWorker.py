@@ -107,6 +107,9 @@ def run():
         logger.log.verbose("imu_yaw: " + str(dataClasses.rawData.imu_yaw))
         logger.log.verbose("motor_yaw: " + str(dataClasses.rawData.motor_yaw))
       
+        logger.log.verbose("yaw rate limited: " + str(dataClasses.data.imu_yaw_rate_limited))
+        logger.log.verbose("imu_yaw limited: " + str(dataClasses.data.imu_yaw_limited))        
+      
     
         if(dataClasses.gndStationCmd.doFtpLoadAndReset):
             keepRunning = 0            

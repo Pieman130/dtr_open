@@ -37,7 +37,7 @@ moveToGoal = SystemState("moveToGoal", TARGET_GOAL,ACTION_MOVE)
 scoreGoal = SystemState("scoreGoal",TARGET_GOAL,ACTION_RELEASE)
 
 manualTesting = SystemState("manualTesting",TARGET_GOAL,ACTION_RELEASE) # direct control of motors
-rcControl = SystemState("manual","none","none") # direct control of motors
+rcControl = SystemState("rcRemote","none","none") # direct control of motors
 
 
     
@@ -182,7 +182,7 @@ class MissionCommander:
 
     def updateStateManualRemote(self):
          
-        self.flightDirector.currentState = startup # self.currentState
+        self.flightDirector.currentState = rcControl # self.currentState
 
     
 

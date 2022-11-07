@@ -19,10 +19,19 @@ class EMA:
         return self.value
 
 #Copied from OpenMV_ide_prototype.py, edited to better fit code structure
+import sensor, image, time, math, ustruct, sys, pyb, pid
+from pyb import USB_VCP, Pin, Timer, Servo
 
-thresholds = [(60, 82, -48, -11, -128, 127), #yellow 0
+ledRed = pyb.LED(1) # Initiates the red led
+ledGreen = pyb.LED(2) # Initiates the green led
+ledBlue = pyb.LED(3) # Initiates the blue led
+ledIR = pyb.LED(4) # Initiates the IR led
+
+
+thresholds = [(64, 100, -36, -11, 8, 127), #yellow 0
               (0, 70, -59, -12, -10, 54), #green 1
-              (17, 100, 14, 70, 34, 127)] #orange 2
+              (35, 62, 29, 93, 35, 98)] #orange 2
+
 
 
 #These are the sensor parameters for color detection to work optimally:
@@ -69,32 +78,35 @@ def find_ball(img):
     global rect_ema
     global alpha_rect
     global dist_ball
+    dataClasses.data.ballIsFound = 0
     for blob in blobs:
+        dataClasses.data.ballIsFound = 1
         current = [blob.cx(), blob.cy(), blob.rect()[2], blob.rect()[3]]
         if current[2] > biggest[2]:
             biggest = current
             r = blob.rect()
-            if x_ema == None:
-                x_ema = EMA(current[0], ball_alpha)
-                rect_ema = [EMA(r[0], alpha_rect), EMA(r[1], alpha_rect), EMA(r[2], alpha_rect), EMA(r[3], alpha_rect)]
-                y_ema = EMA(current[1], ball_alpha)
-            else:
-                x_ema.update(current[0])
-                y_ema.update(current[1])
-                rect_ema[0].update(r[0])
-                rect_ema[1].update(r[1])
-                rect_ema[2].update(r[2])
-                rect_ema[3].update(r[3])
-            if (rect_ema[2].get_value() != 0):
-                dist_ball = 22/(math.tan((rect_ema[2].get_value() * .22125)/2)) #rect_ema[2].getvalue() gives ball width, use equation for pixel width to meters away
-            #img.draw_rectangle(blob.rect())
-            img.draw_rectangle([round(ema.get_value()) for ema in rect_ema], 2)
-            img.draw_string(round(rect_ema[0].get_value()),round(rect_ema[1].get_value()), " Ball", [0, 0, 255], mono_space = False)
-            #img.draw_cross(blob.cx(), blob.cy())
-            img.draw_cross(round(x_ema.get_value()), round(y_ema.get_value()), 2)
-            dataClasses.data.ball_xerror = round(x_ema.get_value()) - 160
-            dataClasses.data.ball_yerror = round(y_ema.get_value()) - 120
+    if x_ema == None:
+        x_ema = EMA(biggest[0], ball_alpha)
+        rect_ema = [EMA(r[0], alpha_rect), EMA(r[1], alpha_rect), EMA(r[2], alpha_rect), EMA(r[3], alpha_rect)]
+        y_ema = EMA(biggest[1], ball_alpha)
+    else:
+        x_ema.update(biggest[0])
+        y_ema.update(biggest[1])
+        rect_ema[0].update(r[0])
+        rect_ema[1].update(r[1])
+        rect_ema[2].update(r[2])
+        rect_ema[3].update(r[3])
+    if (rect_ema[2].get_value() != 0):
+        dist_ball = 22/(math.tan((rect_ema[2].get_value() * .22125)/2)) #rect_ema[2].getvalue() gives ball width, use equation for pixel width to meters away
+    #img.draw_rectangle(blob.rect())
+    img.draw_rectangle([round(ema.get_value()) for ema in rect_ema], 2)
+    img.draw_string(round(rect_ema[0].get_value()),round(rect_ema[1].get_value()), " Ball", [0, 0, 255], mono_space = False)
+    #img.draw_cross(blob.cx(), blob.cy())
+    img.draw_cross(round(x_ema.get_value()), round(y_ema.get_value()), 2)
+    dataClasses.data.ball_xerror = round(x_ema.get_value()) - (sensor.width()/2)
+    dataClasses.data.ball_yerror = round(y_ema.get_value()) - (sensor.height()/2)
    # dataClasses.data.ballIsFound = len(blob)
+    return
 
 def find_yellow_goal(img):
     blobs = img.find_blobs([thresholds[0]], pixels_threshold=3, area_threshold=12, merge=True, margin=10)
@@ -106,7 +118,9 @@ def find_yellow_goal(img):
     global SQerror
     global goal_xerror
     global goal_yerror
+    dataClasses.data.yellowGoalIsFound = 0
     for blob in blobs:
+        dataClasses.data.yellowGoalIsFound = 1
         current = [blob.cx(), blob.cy(), blob.rect()[2], blob.rect()[3]]
         img.draw_rectangle(blob.rect())
         #img.draw_cross(current[0], current[1])
@@ -127,8 +141,9 @@ def find_yellow_goal(img):
     if (biggest[3] != 0):
         dist_goal = 42 / math.tan((biggest[3] * .23166/2)) # change parameters to determine distance from goal with known values, biggest[3] is height of goal
     img.draw_cross(round(goalx_ema.get_value()), round(goaly_ema.get_value()), color=[0,0,0])
-    dataClasses.data.goal_yellow_xerror = 160 - round(goalx_ema.get_value())
-    dataClasses.data.goal_yellow_goal_yerror = round(goaly_ema.get_value()) - 120
+    dataClasses.data.goal_yellow_xerror = round(goalx_ema.get_value()) - (sensor.width()/2)
+    dataClasses.data.goal_yellow_goal_yerror = round(goaly_ema.get_value()) - (sensor.height()/2)
+    return
 
 def find_orange_goal(img):
     blobs = img.find_blobs([thresholds[2]], pixels_threshold=3, area_threshold=12, merge=True, margin=10)
@@ -140,7 +155,9 @@ def find_orange_goal(img):
     global SQerror
     global goal_xerror
     global goal_yerror
+    dataClasses.data.orangeGoalIsFound = 0
     for blob in blobs:
+        dataClasses.data.orangeGoalIsFound = 1
         current = [blob.cx(), blob.cy(), blob.rect()[2], blob.rect()[3]]
         img.draw_rectangle(blob.rect())
         #img.draw_cross(current[0], current[1])
@@ -161,8 +178,9 @@ def find_orange_goal(img):
     if (biggest[3] != 0):
         dist_goal = 42 / math.tan((biggest[3] * .23166/2)) # change parameters to determine distance from goal with known values, biggest[3] is height of goal
     img.draw_cross(round(goalx_ema.get_value()), round(goaly_ema.get_value()), color=[0,0,0])
-    dataClasses.data.goal_orange_xerror = 160 - round(goalx_ema.get_value())
-    dataClasses.data.goal_orange_goal_yerror = round(goaly_ema.get_value()) - 120
+    dataClasses.data.goal_orange_xerror = round(goalx_ema.get_value()) -(sensor.width()/2)
+    dataClasses.data.goal_orange_goal_yerror = round(goaly_ema.get_value()) - (sensor.height()/2)
+    return
 
 
 
@@ -202,32 +220,32 @@ class TagInfo:
 tagsFound = TagInfo()
     
 
-#def lookForAprilTag(img):
- #   logger.log.verbose("in look for april tag")
+def lookForAprilTag(img):
+    logger.log.verbose("in look for april tag")
 
-  #  foundIt = 0
+    foundIt = 0
     
-   # for tag in img.find_apriltags(): # defaults to TAG36H11 without "families".        
-    #    tagsFound.foundIt = 1 
-    #    tagsFound.tags = tag 
-    #    tagsFound.rotation = (180 * tag.rotation()) / math.pi    
-    #    print_args = (family_name(tag), tag.id(), (180 * tag.rotation()) / math.pi)
-    #    logger.log.verbose("Tag Family %s, Tag ID %d, rotation %f (degrees)" % print_args)
+    for tag in img.find_apriltags(): # defaults to TAG36H11 without "families".        
+        tagsFound.foundIt = 1 
+        tagsFound.tags = tag 
+        tagsFound.rotation = (180 * tag.rotation()) / math.pi    
+        print_args = (family_name(tag), tag.id(), (180 * tag.rotation()) / math.pi)
+        logger.log.verbose("Tag Family %s, Tag ID %d, rotation %f (degrees)" % print_args)
 
-    #logger.log.verbose("found april tag?: " + str(tagsFound.foundIt))
+    logger.log.verbose("found april tag?: " + str(tagsFound.foundIt))
 
-    #return tagsFound
+    return tagsFound
 
-#def family_name(tag):
- #   if(tag.family() == image.TAG16H5):
-  #      return "TAG16H5"
-  #  if(tag.family() == image.TAG25H7):
-  #      return "TAG25H7"
-  #  if(tag.family() == image.TAG25H9):
-  #      return "TAG25H9"
-  #  if(tag.family() == image.TAG36H10):
-  #      return "TAG36H10"
-  #  if(tag.family() == image.TAG36H11):
-  #      return "TAG36H11"
-   # if(tag.family() == image.ARTOOLKIT):
-   #     return "ARTOOLKIT"  
+def family_name(tag):
+    if(tag.family() == image.TAG16H5):
+        return "TAG16H5"
+    if(tag.family() == image.TAG25H7):
+        return "TAG25H7"
+    if(tag.family() == image.TAG25H9):
+        return "TAG25H9"
+    if(tag.family() == image.TAG36H10):
+        return "TAG36H10"
+    if(tag.family() == image.TAG36H11):
+        return "TAG36H11"
+    if(tag.family() == image.ARTOOLKIT):
+        return "ARTOOLKIT"  

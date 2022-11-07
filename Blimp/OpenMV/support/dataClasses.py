@@ -46,6 +46,9 @@ class ProcessedData:
         self.goal_orange_xerror = None
         self.goal_orange_goal_yerror = None
         
+        self.orangeGoalIsFound = None
+        self.yellowGoalIsFound = None
+
         self.ball_xerror = None
         self.ball_yerror = None  
         self.ballIsFound = None

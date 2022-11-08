@@ -126,12 +126,12 @@ class ImageProcessing():
                     dist_goal = 42 / math.tan((biggest[3] * .23166/2)) # change parameters to determine distance from goal with known values, biggest[3] is height of goal
                 img.draw_cross(round(self.goalx_ema.get_value()), round(self.goaly_ema.get_value()), color=[0,0,0])
                 dataClasses.data.goal_yellow_xerror = round(self.goalx_ema.get_value()) - (img.width()/2)
-                dataClasses.data.goal_yellow_goal_yerror = round(self.goaly_ema.get_value()) - (img.height()/2)
+                dataClasses.data.goal_yellow_yerror = round(self.goaly_ema.get_value()) - (img.height()/2)
 
             else: #nothing that looks like a goal was detected
                 dataClasses.data.yellowGoalIsFound = 0
                 dataClasses.data.goal_yellow_xerror = None
-                dataClasses.data.goal_yellow_goal_yerror = None
+                dataClasses.data.goal_yellow_yerror = None
                 logger.log.verbose("Yellow Goal Not Found!")
                 return
         else:

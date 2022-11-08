@@ -51,7 +51,9 @@ router.route('/openMvRuntimeError/')
 .post(function(req,res){
     var runTimeError = req.body.runTimeError;
     runTimeError = sqlTools.handleSingleQuote(runTimeError);    
-    var sqlStr = "UPDATE blimpCodeUploader SET lastRunTimeError = '" + runTimeError + "'";
+    var errTime = sqlTools.makeDateForSqlServer()
+    var valueStr = sqlTools.makeValuesStr(errTime,runTimeError)
+    var sqlStr = "UPDATE blimpCodeUploader SET lastRunTimeError = '" + runTimeError + "'; INSERT INTO errorLogs(errorTime,error)" + valueStr;
     sqlTools.run(sqlStr,res);
 })
 

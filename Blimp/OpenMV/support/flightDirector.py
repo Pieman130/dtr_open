@@ -4,7 +4,7 @@ import logger
 
 HEIGHT_LOWER = 1000
 HEIGHT_HIGHER = 550
-YAW_RATE_SEEK = 1
+YAW_RATE_SEEK = 0.25
 class FlightDirector:    
     ''' 
         Goal of the flight director:
@@ -16,7 +16,7 @@ class FlightDirector:
     def __init__(self,comms,hw):
         self.currentState = None # SET BY MISSION COMMANDER
         self.allowGroundStationCommands = True        
-              
+        self.hw = hw
         self.requestedFirstManeuver = None
         self.requestedSecondManeuver = None
         self.blimpManeuvers = flightManeuvers.BlimpManeuvers(comms,hw)
@@ -151,7 +151,7 @@ class FlightDirector:
             hoverStr = "(low)"
             ballCatchStr = 'not caught'
             targetStr = "ball"
-            if(dataClasses.data.ballIsFound):                
+            if(dataClasses.data.haveFoundBallPreviously):                
                 yawRate = 0
                 seeTarget = "yes"
             else:
@@ -187,3 +187,15 @@ class FlightDirector:
         #self.blimpManeuvers.hover.execute()
         #           
 
+    def executeDoorPosition(self):
+        if dataClasses.data.sw_door_control == "closed":
+            self.hw.closeDoor() 
+        elif dataClasses.data.sw_door_control == "open":
+            self.hw.openDoor() 
+            dataClasses.data.haveFoundBallPreviously = False
+
+        elif dataClasses.data.sw_door_control == "auto":
+            
+            if(dataClasses.data.irData):
+                self.hw.closeDoor()           
+            

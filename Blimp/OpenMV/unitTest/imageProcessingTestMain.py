@@ -25,7 +25,7 @@ while(True):
 
 
     logger.log.verbose('yellow x error: ' + str(dataClasses.data.goal_yellow_xerror) )
-    logger.log.verbose('yellow y error: ' + str(dataClasses.data.goal_yellow_goal_yerror) )
+    logger.log.verbose('yellow y error: ' + str(dataClasses.data.goal_yellow_yerror) )
 
     logger.log.verbose('orange x error: ' + str(dataClasses.data.goal_orange_xerror) )
     logger.log.verbose('orange x error: ' + str(dataClasses.data.goal_orange_goal_yerror) )

@@ -99,6 +99,8 @@ def run():
 
         fltDirector.executeNextStep()
 
+        fltDirector.executeDoorPosition()        
+
         gndStation.sendStatusMessage(missionCmder,fltDirector)
         # logger.log.getLogsForServerAndClear()    #IF COMMENT OUT ABOVE, uncomment this so log buffer will clear!
 

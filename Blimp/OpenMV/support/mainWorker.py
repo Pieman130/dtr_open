@@ -101,8 +101,6 @@ def run():
 
         gndStation.sendStatusMessage(missionCmder,fltDirector)
 
-
-
         logger.log.verbose("yaw rate: " + str(dataClasses.rawData.imu_yaw_rate))
         logger.log.verbose("imu_yaw: " + str(dataClasses.rawData.imu_yaw))
         logger.log.verbose("motor_yaw: " + str(dataClasses.rawData.motor_yaw))

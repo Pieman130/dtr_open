@@ -88,9 +88,10 @@ class GroundStationCommand:
         self.pid_min_up = -0.2
         self.pid_min_yaw = -1.0
         self.controlAuthority = 'autonomous'
-        self.manualHeight = 100000
+        self.assisted_manualHeight = 100000
         self.resetOpenMVforFTPtsfr = 0
         self.doFtpLoadAndReset = 0
+        self.assisted_yawRate = 0        
 
 
         self.requestedState = None

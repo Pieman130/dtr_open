@@ -8,6 +8,7 @@ angular.module('mainModel',[])
             var ytitle = 'y title'
             var obj = {
                 control: '',
+                mode: '',                
                 status: {},       
                 logs: {
                     lines: '',
@@ -20,6 +21,10 @@ angular.module('mainModel',[])
                         throttle: null,
                         yaw: null,
                         doorOpen: 0                                            
+                },
+                assistedParams: {
+                    yawRate: null,
+                    heightSetPoint: null
                 },
                 updateOpenMvCodeStatus:{},
                 config: {
@@ -58,6 +63,13 @@ angular.module('mainModel',[])
                         })                        
                     })
                 },
+                sendAssistedParams(){
+                    return new Promise(function(resolve,reject){
+                        MainToServer.sendAssistedParams(obj.assistedParams).then(function(){
+                            resolve();
+                        })                        
+                    })
+                },
                 sendControlChange(){
                     return new Promise(function(resolve,reject){
                         let info={
@@ -67,7 +79,7 @@ angular.module('mainModel',[])
                         if(obj.control === 'manualWeb'){
                             info.requestedState = 'manualTesting'                            
                         }else if(obj.control === 'auto-assisted'){
-                            info.requestedState = 'hover'      
+                            info.requestedState =  obj.mode    
                         }
                         MainToServer.sendControlChange(info).then(function(){
                             resolve();
@@ -126,6 +138,9 @@ angular.module('mainModel',[])
                                 obj.config.pid.up.error_rounding_up = d.error_rounding_up;
                                 obj.config.pid.up.error_scaling_up = d.error_scaling_up;
                                 obj.config.pid.up.pid_min_up = d.pid_min_up;
+
+                                obj.assistedParams.yawRate = d.yawRate
+                                obj.assistedParams.heightSetPoint = d.manualHeight 
 
                                 obj.control = d.control;
 

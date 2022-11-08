@@ -29,6 +29,11 @@ hover = SystemState("hover","nothing","nothing")
 hoverYaw = SystemState("hoverYaw","nothing","nothing")
 yaw = SystemState("yaw","nothing","nothing")
 
+autonomous = SystemState("autonomous","nothing","nothing")
+manualTesting = SystemState("manualTesting",TARGET_GOAL,ACTION_RELEASE) # direct control of motors
+rcControl = SystemState("rcRemote","none","none") # direct control of motors
+
+
 lookForBall = SystemState("lookForBall",TARGET_BALL,ACTION_LOOK)
 moveToBall = SystemState("moveToBall",TARGET_BALL,ACTION_MOVE)
 captureBall = SystemState("captureBall", TARGET_BALL,ACTION_CAPTURE)
@@ -36,8 +41,7 @@ lookForGoal = SystemState("lookForGoal",TARGET_GOAL,ACTION_LOOK)
 moveToGoal = SystemState("moveToGoal", TARGET_GOAL,ACTION_MOVE)
 scoreGoal = SystemState("scoreGoal",TARGET_GOAL,ACTION_RELEASE)
 
-manualTesting = SystemState("manualTesting",TARGET_GOAL,ACTION_RELEASE) # direct control of motors
-rcControl = SystemState("rcRemote","none","none") # direct control of motors
+
 
 
 CONTROL_AUTHORITY_AUTO = "auto"
@@ -157,15 +161,16 @@ class MissionCommander:
 
 
     def updateStateManualWeb(self):                
-        logger.log.verbose("changed to manual testing")             
+        logger.log.verbose("changed to manual testing")    
+        self.currentState = manualTesting         
         self.flightDirector.currentState = manualTesting
 
-    def updateStateAuto(self):  
-          
-        self.flightDirector.currentState = self.currentState    
+    def updateStateAuto(self):           
+        self.currentState = autonomous         
+        self.flightDirector.currentState = autonomous  
 
     def updateStateManualRemote(self):
-         
+        self.currentState = rcControl     
         self.flightDirector.currentState = rcControl # self.currentState
 
     

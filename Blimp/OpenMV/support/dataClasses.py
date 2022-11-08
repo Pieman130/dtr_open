@@ -92,8 +92,6 @@ class GroundStationCommand:
         self.resetOpenMVforFTPtsfr = 0
         self.doFtpLoadAndReset = 0
         self.assisted_yawRate = 0        
-
-
         self.requestedState = None
 
     def print(self):

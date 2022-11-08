@@ -35,8 +35,7 @@ class FlightDirector:
         
             logger.log.verbose(" FLIGHT DIRECTOR CURRENT MODE: " + self.currentState.description)     
 
-            logger.log.debugOnly(" FLIGHT DIRECTOR CURRENT MODE: " + self.currentState.description)
-            #yawRate = 0
+            logger.log.debugOnly(" FLIGHT DIRECTOR CURRENT MODE: " + self.currentState.description)            
             
             yawRate = dataClasses.gndStationCmd.assisted_yawRate
 
@@ -80,8 +79,7 @@ class FlightDirector:
             
             elif(self.currentState.description == 'yaw'):   
                 self.currentManeuver = self.blimpManeuvers.yaw             
-                self.blimpManeuvers.yaw.execute_yaw_control(yawRate)
-                
+                self.blimpManeuvers.yaw.execute_yaw_control(yawRate)                
             
 
             elif(self.currentState.description == 'lookForBall'):

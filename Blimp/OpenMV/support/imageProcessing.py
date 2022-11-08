@@ -19,10 +19,23 @@ class EMA:
         return self.value
 
 #Copied from OpenMV_ide_prototype.py, edited to better fit code structure
+import  math
 
+<<<<<<< HEAD
 thresholds = [(54, 100, -39, -7, 29, 85), #yellow 0
               (6, 60, -103, -9, -64, 100), #green 1
               (34, 43, 11, 48, 21, 55)] #orange 2
+=======
+# ledRed = pyb.LED(1) # Initiates the red led
+# ledGreen = pyb.LED(2) # Initiates the green led
+# ledBlue = pyb.LED(3) # Initiates the blue led
+# ledIR = pyb.LED(4) # Initiates the IR led
+
+
+thresholds = [(64, 100, -36, -11, 8, 127), #yellow 0
+              (0, 70, -59, -12, -10, 54), #green 1
+              (35, 62, 29, 93, 35, 98)] #orange 2
+>>>>>>> autonomousFlight1
 
 
 
@@ -85,10 +98,14 @@ def find_ball(img):
             r = blob.rect()
     if x_ema == None:
         x_ema = EMA(biggest[0], ball_alpha)
+<<<<<<< HEAD
         rect_ema = [EMA(r[0], alpha_rect),
         EMA(r[1], alpha_rect),
         EMA(r[2], alpha_rect),
         EMA(r[3], alpha_rect)]
+=======
+        rect_ema = [EMA(r[0], alpha_rect), EMA(r[1], alpha_rect), EMA(r[2], alpha_rect), EMA(r[3], alpha_rect)]
+>>>>>>> autonomousFlight1
         y_ema = EMA(biggest[1], ball_alpha)
     else:
         x_ema.update(biggest[0])
@@ -97,6 +114,7 @@ def find_ball(img):
         rect_ema[1].update(r[1])
         rect_ema[2].update(r[2])
         rect_ema[3].update(r[3])
+<<<<<<< HEAD
     #if (rect_ema[2].get_value() != 0):
         #dist_ball = 22/(math.tan((rect_ema[2].get_value() * .22125)/2)) #rect_ema[2].getvalue() gives ball width, use equation for pixel width to meters away
     #img.draw_rectangle(blob.rect())
@@ -105,6 +123,15 @@ def find_ball(img):
         img.draw_string(round(rect_ema[0].get_value()),round(rect_ema[1].get_value()), " Ball", [0, 255, 0], mono_space = False)
         #img.draw_cross(blob.cx(), blob.cy())
         img.draw_cross(round(x_ema.get_value()), round(y_ema.get_value()), [0, 255, 0])
+=======
+    if (rect_ema[2].get_value() != 0):
+        dist_ball = 22/(math.tan((rect_ema[2].get_value() * .22125)/2)) #rect_ema[2].getvalue() gives ball width, use equation for pixel width to meters away
+    #img.draw_rectangle(blob.rect())
+    img.draw_rectangle([round(ema.get_value()) for ema in rect_ema], 2)
+    img.draw_string(round(rect_ema[0].get_value()),round(rect_ema[1].get_value()), " Ball", [0, 0, 255], mono_space = False)
+    #img.draw_cross(blob.cx(), blob.cy())
+    img.draw_cross(round(x_ema.get_value()), round(y_ema.get_value()), 2)
+>>>>>>> autonomousFlight1
     dataClasses.data.ball_xerror = round(x_ema.get_value()) - (sensor.width()/2)
     dataClasses.data.ball_yerror = round(y_ema.get_value()) - (sensor.height()/2)
    # dataClasses.data.ballIsFound = len(blob)
@@ -119,8 +146,13 @@ def find_yellow_goal(img):
     global yellow_goalx_ema
     global yellow_goaly_ema
     global SQerror
+<<<<<<< HEAD
     global yellow_goal_xerror
     global yellow_goal_yerror
+=======
+    global goal_xerror
+    global goal_yerror
+>>>>>>> autonomousFlight1
     dataClasses.data.yellowGoalIsFound = 0
     for blob in blobs:
         dataClasses.data.yellowGoalIsFound = 1
@@ -141,6 +173,7 @@ def find_yellow_goal(img):
         yellow_goaly_ema.update(biggest[1])
     if (biggest[3] != 0):
         dist_goal = 42 / math.tan((biggest[3] * .23166/2)) # change parameters to determine distance from goal with known values, biggest[3] is height of goal
+
     if dataClasses.data.yellowGoalIsFound == 1:
         img.draw_cross(round(yellow_goalx_ema.get_value()), round(yellow_goaly_ema.get_value()), color=[255, 255, 0])
         img.draw_string(biggest[0], biggest[1],"Selected Yellow Goal",[255, 255, 0] , mono_space = False)
@@ -158,8 +191,10 @@ def find_orange_goal(img):
     global orange_goalx_ema
     global orange_goaly_ema
     global SQerror
+
     global orange_goal_xerror
     global orange_goal_yerror
+
     dataClasses.data.orangeGoalIsFound = 0
     for blob in blobs:
         dataClasses.data.orangeGoalIsFound = 1
@@ -180,6 +215,7 @@ def find_orange_goal(img):
         orange_goaly_ema.update(biggest[1])
     if (biggest[3] != 0):
         dist_goal = 42 / math.tan((biggest[3] * .23166/2)) # change parameters to determine distance from goal with known values, biggest[3] is height of goal
+
     if dataClasses.data.orangeGoalIsFound == 1:
         img.draw_string(biggest[0], biggest[1],"Selected Orange Goal",[255, 127, 0] , mono_space = False)
         #img.draw_cross(biggest[0], biggest[1])
@@ -217,18 +253,24 @@ def find_orange_goal(img):
 
 
 
-class TagInfo:
-    def __init__(self):
-        self.foundIt = 0
-        self.tags = None
-        self.rotation = None
+# class TagInfo:
+#     def __init__(self):
+#         self.foundIt = 0
+#         self.tags = None
+#         self.rotation = None
 
+<<<<<<< HEAD
 tagsFound = TagInfo()
 
+=======
+# tagsFound = TagInfo()
+    
+>>>>>>> autonomousFlight1
 
-#def lookForAprilTag(img):
- #   logger.log.verbose("in look for april tag")
+# def lookForAprilTag(img):
+#     logger.log.verbose("in look for april tag")
 
+<<<<<<< HEAD
     foundIt = 0
 
     for tag in img.find_apriltags(): # defaults to TAG36H11 without "families".
@@ -237,11 +279,22 @@ tagsFound = TagInfo()
         tagsFound.rotation = (180 * tag.rotation()) / math.pi
         print_args = (family_name(tag), tag.id(), (180 * tag.rotation()) / math.pi)
         logger.log.verbose("Tag Family %s, Tag ID %d, rotation %f (degrees)" % print_args)
+=======
+#     foundIt = 0
+    
+#     for tag in img.find_apriltags(): # defaults to TAG36H11 without "families".        
+#         tagsFound.foundIt = 1 
+#         tagsFound.tags = tag 
+#         tagsFound.rotation = (180 * tag.rotation()) / math.pi    
+#         print_args = (family_name(tag), tag.id(), (180 * tag.rotation()) / math.pi)
+#         logger.log.verbose("Tag Family %s, Tag ID %d, rotation %f (degrees)" % print_args)
+>>>>>>> autonomousFlight1
 
-    #logger.log.verbose("found april tag?: " + str(tagsFound.foundIt))
+#     logger.log.verbose("found april tag?: " + str(tagsFound.foundIt))
 
-    #return tagsFound
+#     return tagsFound
 
+<<<<<<< HEAD
 def family_name(tag):
     if(tag.family() == image.TAG16H5):
         return "TAG16H5"
@@ -256,3 +309,18 @@ def family_name(tag):
     if(tag.family() == image.ARTOOLKIT):
         return "ARTOOLKIT"
 
+=======
+# def family_name(tag):
+#     if(tag.family() == image.TAG16H5):
+#         return "TAG16H5"
+#     if(tag.family() == image.TAG25H7):
+#         return "TAG25H7"
+#     if(tag.family() == image.TAG25H9):
+#         return "TAG25H9"
+#     if(tag.family() == image.TAG36H10):
+#         return "TAG36H10"
+#     if(tag.family() == image.TAG36H11):
+#         return "TAG36H11"
+#     if(tag.family() == image.ARTOOLKIT):
+#         return "ARTOOLKIT"  
+>>>>>>> autonomousFlight1

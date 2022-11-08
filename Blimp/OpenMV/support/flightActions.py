@@ -130,8 +130,8 @@ class FlightAction:
             return getattr(self.data, name)
 
     def assistedAltitudeWebControlled(self):
-        logger.log.info("TRYING TO HOVER AT ALTITUDE: " + str(dataClasses.gndStationCmd.manualHeight) + " cm")
-        self.execute_assisted_altitude(dataClasses.gndStationCmd.manualHeight)
+        logger.log.info("TRYING TO HOVER AT ALTITUDE: " + str(dataClasses.gndStationCmd.assisted_manualHeight) + " cm")
+        self.execute_assisted_altitude(dataClasses.gndStationCmd.assisted_manualHeight)
 
     def execute_assisted_altitude(self, height):
         '''take in desired distance to ceiling (height)

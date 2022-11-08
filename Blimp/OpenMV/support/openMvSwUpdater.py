@@ -35,7 +35,7 @@ def updateStatus(host,path,filename):
 def postRuntimeError(host,path,runTimeErrorJson):
     print("in post runtime eror function")
     fullAddress = 'http://%s%s' %(host, path)    
-    print("about to post to: " + str(fullAddress))
+    print("about to post to: "  + str(fullAddress))
     data = '{"runTimeError":"' + str(runTimeErrorJson) + '"}'
     print("data: " + data)
     headers = {'Content-Type': 'application/json'}    
@@ -57,21 +57,10 @@ def markUploadComplete(host,path):
     r = urequests.post(fullAddress,data = data,headers = headers)   
 
 def exceptionToStr(e):
-    #errStr = "Error: {}".format(e)
-    #return errStr
-
-    #martin changes:
-
     buf = io.StringIO()
     sys.print_exception(e, buf)
-    #print(buf.getvalue())
-    return buf.getvalue()
-
-
-
-    #errStr = sys.print_exception(e)
-    #print(errStr)
-    #print("after print")
-    #attr , mod, tr = sys.exc_info()      
-    #errStr = mod.args[0] + ", lineno: " + str(tr.tb_lineno)
-    #return errStr
+    print(buf.getvalue())
+    ret = buf.getvalue()
+    ret = ret.replace('"','')
+    ret = ret.replace('\n','')
+    return ret

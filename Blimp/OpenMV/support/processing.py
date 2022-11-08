@@ -43,6 +43,9 @@ def parseSensorData():  # https://github.com/mavlink/c_library_v1/blob/master/ch
 
     logger.log.verbose("color detected: " + dataClasses.data.colorDetected)
 
+    logger.log.verbose("orange goal is found: " + str(dataClasses.data.orangeGoalIsFound))
+    logger.log.verbose("orange goal is found: " + str(dataClasses.data.yellowGoalIsFound))
+
   #  dataClasses.data.aprilTagFound = imageProcessing.lookForAprilTag(
    #     dataClasses.rawData.img)
   #  dataClasses.data.isAprilTagDetected = dataClasses.data.aprilTagFound.foundIt

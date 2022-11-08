@@ -146,7 +146,7 @@ class GroundStation:
         dataClasses.gndStationCmd.scalar_yaw = jsonDict['scalar_yaw'] 
         dataClasses.gndStationCmd.scalar_throttle = jsonDict['scalar_throttle'] 
         dataClasses.gndStationCmd.controlAuthority = jsonDict['control'] 
-        dataClasses.gndStationCmd.manualHeight = jsonDict['manualHeight']
+        dataClasses.gndStationCmd.assisted_manualHeight = jsonDict['manualHeight']
 
         dataClasses.gndStationCmd.resetOpenMVforFTPtsfr = jsonDict['resetOpenMVforFTPtsfr']
 
@@ -155,5 +155,6 @@ class GroundStation:
         dataClasses.gndStationCmd.pid_min_up = jsonDict['pid_min_up']
 
         dataClasses.gndStationCmd.doFtpLoadAndReset = jsonDict['doFtpLoadAndReset']
+        dataClasses.gndStationCmd.assisted_yawRate = jsonDict['yawRate']
  
 

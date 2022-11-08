@@ -10,6 +10,7 @@ LOOP_TIME_FIXED = 0.2
 
 
 camera = cameraSetup.OpenMVcamera(sensor)
+imageProcessing = ImageProcessing()
 
 imageProcessing = ImageProcessing()
 

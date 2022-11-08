@@ -112,6 +112,10 @@ def run():
         logger.log.verbose("imu_yaw limited: " + str(dataClasses.data.imu_yaw_limited))        
       
     
+        logger.log.debugOnly("imu pitch: " + str(dataClasses.rawData.imu_pitch) )
+        logger.log.debugOnly("imu imu_roll: " + str(dataClasses.rawData.imu_roll) )
+        
+
         if(dataClasses.gndStationCmd.doFtpLoadAndReset):
             keepRunning = 0            
 

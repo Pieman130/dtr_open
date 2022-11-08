@@ -2,6 +2,9 @@ import flightManeuvers
 import dataClasses 
 import logger
 
+HEIGHT_LOWER = 1000
+HEIGHT_HIGHER = 550
+YAW_RATE_SEEK = 1
 class FlightDirector:    
     ''' 
         Goal of the flight director:
@@ -24,7 +27,7 @@ class FlightDirector:
        # self.currentManeuver = self.blimpManeuvers
         #self.blimpManeuvers = flightManeuvers.BlimpManeuvers(comms)
 
-
+    
     def getNextStep(self):
         
         if(self.currentState == None):
@@ -37,7 +40,7 @@ class FlightDirector:
 
             logger.log.debugOnly(" FLIGHT DIRECTOR CURRENT MODE: " + self.currentState.description)            
             
-            yawRate = dataClasses.gndStationCmd.assisted_yawRate
+            yawRateAssisted = dataClasses.gndStationCmd.assisted_yawRate
 
 
             # if(dataClasses.gndStationCmd.p_up != None):
@@ -74,12 +77,11 @@ class FlightDirector:
             elif(self.currentState.description == 'hoverYaw'):
                 self.currentManeuver = self.blimpManeuvers.hoverYaw
                 self.blimpManeuvers.hoverYaw.assistedAltitudeWebControlled()
-                self.blimpManeuvers.hoverYaw.execute_yaw_control(yawRate)
-
+                self.blimpManeuvers.hoverYaw.execute_yaw_control(yawRateAssisted)
             
             elif(self.currentState.description == 'yaw'):   
                 self.currentManeuver = self.blimpManeuvers.yaw             
-                self.blimpManeuvers.yaw.execute_yaw_control(yawRate)                
+                self.blimpManeuvers.yaw.execute_yaw_control(yawRateAssisted)                
             
 
             elif(self.currentState.description == 'lookForBall'):
@@ -87,6 +89,11 @@ class FlightDirector:
             
             elif(self.currentState.description == 'rcRemote'):
                 self.currentManeuver = self.blimpManeuvers.doNothing
+
+            elif(self.currentState.description == 'autonomous'):
+                self.currentManeuver = self.blimpManeuvers.hoverYaw
+                self.getNextAutonomousStep()                
+
                 
             #elif(self.currentState.description == 'moveToBall'):
             #      self.currentManeuver = self.blimpManeuvers.forward
@@ -123,7 +130,39 @@ class FlightDirector:
             #     self.currentManeuver.p_yaw = dataClasses.gndStationCmd.p_yaw
             #     self.currentManeuver.i_yaw = dataClasses.gndStationCmd.i_yaw
             #     self.currentManeuver.d_yaw = dataClasses.gndStationCmd.d_yaw
+    def getNextAutonomousStep(self):                
+
+        if(dataClasses.data.irData):
+            heightSetPoint = HEIGHT_HIGHER            
+            hoverStr = "(higher)"
             
+            targetStr = "yellow goal"
+            ballCatchStr = 'caught'            
+            
+            if(dataClasses.data.yellowGoalIsFound):
+                seeTarget = "yes"
+                yawRate = 0                
+            else:
+                seeTarget = "no"
+                yawRate = YAW_RATE_SEEK                
+                
+        else:
+            heightSetPoint = HEIGHT_LOWER
+            hoverStr = "(low)"
+            ballCatchStr = 'not caught'
+            targetStr = "ball"
+            if(dataClasses.data.ballIsFound):                
+                yawRate = 0
+                seeTarget = "yes"
+            else:
+                yawRate = YAW_RATE_SEEK
+                seeTarget = "no"                
+
+        logger.log.info("INFO - Ball: " + ballCatchStr + ". Target: " + targetStr + ".  See target: " + seeTarget + ". ACTION - hover height: " + str(heightSetPoint) + " " + hoverStr + " , yaw rate: " + str(yawRate))
+                
+        self.currentManeuver.execute_yaw_control(yawRate) 
+        self.currentManeuver.execute_assisted_altitude(heightSetPoint)
+
 
     def executeNextStep(self): # to be defined by determine next step
         self.currentManeuver.execute() 

@@ -100,6 +100,7 @@ def run():
         fltDirector.executeNextStep()
 
         gndStation.sendStatusMessage(missionCmder,fltDirector)
+        # logger.log.getLogsForServerAndClear()    #IF COMMENT OUT ABOVE, uncomment this so log buffer will clear!
 
         logger.log.verbose("yaw rate: " + str(dataClasses.rawData.imu_yaw_rate))
         logger.log.verbose("imu_yaw: " + str(dataClasses.rawData.imu_yaw))
@@ -122,4 +123,4 @@ def run():
         loopTime = (time.time_ns() - start)/1e9
         logger.log.info('Loop time: ' + str(loopTime))
 
-        # logger.log.getLogsForServerAndClear()    
+        

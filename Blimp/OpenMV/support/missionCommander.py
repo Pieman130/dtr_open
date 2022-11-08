@@ -30,7 +30,7 @@ hoverYaw = SystemState("hoverYaw","nothing","nothing")
 yaw = SystemState("yaw","nothing","nothing")
 
 autonomous = SystemState("autonomous","nothing","nothing")
-manualTesting = SystemState("manualTesting",TARGET_GOAL,ACTION_RELEASE) # direct control of motors
+manualTesting = SystemState("manualTesting","nothing","nothing") # direct control of motors
 rcControl = SystemState("rcRemote","none","none") # direct control of motors
 
 

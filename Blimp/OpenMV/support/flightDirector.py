@@ -130,7 +130,7 @@ class FlightDirector:
             #     self.currentManeuver.p_yaw = dataClasses.gndStationCmd.p_yaw
             #     self.currentManeuver.i_yaw = dataClasses.gndStationCmd.i_yaw
             #     self.currentManeuver.d_yaw = dataClasses.gndStationCmd.d_yaw
-    def getNextAutonomousStep(self):                
+    def getNextAutonomousStep(self):                        
 
         if(dataClasses.data.irData):
             heightSetPoint = HEIGHT_HIGHER            
@@ -156,12 +156,26 @@ class FlightDirector:
                 seeTarget = "yes"
             else:
                 yawRate = YAW_RATE_SEEK
-                seeTarget = "no"                
+                seeTarget = "no" 
+
+
+        self.currentManeuver.execute_yaw_control(yawRate) 
+        self.currentManeuver.execute_assisted_altitude(heightSetPoint)
+
+
+        # UPDATING PRINTING / UI        
+        self.currentState.target = targetStr             
+
+        if(seeTarget == "yes"):
+            actionStr = "maintain yaw 0 to view target."  
+        else:
+            actionStr = "yaw to target"
+        
+        self.currentState.action = "hover " + hoverStr + ". " + actionStr
 
         logger.log.info("INFO - Ball: " + ballCatchStr + ". Target: " + targetStr + ".  See target: " + seeTarget + ". ACTION - hover height: " + str(heightSetPoint) + " " + hoverStr + " , yaw rate: " + str(yawRate))
                 
-        self.currentManeuver.execute_yaw_control(yawRate) 
-        self.currentManeuver.execute_assisted_altitude(heightSetPoint)
+        
 
 
     def executeNextStep(self): # to be defined by determine next step

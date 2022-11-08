@@ -18,9 +18,9 @@ class EMA:
     def get_value(self):
         return self.value
 
-THRESHOLDS = [(64, 100, -36, -11, 8, 127), #yellow 0
-              (0, 70, -59, -12, -10, 54), #green 1
-              (17, 100, 14, 70, 34, 127)] #orange 2
+THRESHOLDS = [(41, 74, -21, 2, 24, 58), #yellow 0
+              (15, 38, -26, -6, 6, 32), #green 1
+              (14, 51, 25, 72, 30, 83)] #orange 2
 
 class ImageProcessing():
     def __init__(self):
@@ -49,7 +49,7 @@ class ImageProcessing():
 
         self.ball_xerror = 0 # Distance in pixels away from the ball horizontally (int)
         self.ball_yerror = 0 # Distance in pixels away from the ball vertically (int)
-        
+
     def find_ball(self,img):
         if img != None:
             blobs = img.find_blobs([THRESHOLDS[1]], pixels_threshold=50, area_threshold=50, merge=True,  margin = 10)
@@ -65,9 +65,9 @@ class ImageProcessing():
                 if self.x_ema == None:
                     self.x_ema = EMA(biggest[0], self.ball_alpha)
                     self.y_ema = EMA(biggest[1], self.ball_alpha)
-                    self.rect_ema = [EMA(r[0], self.alpha_rect), 
-                                    EMA(r[1], self.alpha_rect), 
-                                    EMA(r[2], self.alpha_rect), 
+                    self.rect_ema = [EMA(r[0], self.alpha_rect),
+                                    EMA(r[1], self.alpha_rect),
+                                    EMA(r[2], self.alpha_rect),
                                     EMA(r[3], self.alpha_rect)]
                 else:
                     self.x_ema.update(biggest[0])
@@ -85,7 +85,7 @@ class ImageProcessing():
                 img.draw_cross(round(self.x_ema.get_value()), round(self.y_ema.get_value()), [0, 255, 0])
                 dataClasses.data.ball_xerror = round(self.x_ema.get_value()) - (img.width()/2)
                 dataClasses.data.ball_yerror = round(self.y_ema.get_value()) - (img.height()/2)
-         
+
             else: #nothing that looks like a ball was detected
                 dataClasses.data.ballIsFound = 0
                 dataClasses.data.ball_xerror = None
@@ -97,7 +97,7 @@ class ImageProcessing():
 
     def find_yellow_goal(self,img):
         if img != None:
-            blobs = img.find_blobs([THRESHOLDS[0]], pixels_threshold=3, area_threshold=12, merge=True, margin=10)
+            blobs = img.find_blobs([THRESHOLDS[0]], pixels_threshold=10, area_threshold=12, merge=True, margin=10)
             biggest = [160,120,0,0] #[cx, cy, width, height]
             #dataClasses.data.yellowGoalIsFound = 0
             if blobs: #goal like object detected

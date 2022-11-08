@@ -19,13 +19,12 @@ class EMA:
         return self.value
 
 #Copied from OpenMV_ide_prototype.py, edited to better fit code structure
-import sensor, image, time, math, ustruct, sys, pyb, pid
-from pyb import USB_VCP, Pin, Timer, Servo
+import  math
 
-ledRed = pyb.LED(1) # Initiates the red led
-ledGreen = pyb.LED(2) # Initiates the green led
-ledBlue = pyb.LED(3) # Initiates the blue led
-ledIR = pyb.LED(4) # Initiates the IR led
+# ledRed = pyb.LED(1) # Initiates the red led
+# ledGreen = pyb.LED(2) # Initiates the green led
+# ledBlue = pyb.LED(3) # Initiates the blue led
+# ledIR = pyb.LED(4) # Initiates the IR led
 
 
 thresholds = [(64, 100, -36, -11, 8, 127), #yellow 0
@@ -211,41 +210,41 @@ def find_orange_goal(img):
 
 
 
-class TagInfo:
-    def __init__(self):
-        self.foundIt = 0
-        self.tags = None
-        self.rotation = None
+# class TagInfo:
+#     def __init__(self):
+#         self.foundIt = 0
+#         self.tags = None
+#         self.rotation = None
 
-tagsFound = TagInfo()
+# tagsFound = TagInfo()
     
 
-def lookForAprilTag(img):
-    logger.log.verbose("in look for april tag")
+# def lookForAprilTag(img):
+#     logger.log.verbose("in look for april tag")
 
-    foundIt = 0
+#     foundIt = 0
     
-    for tag in img.find_apriltags(): # defaults to TAG36H11 without "families".        
-        tagsFound.foundIt = 1 
-        tagsFound.tags = tag 
-        tagsFound.rotation = (180 * tag.rotation()) / math.pi    
-        print_args = (family_name(tag), tag.id(), (180 * tag.rotation()) / math.pi)
-        logger.log.verbose("Tag Family %s, Tag ID %d, rotation %f (degrees)" % print_args)
+#     for tag in img.find_apriltags(): # defaults to TAG36H11 without "families".        
+#         tagsFound.foundIt = 1 
+#         tagsFound.tags = tag 
+#         tagsFound.rotation = (180 * tag.rotation()) / math.pi    
+#         print_args = (family_name(tag), tag.id(), (180 * tag.rotation()) / math.pi)
+#         logger.log.verbose("Tag Family %s, Tag ID %d, rotation %f (degrees)" % print_args)
 
-    logger.log.verbose("found april tag?: " + str(tagsFound.foundIt))
+#     logger.log.verbose("found april tag?: " + str(tagsFound.foundIt))
 
-    return tagsFound
+#     return tagsFound
 
-def family_name(tag):
-    if(tag.family() == image.TAG16H5):
-        return "TAG16H5"
-    if(tag.family() == image.TAG25H7):
-        return "TAG25H7"
-    if(tag.family() == image.TAG25H9):
-        return "TAG25H9"
-    if(tag.family() == image.TAG36H10):
-        return "TAG36H10"
-    if(tag.family() == image.TAG36H11):
-        return "TAG36H11"
-    if(tag.family() == image.ARTOOLKIT):
-        return "ARTOOLKIT"  
+# def family_name(tag):
+#     if(tag.family() == image.TAG16H5):
+#         return "TAG16H5"
+#     if(tag.family() == image.TAG25H7):
+#         return "TAG25H7"
+#     if(tag.family() == image.TAG25H9):
+#         return "TAG25H9"
+#     if(tag.family() == image.TAG36H10):
+#         return "TAG36H10"
+#     if(tag.family() == image.TAG36H11):
+#         return "TAG36H11"
+#     if(tag.family() == image.ARTOOLKIT):
+#         return "ARTOOLKIT"  

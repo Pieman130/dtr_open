@@ -5,7 +5,11 @@
 import time
 import dataClasses
 import logger
-import cameraSetup
+if ( dataClasses.config.isMicroPython):
+    import cameraSetup
+else:
+    import cameraSetupMock
+    cameraSetup = cameraSetupMock
 
 
 class Sensors:

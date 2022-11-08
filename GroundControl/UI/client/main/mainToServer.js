@@ -30,5 +30,9 @@ angular.module('mainToServer',[])
         return $http.get('/status/getUploaderStatus/');
     }
 
+    mainFactory.sendAssistedParams = function(info){
+        return $http.post('/status/sendAssistedParams/',info)
+    }
+
     return mainFactory;
 })

@@ -40,7 +40,8 @@ router.route('/getLastControlRequestedValues/')
                  " p_up, i_up, d_up, scalar_up," +
                  " p_throttle, i_throttle, d_throttle, scalar_throttle," +
                  " p_yaw, i_yaw, d_yaw, scalar_yaw, " +
-                 " control, pid_min_up, error_scaling_up, error_rounding_up " + 
+                 " control, pid_min_up, error_scaling_up, error_rounding_up, " + 
+                 " yawRate, manualHeight " +
                  " FROM maneuverToExecute " 
     sqlTools.run(sqlStr,res);
 })
@@ -65,6 +66,14 @@ router.route('/sendControlRequest/')
                             ", manual_throttle = " + throttle +
                             ", manual_up = " + up
     sqlTools.run(sqlStr,res);
+})
+
+router.route('/sendAssistedParams/')
+.post(function(req,res){
+    var yawRate = req.body.yawRate;
+    var heightSetPoint = req.body.heightSetPoint;
+    var sqlStr = "UPDATE maneuverToExecute SET manualHeight = " + heightSetPoint + ", yawRate = " + yawRate;
+    sqlTools.run(sqlStr,res)
 })
 
 router.route('/triggerOpenMVcodeUpload/')

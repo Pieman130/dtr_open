@@ -2,7 +2,7 @@
 
 import time
 
-def run():      
+def run():          
     try:
         import hardware
         import comms    
@@ -48,7 +48,7 @@ def run():
 
     import processing
 
-    dataClasses.rawData.lidar = 120 #HACK
+    dataClasses.rawData.lidar = 1200 #HACK
 
 
     logger.log.info('is micropython: ' + str(isMicroPython))
@@ -79,9 +79,7 @@ def run():
     LOOP_TIME_FIXED = 0.2
     
     keepRunning = 1
-    while(keepRunning):
-        
-        
+    while(keepRunning):                    
 
         start = time.time_ns()
         
@@ -101,9 +99,23 @@ def run():
 
         fltDirector.executeNextStep()
 
-        gndStation.sendStatusMessage(missionCmder,fltDirector)
+        fltDirector.executeDoorPosition()        
 
+        gndStation.sendStatusMessage(missionCmder,fltDirector)
+        # logger.log.getLogsForServerAndClear()    #IF COMMENT OUT ABOVE, uncomment this so log buffer will clear!
+
+        logger.log.verbose("yaw rate: " + str(dataClasses.rawData.imu_yaw_rate))
+        logger.log.verbose("imu_yaw: " + str(dataClasses.rawData.imu_yaw))
+        logger.log.verbose("motor_yaw: " + str(dataClasses.rawData.motor_yaw))
+      
+        logger.log.verbose("yaw rate limited: " + str(dataClasses.data.imu_yaw_rate_limited))
+        logger.log.verbose("imu_yaw limited: " + str(dataClasses.data.imu_yaw_limited))        
+      
     
+        logger.log.debugOnly("imu pitch: " + str(dataClasses.rawData.imu_pitch) )
+        logger.log.debugOnly("imu imu_roll: " + str(dataClasses.rawData.imu_roll) )
+        
+
         if(dataClasses.gndStationCmd.doFtpLoadAndReset):
             keepRunning = 0            
 
@@ -117,4 +129,4 @@ def run():
         loopTime = (time.time_ns() - start)/1e9
         logger.log.info('Loop time: ' + str(loopTime))
 
-        # logger.log.getLogsForServerAndClear()    
+        

@@ -23,10 +23,16 @@ class SystemState:
         self.target = target
         self.action = action    
 
+
 startup = SystemState("startup","none","none")
 hover = SystemState("hover","nothing","nothing")
 hoverYaw = SystemState("hoverYaw","nothing","nothing")
 yaw = SystemState("yaw","nothing","nothing")
+
+autonomous = SystemState("autonomous","nothing","nothing")
+manualTesting = SystemState("manualTesting","nothing","nothing") # direct control of motors
+rcControl = SystemState("rcRemote","none","none") # direct control of motors
+
 
 lookForBall = SystemState("lookForBall",TARGET_BALL,ACTION_LOOK)
 moveToBall = SystemState("moveToBall",TARGET_BALL,ACTION_MOVE)
@@ -35,14 +41,18 @@ lookForGoal = SystemState("lookForGoal",TARGET_GOAL,ACTION_LOOK)
 moveToGoal = SystemState("moveToGoal", TARGET_GOAL,ACTION_MOVE)
 scoreGoal = SystemState("scoreGoal",TARGET_GOAL,ACTION_RELEASE)
 
-manualTesting = SystemState("manualTesting",TARGET_GOAL,ACTION_RELEASE) # direct control of motors
 
 
-    
-CONTROL_AUTHORITY_AUTO = "autonomous"
-CONTROL_AUTHORITY_AUTO_ASSISTED = "auto-assisted"
-CONTROL_AUTHORITY_MANUAL_WEB = "manualWeb"
-CONTROL_AUTHORITY_MANUAL_REMOTE = "manualRemote"
+
+CONTROL_AUTHORITY_AUTO = "auto"
+CONTROL_AUTHORITY_RC_REMOTE_CONTROL = "manual"    
+CONTROL_AUTHORITY_AUTO_ASSISTED = "assisted"
+
+
+WEB_ASSISTED_STATE_TEST = "auto-assisted"
+WEB_ASSISTED_STATE_AUTO = "autonomous"
+WEB_ASSISTED_STATE_MANUAL = "manualWeb"
+
 class MissionCommander:   
     '''    Mission commander:
            Goal: 
@@ -59,7 +69,6 @@ class MissionCommander:
         pass
 
     def determineControlAuthority(self):        
-       
         processing.parseRCSwitchPositions()
 
         
@@ -67,49 +76,46 @@ class MissionCommander:
         #logger.log.verbose('sw flight mode: ' + str(dataClasses.data.sw_flight_mode ))
         #logger.log.verbose('sw door control: ' + str(dataClasses.data.sw_door_control))
 
-        if(dataClasses.data.sw_flight_mode == 'manual'):
+        logger.log.verbose("FLIGHT MODE:")
+        logger.log.verbose(dataClasses.data.sw_flight_mode)
+
+        logger.log.debugOnly('flight mode: ' + dataClasses.data.sw_flight_mode)
+
+       # dataClasses.data.sw_flight_mode = CONTROL_AUTHORITY_RC_REMOTE_CONTROL
+        controlAuthority = ''
+
+        if( (dataClasses.data.sw_flight_mode == CONTROL_AUTHORITY_RC_REMOTE_CONTROL) or
+             (dataClasses.gndStationCmd.controlAuthority == CONTROL_AUTHORITY_RC_REMOTE_CONTROL) ):
             self.updateState = self.updateStateManualRemote
+            controlAuthority = 'rc remote control'
 
-        elif(dataClasses.data.sw_flight_mode == 'auto'):
+        elif(dataClasses.data.sw_flight_mode == CONTROL_AUTHORITY_AUTO or
+            dataClasses.gndStationCmd.controlAuthority == WEB_ASSISTED_STATE_AUTO):
              self.updateState = self.updateStateAuto
+             controlAuthority = 'auto'
 
-        elif(dataClasses.data.sw_flight_mode == 'assisted'):
-            if (dataClasses.gndStationCmd.controlAuthority == CONTROL_AUTHORITY_AUTO_ASSISTED):
+        elif(dataClasses.data.sw_flight_mode == CONTROL_AUTHORITY_AUTO_ASSISTED):            
+            if (dataClasses.gndStationCmd.controlAuthority == WEB_ASSISTED_STATE_TEST):
                 logger.log.verbose("CONTROL AUTHORITY: Auto assisted")             
                 self.updateState = self.updateStateAutoAssisted
+                controlAuthority = 'web auto-assisted'
 
-            elif (dataClasses.gndStationCmd.controlAuthority == CONTROL_AUTHORITY_MANUAL_WEB):
+            elif (dataClasses.gndStationCmd.controlAuthority == WEB_ASSISTED_STATE_MANUAL):
                 logger.log.verbose("CONTROL AUTHORITY: Manual Web")
                 self.updateState = self.updateStateManualWeb
+                controlAuthority = 'web manual'
 
             else:
-                dataClasses.gndStationCmd.controlAuthority = CONTROL_AUTHORITY_AUTO
-                self.updateState = self.updateStateAuto
-            
-
-       # if dataClasses.data.sw_door_control is not None:
-       #     logger.log.verbose("DoorSwitch: " + dataClasses.data.sw_door_control)
-       # if dataClasses.data.sw_flight_mode is not None:
-       #     logger.log.verbose("FlightMode: " + dataClasses.data.sw_flight_mode)
+                logger.log.verbose("CONTROL AUTHORITY: Manual Web")
+                self.updateState = self.updateStateManualWeb
+                controlAuthority = 'web manual'
 
 
-       # if (dataClasses.gndStationCmd.controlAuthority == CONTROL_AUTHORITY_AUTO):   
-        #    logger.log.verbose("CONTROL AUTHORITY: Auto")                  
-         #   self.updateState = self.updateStateAuto
-            
-        
-
-        #elif (dataClasses.gndStationCmd.controlAuthority == CONTROL_AUTHORITY_MANUAL_REMOTE):
-         #   logger.log.verbose("CONTROL AUTHORITY: Manual Remote")  
-          #  self.updateState = self.updateStateManualRemote
-        #else:
-           
-
-
-        dataClasses.config.controlAuthority = dataClasses.gndStationCmd.controlAuthority
+        logger.log.verbose('CONTROL AUTHORITY: ' + controlAuthority)
+        dataClasses.config.controlAuthority = controlAuthority
    
 
-    def updateStateAutoAssisted(self):        
+    def updateStateAutoAssisted(self):                              
         requestedState = dataClasses.gndStationCmd.requestedState     
 
         if(requestedState == hover.description):
@@ -118,47 +124,54 @@ class MissionCommander:
         elif(requestedState == hoverYaw.description):
             self.currentState = hoverYaw
 
+
         elif(requestedState == yaw.description):
             self.currentState = yaw
+        
+        else:
+            self.currentState = startup
+
+        
             
-        elif(requestedState == lookForBall.description):
-            logger.log.verbose("changed to look for ball")
-            self.currentState = lookForBall                
+       # elif(requestedState == lookForBall.description):
+        #    logger.log.verbose("changed to look for ball")
+         #   self.currentState = lookForBall                
 
-        elif(requestedState == moveToBall.description):
-            self.currentState = moveToBall
-            logger.log.verbose("changed to moveToBall")
+        #elif(requestedState == moveToBall.description):
+         #   self.currentState = moveToBall
+          #  logger.log.verbose("changed to moveToBall")
 
-        elif(requestedState == captureBall.description):
-            self.currentState = captureBall
-            logger.log.verbose("changed to captureBall")
+        #elif(requestedState == captureBall.description):
+         #   self.currentState = captureBall
+          #  logger.log.verbose("changed to captureBall")
 
-        elif(requestedState == lookForGoal.description):
-            self.currentState = lookForGoal
-            logger.log.verbose("changed to lookForGoal")
+       # elif(requestedState == lookForGoal.description):
+        #    self.currentState = lookForGoal
+         #   logger.log.verbose("changed to lookForGoal")
 
-        elif(requestedState == moveToGoal.description):
-            self.currentState = moveToGoal
-            logger.log.verbose("changed to moveToGoal")
+        #elif(requestedState == moveToGoal.description):
+         #   self.currentState = moveToGoal
+          #  logger.log.verbose("changed to moveToGoal")
 
-        elif(requestedState == scoreGoal.description):
-            self.currentState = scoreGoal
-            logger.log.verbose("changed to scoreGoal")
+        #elif(requestedState == scoreGoal.description):
+         #   self.currentState = scoreGoal
+          #  logger.log.verbose("changed to scoreGoal")
 
         self.flightDirector.currentState = self.currentState    
 
 
     def updateStateManualWeb(self):                
-        logger.log.verbose("changed to manual testing")             
+        logger.log.verbose("changed to manual testing")    
+        self.currentState = manualTesting         
         self.flightDirector.currentState = manualTesting
 
-    def updateStateAuto(self):  
-          
-        self.flightDirector.currentState = self.currentState    
+    def updateStateAuto(self):           
+        self.currentState = autonomous         
+        self.flightDirector.currentState = autonomous  
 
     def updateStateManualRemote(self):
-         
-        self.flightDirector.currentState = None # self.currentState
+        self.currentState = rcControl     
+        self.flightDirector.currentState = rcControl # self.currentState
 
     
 

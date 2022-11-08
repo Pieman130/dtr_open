@@ -80,9 +80,11 @@ def parseLidarData():
         rawDist = dataClasses.rawData.lidar 
         correctedDist_ft = attitudeCorrectDistance(
             rawDist, dataClasses.rawData.imu_roll, dataClasses.rawData.imu_pitch)
-        #correctedDist_ft = rawDist
-        dataClasses.data.lidarDistance = dataClasses.rawData.lidar
-        
+        if correctedDist_ft != None:
+            dataClasses.data.lidarDistance = correctedDist_ft
+        else:
+            dataClasses.data.lidarDistance = rawDist
+
         if(dataClasses.data.lidarDistance > 1600):
             dataClasses.data.lidarDistance = 1600 #trimming bogus lidar values
 
@@ -93,8 +95,11 @@ def parseLidarData():
 
 def attitudeCorrectDistance(measDist=0.0, roll_rad=0.0, pitch_rad=0.0):
     # correctedDist = math.cos(math.sqrt(roll_rad**2 + pitch_rad**2)) * measDist # Not sure which of these methods will be faster on the uC
-    correctedDist = math.cos(roll_rad) * math.cos(pitch_rad) * measDist
-    return correctedDist
+    if roll_rad != None or pitch_rad != None:
+        correctedDist = math.cos(roll_rad) * math.cos(pitch_rad) * measDist
+        return correctedDist
+    else:
+        return None
 
 
 def parseYawData():

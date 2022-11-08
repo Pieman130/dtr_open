@@ -56,14 +56,12 @@ class ImageProcessing():
             dataClasses.data.ballIsFound = 0
             if blobs: #something that looks like a ball was detected
                 for blob in blobs:
-                    print ("I FOUND A BLOB")
                     dataClasses.data.ballIsFound = 1
                     current = [blob.cx(), blob.cy(), blob.rect()[2], blob.rect()[3]]
                     if current[2] > biggest[2]:
                         biggest = current
                         r = blob.rect()
                 if self.x_ema == None:
-                    print("SHAPE OF R: ", type(r))
                     self.x_ema = EMA(biggest[0], self.ball_alpha)
                     self.rect_ema = [EMA(r[0], self.alpha_rect), 
                                     EMA(r[1], self.alpha_rect), 
@@ -86,6 +84,8 @@ class ImageProcessing():
                 img.draw_cross(round(self.x_ema.get_value()), round(self.y_ema.get_value()), 2)
                 dataClasses.data.ball_xerror = round(self.x_ema.get_value()) - (img.width()/2)
                 dataClasses.data.ball_yerror = round(self.y_ema.get_value()) - (img.height()/2)
+                print("IMAGE WIDTH: ", img.width())
+                print("IMAGE HEIGHT: ", img.height())
          
             else: #nothing that looks like a ball was detected
                 dataClasses.data.ballIsFound = 0

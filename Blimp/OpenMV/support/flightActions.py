@@ -150,7 +150,8 @@ class FlightAction:
                 self.pid_up.set_pid_gains(p)  
 
             #logger.log.verbose("right before get pid")
-            self.controls.up = self.pid_up.get_pid(self.data.lidarDistance-height,scaler= dataClasses.gndStationCmd.scalar_up)   
+            if self.data.lidarDistance != None:
+                self.controls.up = self.pid_up.get_pid(self.data.lidarDistance-height,scaler= dataClasses.gndStationCmd.scalar_up)   
                                   
            # self.lidar_ema = self.ema_alpha * self.lidar_ema + (1 - self.ema_alpha) * self.data.lidarDistance
 

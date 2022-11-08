@@ -189,7 +189,10 @@ class FlightDirector:
 
     def executeDoorPosition(self):
         if dataClasses.data.sw_door_control == "closed":
-            self.hw.openDoor()
+            self.hw.closeDoor() 
         elif dataClasses.data.sw_door_control == "open":
-            self.hw.closeDoor()
+            self.hw.openDoor() 
+        elif dataClasses.data.sw_door_control == "auto":
+            if(dataClasses.data.irData):
+                self.hw.closeDoor()           
             

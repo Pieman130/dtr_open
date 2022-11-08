@@ -1,3 +1,4 @@
+import logger
 
 class OpenMVcamera:
     def __init__(self,camera):
@@ -12,5 +13,10 @@ class OpenMVcamera:
         self.camera.set_auto_gain(False) # must be turned off for color tracking
         self.camera.set_auto_whitebal(True)
     def snapshot(self):
-        img = self.camera.snapshot()
-        return img
+        try:
+            img = self.camera.snapshot()
+            return img
+        except RuntimeError:
+            logger.log.error("Camera Failed to Capture Image!")
+            return None
+

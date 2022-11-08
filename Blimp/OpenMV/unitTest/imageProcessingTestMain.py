@@ -24,11 +24,11 @@ while(True):
     imageProcessing.find_orange_goal(dataClasses.rawData.img)
 
 
-    logger.log.verbose('yellow x error' + str(dataClasses.data.goal_yellow_xerror) )
-    logger.log.verbose('yellow y error' + str(dataClasses.data.goal_yellow_goal_yerror) )
+    logger.log.verbose('yellow x error: ' + str(dataClasses.data.goal_yellow_xerror) )
+    logger.log.verbose('yellow y error: ' + str(dataClasses.data.goal_yellow_goal_yerror) )
 
-    logger.log.verbose('orange x error' + str(dataClasses.data.goal_orange_xerror) )
-    logger.log.verbose('orange x error' + str(dataClasses.data.goal_orange_goal_yerror) )
+    logger.log.verbose('orange x error: ' + str(dataClasses.data.goal_orange_xerror) )
+    logger.log.verbose('orange x error: ' + str(dataClasses.data.goal_orange_goal_yerror) )
 
     logger.log.verbose('ball x error: ' + str(dataClasses.data.ball_xerror) )
     logger.log.verbose('ball y error: '  + str(dataClasses.data.ball_yerror) ) 

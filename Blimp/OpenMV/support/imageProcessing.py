@@ -89,6 +89,8 @@ class ImageProcessing():
          
             else: #nothing that looks like a ball was detected
                 dataClasses.data.ballIsFound = 0
+                dataClasses.data.ball_xerror = None
+                dataClasses.data.ball_yerror = None
                 logger.log.verbose("No Ball Found!")
                 return
         else:
@@ -128,6 +130,8 @@ class ImageProcessing():
 
             else: #nothing that looks like a goal was detected
                 dataClasses.data.yellowGoalIsFound = 0
+                dataClasses.data.goal_yellow_xerror = None
+                dataClasses.data.goal_yellow_goal_yerror = None
                 logger.log.verbose("Yellow Goal Not Found!")
                 return
         else:
@@ -167,6 +171,8 @@ class ImageProcessing():
 
             else: #nothing that looks like a goal was detected
                 dataClasses.data.orangeGoalIsFound = 0
+                dataClasses.data.goal_orange_xerror = None
+                dataClasses.data.goal_orange_goal_yerror = None
                 logger.log.verbose("Orange Goal Not Found!")
                 return
         else:

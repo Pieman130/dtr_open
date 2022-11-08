@@ -4,7 +4,7 @@ import logger
 
 HEIGHT_LOWER = 1000
 HEIGHT_HIGHER = 550
-YAW_RATE_SEEK = 0.36
+YAW_RATE_SEEK = 0.25
 class FlightDirector:    
     ''' 
         Goal of the flight director:

@@ -14,6 +14,7 @@ SERVO_OPEN = 0
 SERVO_CLOSED = 45
 PI = 3.14159
 
+imageProcessing = imageProcessing.ImageProcessing()
 
 def parseSensorData():  # https://github.com/mavlink/c_library_v1/blob/master/checksum.h
     output = 0
@@ -24,13 +25,13 @@ def parseSensorData():  # https://github.com/mavlink/c_library_v1/blob/master/ch
     
     imageProcessing.find_ball(dataClasses.rawData.img)
     imageProcessing.find_yellow_goal(dataClasses.rawData.img)
-    imageProcessing.find_orange_goal(dataClasses.rawData.img)
+   # imageProcessing.find_orange_goal(dataClasses.rawData.img)
 
     #imageProcessing.colorDetectedByCamera(
      #   dataClasses.rawData.img)
 
     logger.log.verbose('yellow x error' + str(dataClasses.data.goal_yellow_xerror) )
-    logger.log.verbose('yellow y error' + str(dataClasses.data.goal_yellow_goal_yerror) )
+    logger.log.verbose('yellow y error' + str(dataClasses.data.goal_yellow_yerror) )
 
     logger.log.verbose('orange x error' + str(dataClasses.data.goal_orange_xerror) )
     logger.log.verbose('orange x error' + str(dataClasses.data.goal_orange_goal_yerror) )
@@ -44,7 +45,7 @@ def parseSensorData():  # https://github.com/mavlink/c_library_v1/blob/master/ch
     logger.log.verbose("color detected: " + dataClasses.data.colorDetected)
 
     logger.log.verbose("orange goal is found: " + str(dataClasses.data.orangeGoalIsFound))
-    logger.log.verbose("orange goal is found: " + str(dataClasses.data.yellowGoalIsFound))
+    logger.log.verbose("yellow goal is found: " + str(dataClasses.data.yellowGoalIsFound))
 
   #  dataClasses.data.aprilTagFound = imageProcessing.lookForAprilTag(
    #     dataClasses.rawData.img)

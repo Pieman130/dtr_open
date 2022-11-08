@@ -176,6 +176,8 @@ class FlightAction:
                 p = dataClasses.gndStationCmd.p_yaw
                 self.pid_yaw.set_pid_gains(p)  
 
+            logger.log.verbose("desired yaw rate: {}".format(desired_yaw_rate) )
+            logger.log.verbose(" yawrate limited: {}".format(dataClasses.data.imu_yaw_rate_limited) )
             yr_error = desired_yaw_rate-dataClasses.data.imu_yaw_rate_limited
 
             logger.log.verbose("Yaw Error: "+str(yr_error))           

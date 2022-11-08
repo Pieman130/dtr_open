@@ -132,48 +132,48 @@ class FlightDirector:
             #     self.currentManeuver.d_yaw = dataClasses.gndStationCmd.d_yaw
     def getNextAutonomousStep(self):                        
 
-        if(dataClasses.data.irData):
-            heightSetPoint = HEIGHT_HIGHER            
-            hoverStr = "(higher)"
+        # if(dataClasses.data.irData):
+        #     heightSetPoint = HEIGHT_HIGHER            
+        #     hoverStr = "(higher)"
             
-            targetStr = "yellow goal"
-            ballCatchStr = 'caught'            
+        #     targetStr = "yellow goal"
+        #     ballCatchStr = 'caught'            
             
-            if(dataClasses.data.yellowGoalIsFound):
-                seeTarget = "yes"
-                yawRate = 0                
-            else:
-                seeTarget = "no"
-                yawRate = YAW_RATE_SEEK                
+        #     if(dataClasses.data.yellowGoalIsFound):
+        #         seeTarget = "yes"
+        #         yawRate = 0                
+        #     else:
+        #         seeTarget = "no"
+        #         yawRate = YAW_RATE_SEEK                
                 
-        else:
-            heightSetPoint = HEIGHT_LOWER
-            hoverStr = "(low)"
-            ballCatchStr = 'not caught'
-            targetStr = "ball"
-            if(dataClasses.data.haveFoundBallPreviously):                
-                yawRate = 0
-                seeTarget = "yes"
-            else:
-                yawRate = YAW_RATE_SEEK
-                seeTarget = "no" 
+        # else:
+        #     heightSetPoint = HEIGHT_LOWER
+        #     hoverStr = "(low)"
+        #     ballCatchStr = 'not caught'
+        #     targetStr = "ball"
+        #     if(dataClasses.data.haveFoundBallPreviously):                
+        #         yawRate = 0
+        #         seeTarget = "yes"
+        #     else:
+        #         yawRate = YAW_RATE_SEEK
+        #         seeTarget = "no" 
 
-
+        yawRate = 0
         self.currentManeuver.execute_yaw_control(yawRate) 
-        self.currentManeuver.execute_assisted_altitude(heightSetPoint)
+        self.currentManeuver.execute_assisted_altitude(HEIGHT_HIGHER)
 
 
         # UPDATING PRINTING / UI        
-        self.currentState.target = targetStr             
+        # self.currentState.target = targetStr             
 
-        if(seeTarget == "yes"):
-            actionStr = "maintain yaw 0 to view target."  
-        else:
-            actionStr = "yaw to target"
+        # if(seeTarget == "yes"):
+        #     actionStr = "maintain yaw 0 to view target."  
+        # else:
+        #     actionStr = "yaw to target"
         
-        self.currentState.action = "hover " + hoverStr + ". " + actionStr
+        # self.currentState.action = "hover " + hoverStr + ". " + actionStr
 
-        logger.log.info("INFO - Ball: " + ballCatchStr + ". Target: " + targetStr + ".  See target: " + seeTarget + ". ACTION - hover height: " + str(heightSetPoint) + " " + hoverStr + " , yaw rate: " + str(yawRate))
+        # logger.log.info("INFO - Ball: " + ballCatchStr + ". Target: " + targetStr + ".  See target: " + seeTarget + ". ACTION - hover height: " + str(heightSetPoint) + " " + hoverStr + " , yaw rate: " + str(yawRate))
                 
         
 

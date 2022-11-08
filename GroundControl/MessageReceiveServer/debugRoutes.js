@@ -18,6 +18,21 @@ router.route('/status/')
     var yawMotor = req.body.yawMotor;
     var servoDoor = req.body.servoDoor;
     var controlAuthority = req.body.controlAuthority;
+
+    yawMotor = convertNanToNull(yawMotor)
+    upMotor = convertNanToNull(upMotor)
+    throttleMotor = convertNanToNull(throttleMotor)    
+
+    function convertNanToNull(val){
+
+        if(val === 'nan'){
+            ret = 'null'
+            console.log("was nan");
+        }else{
+            ret = val
+        }
+        return ret;
+    }
     
     var p_up = req.body.p_up;
     var i_up = req.body.i_up;

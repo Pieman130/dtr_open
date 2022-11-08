@@ -1,7 +1,7 @@
 class Configuration:
     def __init__(self):
         self.isMicroPython = None
-        self.controlAuthority = 'autonomous'
+        self.controlAuthority = 'rcRemote'
 
 class RawData:
     def __init__(self):

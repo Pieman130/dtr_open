@@ -19,7 +19,7 @@ class EMA:
         return self.value
 
 THRESHOLDS = [(41, 74, -21, 2, 24, 58), #yellow 0
-              (15, 38, -26, -6, 6, 32), #green 1
+              (37, 100, -70, -14, 5, 127), #green 1
               (14, 51, 25, 72, 30, 83)] #orange 2
 
 class ImageProcessing():

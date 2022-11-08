@@ -160,7 +160,7 @@ class FlightDirector:
 
         yawRate = 0
         self.currentManeuver.execute_yaw_control(yawRate) 
-        self.currentManeuver.execute_assisted_altitude(HEIGHT_HIGHER)
+        self.currentManeuver.execute_assisted_altitude(HEIGHT_LOWER)
 
 
         # UPDATING PRINTING / UI        

@@ -82,33 +82,41 @@ class MissionCommander:
         logger.log.debugOnly('flight mode: ' + dataClasses.data.sw_flight_mode)
 
        # dataClasses.data.sw_flight_mode = CONTROL_AUTHORITY_RC_REMOTE_CONTROL
-        controlAuthority = ''
-
-        if( (dataClasses.data.sw_flight_mode == CONTROL_AUTHORITY_RC_REMOTE_CONTROL) or
-             (dataClasses.gndStationCmd.controlAuthority == CONTROL_AUTHORITY_RC_REMOTE_CONTROL) ):
+        controlAuthority = ''        
+        
+        if(dataClasses.data.sw_flight_mode == CONTROL_AUTHORITY_AUTO):
+              self.updateState = self.updateStateAuto
+              controlAuthority = 'auto'
+        else:
             self.updateState = self.updateStateManualRemote
             controlAuthority = 'rc remote control'
 
-        elif(dataClasses.data.sw_flight_mode == CONTROL_AUTHORITY_AUTO or
-            dataClasses.gndStationCmd.controlAuthority == WEB_ASSISTED_STATE_AUTO):
-             self.updateState = self.updateStateAuto
-             controlAuthority = 'auto'
+        
+        # if( (dataClasses.data.sw_flight_mode == CONTROL_AUTHORITY_RC_REMOTE_CONTROL) or
+        #      (dataClasses.gndStationCmd.controlAuthority == CONTROL_AUTHORITY_RC_REMOTE_CONTROL) ):
+        #     self.updateState = self.updateStateManualRemote
+        #     controlAuthority = 'rc remote control'
 
-        elif(dataClasses.data.sw_flight_mode == CONTROL_AUTHORITY_AUTO_ASSISTED):            
-            if (dataClasses.gndStationCmd.controlAuthority == WEB_ASSISTED_STATE_TEST):
-                logger.log.verbose("CONTROL AUTHORITY: Auto assisted")             
-                self.updateState = self.updateStateAutoAssisted
-                controlAuthority = 'web auto-assisted'
+        # elif(dataClasses.data.sw_flight_mode == CONTROL_AUTHORITY_AUTO or
+        #     dataClasses.gndStationCmd.controlAuthority == WEB_ASSISTED_STATE_AUTO):
+        #      self.updateState = self.updateStateAuto
+        #      controlAuthority = 'auto'
 
-            elif (dataClasses.gndStationCmd.controlAuthority == WEB_ASSISTED_STATE_MANUAL):
-                logger.log.verbose("CONTROL AUTHORITY: Manual Web")
-                self.updateState = self.updateStateManualWeb
-                controlAuthority = 'web manual'
+        # elif(dataClasses.data.sw_flight_mode == CONTROL_AUTHORITY_AUTO_ASSISTED):            
+        #     if (dataClasses.gndStationCmd.controlAuthority == WEB_ASSISTED_STATE_TEST):
+        #         logger.log.verbose("CONTROL AUTHORITY: Auto assisted")             
+        #         self.updateState = self.updateStateAutoAssisted
+        #         controlAuthority = 'web auto-assisted'
 
-            else:
-                logger.log.verbose("CONTROL AUTHORITY: Manual Web")
-                self.updateState = self.updateStateManualWeb
-                controlAuthority = 'web manual'
+        #     elif (dataClasses.gndStationCmd.controlAuthority == WEB_ASSISTED_STATE_MANUAL):
+        #         logger.log.verbose("CONTROL AUTHORITY: Manual Web")
+        #         self.updateState = self.updateStateManualWeb
+        #         controlAuthority = 'web manual'
+
+        #     else:
+        #         logger.log.verbose("CONTROL AUTHORITY: Manual Web")
+        #         self.updateState = self.updateStateManualWeb
+        #         controlAuthority = 'web manual'
 
 
         logger.log.verbose('CONTROL AUTHORITY: ' + controlAuthority)

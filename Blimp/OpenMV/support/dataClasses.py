@@ -42,9 +42,13 @@ class ProcessedData:
         self.sw_flight_mode = 'assisted'
 
         self.goal_yellow_xerror = None
-        self.goal_yellow_goal_yerror = None
+        self.goal_yellow_yerror = None
         self.goal_orange_xerror = None
         self.goal_orange_goal_yerror = None
+
+        self.dist_yellow_goal = 0 # (float)
+        self.dist_orange_goal = 0 # (float)
+        
         self.orangeGoalIsFound = None
         self.yellowGoalIsFound = None
 
@@ -54,6 +58,7 @@ class ProcessedData:
 
         self.imu_yaw_limited = None
         self.imu_yaw_rate_limited = None
+        self.haveFoundBallPreviously = False
         
 
 class GroundStationCommand:

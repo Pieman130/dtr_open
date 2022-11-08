@@ -55,6 +55,8 @@ class ProcessedData:
 
         self.imu_yaw_limited = None
         self.imu_yaw_rate_limited = None
+
+        self.haveFoundBallPreviously = False
         
 
 class GroundStationCommand:

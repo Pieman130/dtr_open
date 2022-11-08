@@ -23,6 +23,7 @@ class RawData:
         self.door_position = None
 
 
+
 class ProcessedData:
     def __init__(self):
         self.irData = 0 
@@ -41,13 +42,29 @@ class ProcessedData:
         self.sw_flight_mode = 'assisted'
 
         self.goal_yellow_xerror = None
-        self.goal_yellow_goal_yerror = None
+        self.goal_yellow_yerror = None
         self.goal_orange_xerror = None
+<<<<<<< Updated upstream
         self.goal_orange_goal_yerror = None
         
+=======
+        self.goal_orange_yerror = None
+
+        self.dist_yellow_goal = 0 # (float)
+        self.dist_orange_goal = 0 # (float)
+        
+        self.orangeGoalIsFound = None
+        self.yellowGoalIsFound = None
+
+>>>>>>> Stashed changes
         self.ball_xerror = None
         self.ball_yerror = None  
         self.ballIsFound = None
+
+        self.imu_yaw_limited = None
+        self.imu_yaw_rate_limited = None
+
+        self.haveFoundBallPreviously = False
         
 
 class GroundStationCommand:
@@ -76,15 +93,15 @@ class GroundStationCommand:
         self.scalar_throttle = 1
         self.error_rounding_up = 0
         self.error_scaling_up = 1
-        self.error_rounding_yaw = 0
+        self.error_rounding_yaw = 4
         self.error_scaling_yaw = 1
         self.pid_min_up = -0.2
         self.pid_min_yaw = -1.0
         self.controlAuthority = 'autonomous'
-        self.manualHeight = 100000
+        self.assisted_manualHeight = 100000
         self.resetOpenMVforFTPtsfr = 0
-
-
+        self.doFtpLoadAndReset = 0
+        self.assisted_yawRate = 0        
         self.requestedState = None
 
     def print(self):

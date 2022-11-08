@@ -17,6 +17,7 @@ class Controller():
         self.error_scaling = 100
         self.error_rounding = 1
         self.pid_minimum = -1
+        self.pid._last_derivative = 0
 
 
     def set_pid_gains(self,p=None,i=None,d=None):
@@ -26,7 +27,7 @@ class Controller():
             self.pid._ki = i
         if d != None:
             self.pid._kd = d
-      
+        
 
     def get_pid_gains(self):
         return {'p':self.pid._kp, 
@@ -45,10 +46,10 @@ class Controller():
         output = self.pid.get_pid(error,scaler)
         if output > 1:
             output = 1
-            self.reset_i() #prevent integrator windup
+            #self.reset_i() #prevent integrator windup
         elif output < -1:
             output = -1
-            self.reset_i() #prevent integrator windup
+            #self.reset_i() #prevent integrator windup
 
         if output < self.pid_minimum:
             output = self.pid_minimum

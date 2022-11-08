@@ -67,18 +67,18 @@ class FlightAction:
 
         self.mavlink.setControls(self.controls)
 
-        if dataClasses.data.sw_door_control == "closed":
-            self.hw.closeDoor()
-        elif dataClasses.data.sw_door_control == "open":
-            self.hw.openDoor()
-        elif dataClasses.data.sw_door_control == "None":
-            pass
-        else:
-            # TODO: Implement proper autonomous door control
-            if self.controls.servo == 1:
-                self.hw.openDoor()
-            else:
-                self.hw.closeDoor()
+        # if dataClasses.data.sw_door_control == "closed":
+        #     self.hw.closeDoor()
+        # elif dataClasses.data.sw_door_control == "open":
+        #     self.hw.openDoor()
+        # elif dataClasses.data.sw_door_control == "None":
+        #     pass
+        # else:
+        #     # TODO: Implement proper autonomous door control
+        #     if self.controls.servo == 1:
+        #         self.hw.openDoor()
+        #     else:
+        #         self.hw.closeDoor()
 
         logger.log.info("Controls Values: {}".format(self.controls.printValues()))
 

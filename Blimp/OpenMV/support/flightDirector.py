@@ -16,7 +16,7 @@ class FlightDirector:
     def __init__(self,comms,hw):
         self.currentState = None # SET BY MISSION COMMANDER
         self.allowGroundStationCommands = True        
-              
+        self.hw = hw
         self.requestedFirstManeuver = None
         self.requestedSecondManeuver = None
         self.blimpManeuvers = flightManeuvers.BlimpManeuvers(comms,hw)
@@ -187,3 +187,9 @@ class FlightDirector:
         #self.blimpManeuvers.hover.execute()
         #           
 
+    def executeDoorPosition(self):
+        if dataClasses.data.sw_door_control == "closed":
+            self.hw.openDoor()
+        elif dataClasses.data.sw_door_control == "open":
+            self.hw.closeDoor()
+            

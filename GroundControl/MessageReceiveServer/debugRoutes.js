@@ -1,4 +1,10 @@
 var links = require('../jsCustomLibrary/serverTools/requireLinks.js');
+var loggerModule = require('../jsCustomLibrary/serverTools/logger.js');
+
+var isFileLoggingOn = true;
+var logger = loggerModule.getLogger(isFileLoggingOn)
+logger.filePrefix = "DTR"
+
 var sqlTools = links.sqlTools;
 var express = links.express;
 var router = express.Router();
@@ -7,16 +13,26 @@ router.route('/status/')
 .post(function(req,res){       
     insertStatusToDb()
     .then(function(){
-        getManeuverToExecute();
+        getManeuverToExecute().then(function(){
+            //
+        })
     })            
-    .catch(function(ex){
-        //do logging.
-        getManeuverToExecute();
+    .catch(function(ex){        
+        getManeuverToExecute().then(function(){
+            logger.error(ex);
+            console.log(ex); // log this!
+            //
+        })
     })
     
     function getManeuverToExecute(){
-        sqlStr = " SELECT * FROM maneuverToExecute "
-        sqlTools.run(sqlStr,res);
+        return new Promise(function(resolve,reject){
+            sqlStr = " SELECT * FROM maneuverToExecute "
+            sqlTools.sqlRequestPromise(sqlStr).then(function(ret){
+                res.send(ret);
+                resolve();
+            })
+        })        
     }    
 
     function insertStatusToDb(){

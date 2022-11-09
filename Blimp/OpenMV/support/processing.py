@@ -1,5 +1,3 @@
-
-
 # Do processing of sensor data
 import logger
 import dataClasses
@@ -60,13 +58,6 @@ def parseSensorData():  # https://github.com/mavlink/c_library_v1/blob/master/ch
 
     parseYawData() #corrected for extremely large/small erroneous values
 
-
-
-    # overwrite for testing purposes the processed info, to test state machine
-    # for running on pc.
-    if (dataClasses.config.isMicroPython == False):
-        dataClasses.data.colorDetected = dataClasses.gndStationCmd.mockSensor_greenDetected
-        dataClasses.data.isAprilTagDetected = dataClasses.gndStationCmd.mockSensor_aprilTagDetected
 
     return output
 

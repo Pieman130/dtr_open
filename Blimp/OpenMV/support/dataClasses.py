@@ -75,8 +75,6 @@ class GroundStationCommand:
         self.secondManeuver = None
         self.baseUpVal = None
         self.duration = None
-        self.mockSensor_greenDetected = ''
-        self.mockSensor_aprilTagDetected = ''
         self.p_up = 1
         self.i_up = 0
         self.d_up = 0

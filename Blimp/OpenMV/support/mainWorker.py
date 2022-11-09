@@ -48,8 +48,6 @@ def run():
 
     import processing
 
-    dataClasses.rawData.lidar = 1200 #HACK
-
 
     logger.log.info('is micropython: ' + str(isMicroPython))
 

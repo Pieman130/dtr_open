@@ -126,47 +126,6 @@ class ImageProcessing():
 
     def find_yellow_goal(self,img):
         if img != None:
-            blobs = img.find_blobs([THRESHOLDS[0]], pixels_threshold=3, area_threshold=12, merge=True, margin=10)
-            biggest = [160,120,0,0] #[cx, cy, width, height]
-            counter = 0
-            #dataClasses.data.yellowGoalIsFound = 0
-            if blobs: #goal like object detected
-                for blob in blobs:
-                    dataClasses.data.yellowGoalIsFound = 1
-                    current = [blob.cx(), blob.cy(), blob.rect()[2], blob.rect()[3]]
-                    img.draw_rectangle(blob.rect())
-                    #img.draw_cross(current[0], current[1])
-                    counter = counter + 1
-                    width = current[2]
-                    height = current[3]
-                    self.SQerror = width/height
-                    if current[3] > biggest[3]:
-                        biggest = current
-                img.draw_string(biggest[0], biggest[1],"Selected Yellow Goal",[0, 0, 255] , mono_space = False)
-                img.draw_cross(biggest[0], biggest[1])
-                if self.goalx_ema == None:
-                    self.goalx_ema = EMA(biggest[0], self.goal_alpha)
-                    self.goaly_ema = EMA(biggest[1], self.goal_alpha)
-                else:
-                    self.goalx_ema.update(biggest[0])
-                    self.goaly_ema.update(biggest[1])
-                if (biggest[3] != 0):
-                    dist_goal = 42 / math.tan((biggest[3] * .23166/2)) # change parameters to determine distance from goal with known values, biggest[3] is height of goal
-                img.draw_cross(round(self.goalx_ema.get_value()), round(self.goaly_ema.get_value()), color=[0,0,0])
-                dataClasses.data.goal_yellow_xerror = round(self.goalx_ema.get_value()) - (img.width()/2)
-                dataClasses.data.goal_yellow_yerror = round(self.goaly_ema.get_value()) - (img.height()/2)
-
-            else: #nothing that looks like a goal was detected
-                dataClasses.data.yellowGoalIsFound = 0
-                dataClasses.data.goal_yellow_xerror = None
-                dataClasses.data.goal_yellow_yerror = None
-                logger.log.verbose("Yellow Goal Not Found!")
-                return
-        else:
-            logger.log.warning("No Image Passed to ImageProcessing!")
-
-    def find_yellow_goal(self,img):
-        if img != None:
             blobs = img.find_blobs([THRESHOLDS[0]], pixels_threshold=10, area_threshold=12, merge=True, margin=10)
             biggest = [-1,-1,0,0] #[cx, cy, width, height]
             #dataClasses.data.yellowGoalIsFound = 0
@@ -207,8 +166,6 @@ class ImageProcessing():
                 dataClasses.data.goal_yellow_xerror = None
                 dataClasses.data.goal_yellow_yerror = None
                 logger.log.verbose("Yellow Goal Not Found!")
-
-
 
     def find_orange_goal(self,img):
         if img != None:

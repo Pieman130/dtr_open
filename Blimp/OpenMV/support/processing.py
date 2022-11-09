@@ -113,7 +113,7 @@ def parseYawData():
                 dataClasses.data.imu_yaw_limited = dataClasses.rawData.imu_yaw 
 
         if dataClasses.rawData.imu_yaw_rate != None:
-            if dataClasses.rawData.imu_yaw_rate > 2*PI:
+            if dataClasses.rawData.imu_yaw_rate > 2*PI or math.isnan(dataClasses.rawData.imu_yaw_rate):
                 dataClasses.data.imu_yaw_limited = 0 
             elif dataClasses.rawData.imu_yaw_rate < -(2*PI):
                 dataClasses.data.imu_yaw_rate_limited = 0

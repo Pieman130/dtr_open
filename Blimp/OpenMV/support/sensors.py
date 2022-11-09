@@ -10,6 +10,7 @@ if ( dataClasses.config.isMicroPython):
 else:
     import cameraSetupMock
     cameraSetup = cameraSetupMock
+    dataClasses.rawData.lidar = 1
 
 
 class Sensors:

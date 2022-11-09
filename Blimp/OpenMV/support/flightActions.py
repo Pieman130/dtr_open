@@ -67,18 +67,18 @@ class FlightAction:
 
         self.mavlink.setControls(self.controls)
 
-        if dataClasses.data.sw_door_control == "closed":
-            self.hw.closeDoor()
-        elif dataClasses.data.sw_door_control == "open":
-            self.hw.openDoor()
-        elif dataClasses.data.sw_door_control == "None":
-            pass
-        else:
-            # TODO: Implement proper autonomous door control
-            if self.controls.servo == 1:
-                self.hw.openDoor()
-            else:
-                self.hw.closeDoor()
+        # if dataClasses.data.sw_door_control == "closed":
+        #     self.hw.closeDoor()
+        # elif dataClasses.data.sw_door_control == "open":
+        #     self.hw.openDoor()
+        # elif dataClasses.data.sw_door_control == "None":
+        #     pass
+        # else:
+        #     # TODO: Implement proper autonomous door control
+        #     if self.controls.servo == 1:
+        #         self.hw.openDoor()
+        #     else:
+        #         self.hw.closeDoor()
 
         logger.log.info("Controls Values: {}".format(self.controls.printValues()))
 
@@ -150,7 +150,8 @@ class FlightAction:
                 self.pid_up.set_pid_gains(p)  
 
             #logger.log.verbose("right before get pid")
-            self.controls.up = self.pid_up.get_pid(self.data.lidarDistance-height,scaler= dataClasses.gndStationCmd.scalar_up)   
+            if self.data.lidarDistance != None:
+                self.controls.up = self.pid_up.get_pid(self.data.lidarDistance-height,scaler= dataClasses.gndStationCmd.scalar_up)   
                                   
            # self.lidar_ema = self.ema_alpha * self.lidar_ema + (1 - self.ema_alpha) * self.data.lidarDistance
 
@@ -176,6 +177,8 @@ class FlightAction:
                 p = dataClasses.gndStationCmd.p_yaw
                 self.pid_yaw.set_pid_gains(p)  
 
+            logger.log.verbose("desired yaw rate: {}".format(desired_yaw_rate) )
+            logger.log.verbose(" yawrate limited: {}".format(dataClasses.data.imu_yaw_rate_limited) )
             yr_error = desired_yaw_rate-dataClasses.data.imu_yaw_rate_limited
 
             logger.log.verbose("Yaw Error: "+str(yr_error))           

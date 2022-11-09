@@ -1,11 +1,42 @@
 const fs = require('fs');
 const path = require('path');
+
+var makeProgressBarText = function(currVal,maxVal,units = '', maxTicks=20,tickChar='.'){
+    var percent = currVal/maxVal;
+    if (percent > 1){
+        percent = 1;
+    }
+    numTicks = Math.floor(percent * maxTicks);
+    numBlanks = maxTicks-numTicks;
+
+    var out = '';
+    for(var ctr = 0; ctr < maxTicks; ctr ++){
+        if(ctr < numTicks){
+            out = out + tickChar
+        }else{
+            out = out + ' ';
+        }
+        
+    }
+    var percentPrint = Math.trunc(percent * 100);
+    var progBarText = '[' + out + ']  ( ' + currVal + ' of ' + maxVal + ' ' + units + ') - ' + percentPrint + '%';
+    return progBarText;
+
+}
+
+var promiseDelay = function(time_ms){
+    return new Promise(function(resolve,reject){
+        setTimeout(resolve.bind(null,undefined),time_ms);
+    })
+}
+
 var readToMlFile = function(filepath){    
     const toml = require('./node_modules/toml');   
     try{
         var tomlConfig = toml.parse(fs.readFileSync(filepath));   
     } catch(err){
         var tomlConfig = "";
+        console.error("Toml file read error: " + path.resolve(filepath) + "\n" +  err.name + err.message )
         throw new TypeError("Toml file read error.\n\t" + err.name + err.message + "\nfor file: " + path.resolve(filepath))        
     }
     
@@ -25,6 +56,32 @@ var readToMlFileDebug = function(path){
     })		
 }
 
+var inputValidator = function(args,typesDesired){
+    var errStr = '';
+    for (var ctr = 0;ctr<args.length; ctr++){
+        if( typeof(args[ctr]) !== typesDesired[ctr] ) {
+            errStr = errStr + "arg[" + ctr + "]: " + args[ctr] + " - NOT TYPE '" + typesDesired[ctr] + "'\n"
+        }
+    }
+    
+    if (errStr !== ''){
+        let callingFcn = getCallingFunctionPath()
+        errStrToPrint = "\nINPUT VALIDATOR:\n\t Error from: " + callingFcn + "\n" +  errStr;
+        throw new Error(errStrToPrint);
+    }
+}
+
+var getCallingFunctionPath = function(){
+    let ret = new Error().stack.split("at ")[3].trim();
+    return ret;
+}
+
+var getCallingFunctionName = function(){
+	let tmp = new Error().stack.split("at ")[3].trim();
+    let idx = tmp.lastIndexOf("\\")+1
+    let ret = tmp.substring(idx,tmp.length-1)
+    return ret;
+}
 
 var convertStringArrayToCsvList = function(arr){
     var ret="";
@@ -83,6 +140,14 @@ function delayMs(numMs){ //for testing only
     })
 }
 
+function removeArrayDuplicates(arr){
+    var uniqueArr = arr.filter(onlyUnique);
+    function onlyUnique(value, index, self) {
+        return self.indexOf(value) === index;
+      }
+    return uniqueArr;
+}
+
 function convertJsDateToUtc(jsDate){
     var utcOffsetHrs = jsDate.getTimezoneOffset()/60;
     jsDate.setHours(jsDate.getHours() + utcOffsetHrs);
@@ -93,8 +158,8 @@ function getTimestamp(inDate){
 if(inDate === undefined){
   inDate = new Date();
 }
-var outDate = inDate.getFullYear() +  //inDate.toLocaleDateString('en-US',{month:'short'}) 
-                ('00' + inDate.getMonth()).slice(-2) + '' +  
+var outDate = inDate.getFullYear() + "_" + //inDate.toLocaleDateString('en-US',{month:'short'}) 
+                ('00' + (inDate.getMonth()+1)).slice(-2) + '_' +  
                 ('00' + inDate.getDate()).slice(-2) + '_' + 
                 ('00' + inDate.getHours()).slice(-2) + '' +  
                 ('00' + inDate.getMinutes()).slice(-2) + '' +  
@@ -102,7 +167,30 @@ var outDate = inDate.getFullYear() +  //inDate.toLocaleDateString('en-US',{month
 return outDate;
 }
 
+
+//also in serverFunctions.  need available separately from inside a server.
+var makeDateForSqlServer = function(inDate){
+    if (inDate === undefined){
+        var inDate = new Date;
+    }
+    var outDate = inDate.getFullYear() + '-' +
+        ('00' + (inDate.getMonth()+1)).slice(-2) + '-' +
+        ('00' + inDate.getDate()).slice(-2) + ' ' + 
+        ('00' + inDate.getHours()).slice(-2) + ':' + 
+        ('00' + inDate.getMinutes()).slice(-2) + ':' + 
+        ('00' + inDate.getSeconds()).slice(-2) + '.' +
+        ('00' + inDate.getMilliseconds()).slice(-3);    
+    return outDate;
+}
+
 module.exports = {  
+    makeDateForSqlServer: makeDateForSqlServer,
+    makeProgressBarText: makeProgressBarText,
+    promiseDelay: promiseDelay,
+    removeArrayDuplicates: removeArrayDuplicates,
+    getCallingFunctionName: getCallingFunctionName,
+	getCallingFunctionPath: getCallingFunctionPath,
+    inputValidator: inputValidator,
 	readToMlFile: readToMlFile,
     readToMlFileDebug: readToMlFileDebug,
     getBitMask: getBitMask,  

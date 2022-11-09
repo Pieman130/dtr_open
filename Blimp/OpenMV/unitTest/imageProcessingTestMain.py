@@ -1,4 +1,4 @@
-import imageProcessing
+from imageProcessing import ImageProcessing
 import logger
 import time
 import dataClasses
@@ -10,6 +10,9 @@ LOOP_TIME_FIXED = 0.05
 
 
 camera = cameraSetup.OpenMVcamera(sensor)
+imageProcessing = ImageProcessing()
+
+imageProcessing = ImageProcessing()
 
 while(True):
     dataClasses.rawData.img = camera.snapshot()
@@ -30,6 +33,7 @@ while(True):
     #logger.log.verbose('ballIsFound: ' + str(dataClasses.data.ballIsFound) )
     #logger.log.verbose('ball x error: ' + str(dataClasses.data.ball_xerror) )
     #logger.log.verbose('ball y error: '  + str(dataClasses.data.ball_yerror) )
+
 
 
     #logger.log.verbose("color detected: " + dataClasses.data.colorDetected)

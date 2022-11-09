@@ -1,7 +1,14 @@
+class Constants:
+    def __init__(self):
+        self.CONTROL_AUTHORITY_AUTO = "auto"
+        self.CONTROL_AUTHORITY_RC_REMOTE_CONTROL = "manual"   
+        self.CONTROL_AUTHORITY_AUTO_ASSISTED = "assisted"
+constants = Constants()
+
 class Configuration:
     def __init__(self):
         self.isMicroPython = None
-        self.controlAuthority = 'autonomous'
+        self.controlAuthority = constants.CONTROL_AUTHORITY_RC_REMOTE_CONTROL #always want manual to be default power up for safety.
 
 class RawData:
     def __init__(self):
@@ -21,6 +28,7 @@ class RawData:
         self.rc_sw_flt_mode = None
         self.rc_sw_st_cntl = None
         self.door_position = None
+        self.lastLoopTime = None
 
 
 
@@ -58,6 +66,7 @@ class ProcessedData:
 
         self.imu_yaw_limited = None
         self.imu_yaw_rate_limited = None
+
         self.haveFoundBallPreviously = False
         
 
@@ -67,8 +76,6 @@ class GroundStationCommand:
         self.secondManeuver = None
         self.baseUpVal = None
         self.duration = None
-        self.mockSensor_greenDetected = ''
-        self.mockSensor_aprilTagDetected = ''
         self.p_up = 1
         self.i_up = 0
         self.d_up = 0
@@ -91,7 +98,7 @@ class GroundStationCommand:
         self.error_scaling_yaw = 1
         self.pid_min_up = -0.2
         self.pid_min_yaw = -1.0
-        self.controlAuthority = 'autonomous'
+        self.controlAuthority = ''
         self.assisted_manualHeight = 100000
         self.resetOpenMVforFTPtsfr = 0
         self.doFtpLoadAndReset = 0
@@ -121,9 +128,9 @@ class AutonomousModeState:
 
 
 class FlightModeState:
-    Manual = [2000, 'manual']
-    Assisted = [1500, 'assisted']
-    Auto = [1000, 'auto']
+    Manual = [2000, constants.CONTROL_AUTHORITY_RC_REMOTE_CONTROL]
+    Assisted = [1500, constants.CONTROL_AUTHORITY_AUTO_ASSISTED]
+    Auto = [1000, constants.CONTROL_AUTHORITY_AUTO]
 
     def __init__(self):
         self.items = [self.Auto, self.Assisted, self.Manual]

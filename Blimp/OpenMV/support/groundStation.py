@@ -73,6 +73,17 @@ class GroundStation:
         data = self.addToJsonStatusMsg(data,'error_scaling_up',dataClasses.gndStationCmd.error_scaling_up)
         data = self.addToJsonStatusMsg(data,'pid_min_up',dataClasses.gndStationCmd.pid_min_up)
 
+        data = self.addToJsonStatusMsg(data,'pid_min_up',dataClasses.gndStationCmd.pid_min_up)
+
+
+        data = self.addToJsonStatusMsg(data,'loopTime',dataClasses.rawData.lastLoopTime)        
+
+
+        data = self.addToJsonStatusMsg(data,'orangeGoalIsFound',dataClasses.data.orangeGoalIsFound)   
+        data = self.addToJsonStatusMsg(data,'yellowGoalIsFound',dataClasses.data.yellowGoalIsFound)   
+        data = self.addToJsonStatusMsg(data,'ballIsFound',dataClasses.data.ballIsFound)   
+
+        
 
 
 

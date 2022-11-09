@@ -1,5 +1,3 @@
-
-
 # Do processing of sensor data
 import logger
 import dataClasses
@@ -14,6 +12,7 @@ SERVO_OPEN = 0
 SERVO_CLOSED = 45
 PI = 3.14159
 
+imageProcessing = imageProcessing.ImageProcessing()
 
 def parseSensorData():  # https://github.com/mavlink/c_library_v1/blob/master/checksum.h
     output = 0
@@ -24,16 +23,24 @@ def parseSensorData():  # https://github.com/mavlink/c_library_v1/blob/master/ch
     
     imageProcessing.find_ball(dataClasses.rawData.img)
     imageProcessing.find_yellow_goal(dataClasses.rawData.img)
-    imageProcessing.find_orange_goal(dataClasses.rawData.img)
+   # imageProcessing.find_orange_goal(dataClasses.rawData.img)
 
-    #imageProcessing.colorDetectedByCamera(
-     #   dataClasses.rawData.img)
+    logger.log.verbose("yaw rate: " + str(dataClasses.rawData.imu_yaw_rate))
+    logger.log.verbose("imu_yaw: " + str(dataClasses.rawData.imu_yaw))
+    logger.log.verbose("motor_yaw: " + str(dataClasses.rawData.motor_yaw))
+    
+    logger.log.verbose("yaw rate limited: " + str(dataClasses.data.imu_yaw_rate_limited))
+    logger.log.verbose("imu_yaw limited: " + str(dataClasses.data.imu_yaw_limited))        
+    
+
+    logger.log.debugOnly("imu pitch: " + str(dataClasses.rawData.imu_pitch) )
+    logger.log.debugOnly("imu imu_roll: " + str(dataClasses.rawData.imu_roll) )
 
     logger.log.verbose('yellow x error' + str(dataClasses.data.goal_yellow_xerror) )
-    logger.log.verbose('yellow y error' + str(dataClasses.data.goal_yellow_goal_yerror) )
+    logger.log.verbose('yellow y error' + str(dataClasses.data.goal_yellow_yerror) )
 
     logger.log.verbose('orange x error' + str(dataClasses.data.goal_orange_xerror) )
-    logger.log.verbose('orange x error' + str(dataClasses.data.goal_orange_goal_yerror) )
+    logger.log.verbose('orange x error' + str(dataClasses.data.goal_orange_yerror) )
 
     logger.log.verbose('ball x error: ' + str(dataClasses.data.ball_xerror) )
     logger.log.verbose('ball y error: '  + str(dataClasses.data.ball_yerror) ) 
@@ -44,23 +51,13 @@ def parseSensorData():  # https://github.com/mavlink/c_library_v1/blob/master/ch
     logger.log.verbose("color detected: " + dataClasses.data.colorDetected)
 
     logger.log.verbose("orange goal is found: " + str(dataClasses.data.orangeGoalIsFound))
-    logger.log.verbose("orange goal is found: " + str(dataClasses.data.yellowGoalIsFound))
+    logger.log.verbose("yellow goal is found: " + str(dataClasses.data.yellowGoalIsFound))
 
-  #  dataClasses.data.aprilTagFound = imageProcessing.lookForAprilTag(
-   #     dataClasses.rawData.img)
-  #  dataClasses.data.isAprilTagDetected = dataClasses.data.aprilTagFound.foundIt
 
     parseLidarData()
 
     parseYawData() #corrected for extremely large/small erroneous values
 
-
-
-    # overwrite for testing purposes the processed info, to test state machine
-    # for running on pc.
-    if (dataClasses.config.isMicroPython == False):
-        dataClasses.data.colorDetected = dataClasses.gndStationCmd.mockSensor_greenDetected
-        dataClasses.data.isAprilTagDetected = dataClasses.gndStationCmd.mockSensor_aprilTagDetected
 
     return output
 
@@ -80,39 +77,50 @@ def parseLidarData():
         rawDist = dataClasses.rawData.lidar 
         correctedDist_ft = attitudeCorrectDistance(
             rawDist, dataClasses.rawData.imu_roll, dataClasses.rawData.imu_pitch)
-        #correctedDist_ft = rawDist
-        dataClasses.data.lidarDistance = dataClasses.rawData.lidar
+        # if correctedDist_ft != None:
+        #     dataClasses.data.lidarDistance = correctedDist_ft
+        # else:
         
-        if(dataClasses.data.lidarDistance > 1600):
-            dataClasses.data.lidarDistance = 1600 #trimming bogus lidar values
 
-        logger.log.verbose('lidar value = ' + str(rawDist) + ', lidar corr = ' + str(correctedDist_ft) + ',imu_roll = ' + str(dataClasses.rawData.imu_roll) + ', imu_pitch =' + str(dataClasses.rawData.imu_pitch))
+        if( (rawDist > 1600) or rawDist == 0):
+            pass
+        else:
+            dataClasses.data.lidarDistance = rawDist
+            logger.log.debugOnly('lidar value = ' + str(rawDist) + ', lidar corr = ' + str(correctedDist_ft) + ',imu_roll = ' + str(dataClasses.rawData.imu_roll) + ', imu_pitch =' + str(dataClasses.rawData.imu_pitch))
+
         
-        logger.log.verbose('lidar distance (ft): ' + str(correctedDist_ft))
+        
+       # logger.log.debugOnly('lidar distance (ft): ' + str(correctedDist_ft))
 
 
 def attitudeCorrectDistance(measDist=0.0, roll_rad=0.0, pitch_rad=0.0):
     # correctedDist = math.cos(math.sqrt(roll_rad**2 + pitch_rad**2)) * measDist # Not sure which of these methods will be faster on the uC
-    correctedDist = math.cos(roll_rad) * math.cos(pitch_rad) * measDist
-    return correctedDist
+    if roll_rad != None or pitch_rad != None:
+        correctedDist = math.cos(roll_rad) * math.cos(pitch_rad) * measDist
+        return correctedDist
+    else:
+        return None
 
 
 def parseYawData():
-    if (dataClasses.rawData.imu_yaw != None):
-        if dataClasses.rawData.imu_yaw > PI:
-            dataClasses.data.imu_yaw_limited = PI 
-        elif dataClasses.rawData.imu_yaw < -(PI):
-            dataClasses.data.imu_yaw_limited = -(PI)
-        else:
-            dataClasses.data.imu_yaw_limited = dataClasses.rawData.imu_yaw 
+    try:
+        if dataClasses.rawData.imu_yaw != None:
+            if dataClasses.rawData.imu_yaw > PI:
+                dataClasses.data.imu_yaw_limited = PI 
+            elif dataClasses.rawData.imu_yaw < -(PI):
+                dataClasses.data.imu_yaw_limited = -(PI)
+            else:
+                dataClasses.data.imu_yaw_limited = dataClasses.rawData.imu_yaw 
 
-    if (dataClasses.rawData.imu_yaw_rate != None):
-        if dataClasses.rawData.imu_yaw_rate > 2*PI:
-            dataClasses.data.imu_yaw_limited = 0 
-        elif dataClasses.rawData.imu_yaw_rate < -(2*PI):
-            dataClasses.data.imu_yaw_rate_limited = 0
-        else:
-            dataClasses.data.imu_yaw_rate_limited = dataClasses.rawData.imu_yaw_rate 
+        if dataClasses.rawData.imu_yaw_rate != None:
+            if dataClasses.rawData.imu_yaw_rate > 2*PI:
+                dataClasses.data.imu_yaw_limited = 0 
+            elif dataClasses.rawData.imu_yaw_rate < -(2*PI):
+                dataClasses.data.imu_yaw_rate_limited = 0
+            else:
+                dataClasses.data.imu_yaw_rate_limited = dataClasses.rawData.imu_yaw_rate 
+    except:
+        pass
 
 
 def parseDoorPosition():
@@ -137,13 +145,13 @@ def parseRCSwitchPositions():
 
         # If the current value is within +- currentDelta of a mode, set the mode variable to that mode.
         if flightModes.Auto[0] + currentDelta >= currentValue and flightModes.Auto[0] - currentDelta <= currentValue:
-            dataClasses.data.sw_flight_mode = flightModes.Auto[1]
+            dataClasses.config.controlAuthority = flightModes.Auto[1]
         elif flightModes.Assisted[0] + currentDelta >= currentValue and flightModes.Assisted[0] - currentDelta <= currentValue:
-            dataClasses.data.sw_flight_mode = flightModes.Assisted[1]
+            dataClasses.config.controlAuthority = flightModes.Assisted[1]
         elif flightModes.Manual[0] + currentDelta >= currentValue and flightModes.Manual[0] - currentDelta <= currentValue:
-            dataClasses.data.sw_flight_mode = flightModes.Manual[1]
+            dataClasses.config.controlAuthority = flightModes.Manual[1]
         else:
-            dataClasses.data.sw_flight_mode = "None"
+            dataClasses.config.controlAuthority = "None"
 
 
     currentValue = dataClasses.rawData.rc_sw_door
@@ -165,7 +173,7 @@ def parseRCSwitchPositions():
 
     logger.log.verbose("Processed data states:")
     logger.log.verbose("DR_CTRL:\t " + str(dataClasses.data.sw_door_control))
-    logger.log.verbose("FLT_MDE:\t " + str(dataClasses.data.sw_flight_mode))
+    logger.log.verbose("FLT_MDE:\t " + str(dataClasses.config.controlAuthority))
 
 
 # def distanceToBall():

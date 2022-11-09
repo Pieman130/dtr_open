@@ -4,7 +4,7 @@ import logger
 
 HEIGHT_LOWER = 1000
 HEIGHT_HIGHER = 550
-YAW_RATE_SEEK = 1
+YAW_RATE_SEEK = 0.25
 class FlightDirector:    
     ''' 
         Goal of the flight director:
@@ -16,7 +16,7 @@ class FlightDirector:
     def __init__(self,comms,hw):
         self.currentState = None # SET BY MISSION COMMANDER
         self.allowGroundStationCommands = True        
-              
+        self.hw = hw
         self.requestedFirstManeuver = None
         self.requestedSecondManeuver = None
         self.blimpManeuvers = flightManeuvers.BlimpManeuvers(comms,hw)
@@ -132,51 +132,80 @@ class FlightDirector:
             #     self.currentManeuver.d_yaw = dataClasses.gndStationCmd.d_yaw
     def getNextAutonomousStep(self):                        
 
-        if(dataClasses.data.irData):
-            heightSetPoint = HEIGHT_HIGHER            
-            hoverStr = "(higher)"
+        #self.autonomousHoverYaw()
+
+        self.autonomousOneGoalSeek()
+
+        # if(dataClasses.data.irData):
+        #     heightSetPoint = HEIGHT_HIGHER            
+        #     hoverStr = "(higher)"
             
-            targetStr = "yellow goal"
-            ballCatchStr = 'caught'            
+        #     targetStr = "yellow goal"
+        #     ballCatchStr = 'caught'            
             
-            if(dataClasses.data.yellowGoalIsFound):
-                seeTarget = "yes"
-                yawRate = 0                
-            else:
-                seeTarget = "no"
-                yawRate = YAW_RATE_SEEK                
+        #     if(dataClasses.data.yellowGoalIsFound):
+        #         seeTarget = "yes"
+        #         yawRate = 0                
+        #     else:
+        #         seeTarget = "no"
+        #         yawRate = YAW_RATE_SEEK                
                 
-        else:
-            heightSetPoint = HEIGHT_LOWER
-            hoverStr = "(low)"
-            ballCatchStr = 'not caught'
-            targetStr = "ball"
-            if(dataClasses.data.ballIsFound):                
-                yawRate = 0
-                seeTarget = "yes"
-            else:
-                yawRate = YAW_RATE_SEEK
-                seeTarget = "no" 
+        # else:
+        #     heightSetPoint = HEIGHT_LOWER
+        #     hoverStr = "(low)"
+        #     ballCatchStr = 'not caught'
+        #     targetStr = "ball"
+        #     if(dataClasses.data.haveFoundBallPreviously):                
+        #         yawRate = 0
+        #         seeTarget = "yes"
+        #     else:
+        #         yawRate = YAW_RATE_SEEK
+        #         seeTarget = "no" 
 
-
-        self.currentManeuver.execute_yaw_control(yawRate) 
-        self.currentManeuver.execute_assisted_altitude(heightSetPoint)
+        
 
 
         # UPDATING PRINTING / UI        
-        self.currentState.target = targetStr             
+        # self.currentState.target = targetStr             
 
+        # if(seeTarget == "yes"):
+        #     actionStr = "maintain yaw 0 to view target."  
+        # else:
+        #     actionStr = "yaw to target"
+        
+        # self.currentState.action = "hover " + hoverStr + ". " + actionStr
+
+        
+    def autonomousOneGoalSeek(self):
+        heightSetPoint = HEIGHT_HIGHER            
+        hoverStr = "(higher)"
+            
+        targetStr = "yellow goal"
+        ballCatchStr = 'caught'            
+            
+        if(dataClasses.data.yellowGoalIsFound):
+            seeTarget = "yes"
+            yawRate = 0                
+        else:
+            seeTarget = "no"
+            yawRate = YAW_RATE_SEEK   
+        
         if(seeTarget == "yes"):
             actionStr = "maintain yaw 0 to view target."  
         else:
             actionStr = "yaw to target"
-        
+
         self.currentState.action = "hover " + hoverStr + ". " + actionStr
 
-        logger.log.info("INFO - Ball: " + ballCatchStr + ". Target: " + targetStr + ".  See target: " + seeTarget + ". ACTION - hover height: " + str(heightSetPoint) + " " + hoverStr + " , yaw rate: " + str(yawRate))
-                
+        logger.log.info("INFO - Ball: " + ballCatchStr + ". Target: " + targetStr + ".  See target: " + seeTarget + ". ACTION - hover height: " + str(heightSetPoint) + " " + hoverStr + " , yaw rate: " + str(yawRate))            
         
-
+        self.currentManeuver.execute_yaw_control(yawRate) 
+        self.currentManeuver.execute_assisted_altitude(heightSetPoint)
+        
+    def autonomousHoverYaw(self):
+        yawRate = 0
+        self.currentManeuver.execute_yaw_control(yawRate) 
+        self.currentManeuver.execute_assisted_altitude(HEIGHT_LOWER)
 
     def executeNextStep(self): # to be defined by determine next step
         self.currentManeuver.execute() 
@@ -187,3 +216,15 @@ class FlightDirector:
         #self.blimpManeuvers.hover.execute()
         #           
 
+    def executeDoorPosition(self):
+        if dataClasses.data.sw_door_control == "closed":
+            self.hw.closeDoor() 
+        elif dataClasses.data.sw_door_control == "open":
+            self.hw.openDoor() 
+            dataClasses.data.haveFoundBallPreviously = False
+
+        elif dataClasses.data.sw_door_control == "auto":
+            
+            if(dataClasses.data.irData):
+                self.hw.closeDoor()           
+            

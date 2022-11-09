@@ -51,6 +51,14 @@ router.route('/status/')
             var controlAuthority = req.body.controlAuthority;
             var loopTime = req.body.loopTime;
 
+            var imu_yaw = convertNoneToNull(req.body.imu_yaw);
+            var imu_yaw_rate = convertNoneToNull(req.body.imu_yaw_rate);
+
+            var imu_yaw_limited = convertNoneToNull(req.body.imu_yaw_limited);
+            var imu_yaw_rate_limited = convertNoneToNull(req.body.imu_yaw_rate_limited);
+
+
+
             var ballIsFound = convertNoneToZero(req.body.ballIsFound);
             var yellowGoalIsFound = convertNoneToZero(req.body.yellowGoalIsFound);
             var orangeGoalIsFound = convertNoneToZero(req.body.orangeGoalIsFound);
@@ -62,6 +70,12 @@ router.route('/status/')
             function convertNoneToZero(val){
                 if(val === 'None'){
                     val = 0;
+                }
+                return val;
+            }
+            function convertNoneToNull(val){
+                if (val === 'None'){
+                    val = 'null'
                 }
                 return val;
             }
@@ -135,12 +149,13 @@ router.route('/status/')
             .then(function(){
                 var valueStr = sqlTools.makeValuesStr(lastHeartbeat,lidarDistance,irSensorDetection,upMotor,throttleMotor,yawMotor,servoDoor,isMicroPython,
                     p_up,i_up,d_up,p_throttle,i_throttle,d_throttle,p_yaw,i_yaw,d_yaw,scalar_up,scalar_yaw,scalar_throttle,error_rounding_up, error_scaling_up,pid_min_up,controlAuthority,loopTime,
-                currentManeuver,state_description,state_target,state_action, ballIsFound,yellowGoalIsFound,orangeGoalIsFound)                    
+                currentManeuver,state_description,state_target,state_action, ballIsFound,yellowGoalIsFound,orangeGoalIsFound,imu_yaw ,imu_yaw_rate,imu_yaw_limited , imu_yaw_rate_limited)                    
 
+                
                 sqlStr = " INSERT INTO dataLogs(logTime,lidarDistance,irSensor,upMotor,throttleMotor,yawMotor,servoDoor,isMicroPython," +
                             "p_up,i_up,d_up,p_throttle,i_throttle,d_throttle,p_yaw,i_yaw,d_yaw,scalar_up,scalar_yaw,scalar_throttle," +
                             "error_rounding_up, error_scaling_up,pid_min_up,controlAuthority,loopTime," +
-                            "currentManeuver,state_description,state_target,state_action, ballIsFound,yellowGoalIsFound,orangeGoalIsFound) " + valueStr;
+                            "currentManeuver,state_description,state_target,state_action, ballIsFound,yellowGoalIsFound,orangeGoalIsFound,imu_yaw ,imu_yaw_rate,imu_yaw_limited , imu_yaw_rate_limited) " + valueStr;
                 return sqlTools.sqlRequestPromise(sqlStr);
             })
             .then(function(){

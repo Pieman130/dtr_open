@@ -19,9 +19,7 @@ router.route('/status/')
     })            
     .catch(function(ex){        
         getManeuverToExecute().then(function(){
-            logger.error(ex);
-            console.log(ex); // log this!
-            //
+            logger.error(ex);            
         })
     })
     
@@ -51,6 +49,7 @@ router.route('/status/')
             var yawMotor = req.body.yawMotor;
             var servoDoor = req.body.servoDoor;
             var controlAuthority = req.body.controlAuthority;
+            var loopTime = req.body.loopTime
         
             yawMotor = convertNanToNull(yawMotor)
             upMotor = convertNanToNull(upMotor)
@@ -120,10 +119,10 @@ router.route('/status/')
             })
             .then(function(){
                 var valueStr = sqlTools.makeValuesStr(lastHeartbeat,lidarDistance,irSensorDetection,upMotor,throttleMotor,yawMotor,servoDoor,isMicroPython,
-                    p_up,i_up,d_up,p_throttle,i_throttle,d_throttle,p_yaw,i_yaw,d_yaw,scalar_up,scalar_yaw,scalar_throttle,error_rounding_up, error_scaling_up,pid_min_up)
+                    p_up,i_up,d_up,p_throttle,i_throttle,d_throttle,p_yaw,i_yaw,d_yaw,scalar_up,scalar_yaw,scalar_throttle,error_rounding_up, error_scaling_up,pid_min_up,controlAuthority,loopTime)
                 sqlStr = " INSERT INTO dataLogs(logTime,lidarDistance,irSensor,upMotor,throttleMotor,yawMotor,servoDoor,isMicroPython," +
                             "p_up,i_up,d_up,p_throttle,i_throttle,d_throttle,p_yaw,i_yaw,d_yaw,scalar_up,scalar_yaw,scalar_throttle," +
-                            "error_rounding_up, error_scaling_up,pid_min_up) " + valueStr;
+                            "error_rounding_up, error_scaling_up,pid_min_up,controlAuthority,loopTime) " + valueStr;
                 return sqlTools.sqlRequestPromise(sqlStr);
             })
             .then(function(){

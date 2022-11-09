@@ -73,6 +73,10 @@ class GroundStation:
         data = self.addToJsonStatusMsg(data,'error_scaling_up',dataClasses.gndStationCmd.error_scaling_up)
         data = self.addToJsonStatusMsg(data,'pid_min_up',dataClasses.gndStationCmd.pid_min_up)
 
+        data = self.addToJsonStatusMsg(data,'pid_min_up',dataClasses.gndStationCmd.pid_min_up)
+
+
+        data = self.addToJsonStatusMsg(data,'loopTime',dataClasses.rawData.lastLoopTime)        
 
 
 

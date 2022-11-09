@@ -111,13 +111,14 @@ def run():
             keepRunning = 0            
 
         # make loop time fixed
-        loopTime = (time.time_ns() - start)/1e9
+        loopTime = (time.time_ns() - start)/1e9        
         loopPause = LOOP_TIME_FIXED - loopTime
         if(loopPause >0):
             time.sleep(loopPause)
             logger.log.verbose('loop pause added: ' + str(loopPause))        
 
         loopTime = (time.time_ns() - start)/1e9
+        dataClasses.rawData.lastLoopTime = loopTime
         logger.log.info('Loop time: ' + str(loopTime))
 
         

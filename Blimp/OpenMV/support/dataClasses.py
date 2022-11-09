@@ -49,9 +49,9 @@ class ProcessedData:
         self.sw_door_control = 'open'
         self.sw_flight_mode = 'assisted'
 
-        self.goal_yellow_xerror = None
-        self.goal_yellow_yerror = None
-        self.goal_orange_xerror = None
+        self.goal_yellow_goal_xerror = None
+        self.goal_yellow_goal_yerror = None
+        self.goal_orange_goal_xerror = None
         self.goal_orange_goal_yerror = None
 
         self.dist_yellow_goal = 0 # (float)

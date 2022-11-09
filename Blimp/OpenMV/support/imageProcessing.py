@@ -2,7 +2,7 @@
 from dataClasses import ProcessedData
 import dataClasses
 import logger
-import  math
+import math
 import time
 
 if dataClasses.config.isMicroPython:
@@ -152,12 +152,11 @@ class ImageProcessing():
                     self.orange_goalx_ema.update(biggest[0])
                     self.orange_goaly_ema.update(biggest[1])
                 if (biggest[3] != 0):
-                    dataClasses.data.dist_orange_goal = 42 / math.tan((biggest[3] * .23166/2)) # change parameters to determine distance from goal with known values, biggest[3] is height of goal
+                    dataClasses.data.dist_orange_goal = (46/2)/math.atan(abs((biggest[3]*.23166*0.01745329))/2) # change parameters to determine distance from goal with known values, biggest[3] is height of goal
                 img.draw_cross(round(self.orange_goalx_ema.get_value()), round(self.orange_goaly_ema.get_value()), color=[255, 165, 0])
                 img.draw_string(round(self.orange_goalx_ema.get_value()), round(self.orange_goaly_ema.get_value()),"Selected Orange Goal",[255, 165, 0] , mono_space = False)
                 dataClasses.data.goal_orange_xerror = round(self.orange_goalx_ema.get_value()) -(img.width()/2)
                 dataClasses.data.goal_orange_yerror = round(self.orange_goaly_ema.get_value()) - (img.height()/2)
-
             else: #nothing that looks like a goal was detected
                 dataClasses.data.orangeGoalIsFound = 0
                 dataClasses.data.goal_orange_xerror = None

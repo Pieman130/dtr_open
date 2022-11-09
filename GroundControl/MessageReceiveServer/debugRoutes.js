@@ -27,7 +27,7 @@ router.route('/status/')
         return new Promise(function(resolve,reject){
             sqlStr = " SELECT * FROM maneuverToExecute "
             sqlTools.sqlRequestPromise(sqlStr).then(function(ret){
-                res.send(ret);
+                res.send(ret.recordset);
                 resolve();
             })
         })        

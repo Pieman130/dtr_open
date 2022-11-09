@@ -90,8 +90,7 @@ def run():
             
         missionCmder.determineControlAuthority()
         
-
-        dataClasses.config.controlAuthority = dataClasses.constants.CONTROL_AUTHORITY_AUTO
+        
         if(dataClasses.config.controlAuthority != dataClasses.constants.CONTROL_AUTHORITY_RC_REMOTE_CONTROL):
             missionCmder.updateState()
 

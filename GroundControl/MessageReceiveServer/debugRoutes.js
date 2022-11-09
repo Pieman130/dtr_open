@@ -119,10 +119,13 @@ router.route('/status/')
             })
             .then(function(){
                 var valueStr = sqlTools.makeValuesStr(lastHeartbeat,lidarDistance,irSensorDetection,upMotor,throttleMotor,yawMotor,servoDoor,isMicroPython,
-                    p_up,i_up,d_up,p_throttle,i_throttle,d_throttle,p_yaw,i_yaw,d_yaw,scalar_up,scalar_yaw,scalar_throttle,error_rounding_up, error_scaling_up,pid_min_up,controlAuthority,loopTime)
+                    p_up,i_up,d_up,p_throttle,i_throttle,d_throttle,p_yaw,i_yaw,d_yaw,scalar_up,scalar_yaw,scalar_throttle,error_rounding_up, error_scaling_up,pid_min_up,controlAuthority,loopTime,
+                currentManeuver,state_description,state_target,state_action)                    
+
                 sqlStr = " INSERT INTO dataLogs(logTime,lidarDistance,irSensor,upMotor,throttleMotor,yawMotor,servoDoor,isMicroPython," +
                             "p_up,i_up,d_up,p_throttle,i_throttle,d_throttle,p_yaw,i_yaw,d_yaw,scalar_up,scalar_yaw,scalar_throttle," +
-                            "error_rounding_up, error_scaling_up,pid_min_up,controlAuthority,loopTime) " + valueStr;
+                            "error_rounding_up, error_scaling_up,pid_min_up,controlAuthority,loopTime," +
+                            "currentManeuver,state_description,state_target,state_action) " + valueStr;
                 return sqlTools.sqlRequestPromise(sqlStr);
             })
             .then(function(){

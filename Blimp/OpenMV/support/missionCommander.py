@@ -25,12 +25,12 @@ class SystemState:
 
 
 startup = SystemState("startup","none","none")
-hover = SystemState("hover","nothing","nothing")
-hoverYaw = SystemState("hoverYaw","nothing","nothing")
-yaw = SystemState("yaw","nothing","nothing")
+hover = SystemState("hover","none","none")
+hoverYaw = SystemState("hoverYaw","none","none")
+yaw = SystemState("yaw","none","none")
 
-autonomous = SystemState("autonomous","nothing","nothing")
-manualTesting = SystemState("manualTesting","nothing","nothing") # direct control of motors
+autonomous = SystemState("autonomous","none","none")
+manualTesting = SystemState("manualTesting","none","none") # direct control of motors
 rcControl = SystemState("rcRemote","none","none") # direct control of motors
 
 

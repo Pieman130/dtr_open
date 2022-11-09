@@ -27,8 +27,16 @@ def parseSensorData():  # https://github.com/mavlink/c_library_v1/blob/master/ch
     imageProcessing.find_yellow_goal(dataClasses.rawData.img)
    # imageProcessing.find_orange_goal(dataClasses.rawData.img)
 
-    #imageProcessing.colorDetectedByCamera(
-     #   dataClasses.rawData.img)
+    logger.log.verbose("yaw rate: " + str(dataClasses.rawData.imu_yaw_rate))
+    logger.log.verbose("imu_yaw: " + str(dataClasses.rawData.imu_yaw))
+    logger.log.verbose("motor_yaw: " + str(dataClasses.rawData.motor_yaw))
+    
+    logger.log.verbose("yaw rate limited: " + str(dataClasses.data.imu_yaw_rate_limited))
+    logger.log.verbose("imu_yaw limited: " + str(dataClasses.data.imu_yaw_limited))        
+    
+
+    logger.log.debugOnly("imu pitch: " + str(dataClasses.rawData.imu_pitch) )
+    logger.log.debugOnly("imu imu_roll: " + str(dataClasses.rawData.imu_roll) )
 
     logger.log.verbose('yellow x error' + str(dataClasses.data.goal_yellow_xerror) )
     logger.log.verbose('yellow y error' + str(dataClasses.data.goal_yellow_yerror) )
@@ -47,9 +55,6 @@ def parseSensorData():  # https://github.com/mavlink/c_library_v1/blob/master/ch
     logger.log.verbose("orange goal is found: " + str(dataClasses.data.orangeGoalIsFound))
     logger.log.verbose("yellow goal is found: " + str(dataClasses.data.yellowGoalIsFound))
 
-  #  dataClasses.data.aprilTagFound = imageProcessing.lookForAprilTag(
-   #     dataClasses.rawData.img)
-  #  dataClasses.data.isAprilTagDetected = dataClasses.data.aprilTagFound.foundIt
 
     parseLidarData()
 
@@ -149,13 +154,13 @@ def parseRCSwitchPositions():
 
         # If the current value is within +- currentDelta of a mode, set the mode variable to that mode.
         if flightModes.Auto[0] + currentDelta >= currentValue and flightModes.Auto[0] - currentDelta <= currentValue:
-            dataClasses.data.sw_flight_mode = flightModes.Auto[1]
+            dataClasses.config.controlAuthority = flightModes.Auto[1]
         elif flightModes.Assisted[0] + currentDelta >= currentValue and flightModes.Assisted[0] - currentDelta <= currentValue:
-            dataClasses.data.sw_flight_mode = flightModes.Assisted[1]
+            dataClasses.config.controlAuthority = flightModes.Assisted[1]
         elif flightModes.Manual[0] + currentDelta >= currentValue and flightModes.Manual[0] - currentDelta <= currentValue:
-            dataClasses.data.sw_flight_mode = flightModes.Manual[1]
+            dataClasses.config.controlAuthority = flightModes.Manual[1]
         else:
-            dataClasses.data.sw_flight_mode = "None"
+            dataClasses.config.controlAuthority = "None"
 
 
     currentValue = dataClasses.rawData.rc_sw_door
@@ -177,7 +182,7 @@ def parseRCSwitchPositions():
 
     logger.log.verbose("Processed data states:")
     logger.log.verbose("DR_CTRL:\t " + str(dataClasses.data.sw_door_control))
-    logger.log.verbose("FLT_MDE:\t " + str(dataClasses.data.sw_flight_mode))
+    logger.log.verbose("FLT_MDE:\t " + str(dataClasses.config.controlAuthority))
 
 
 # def distanceToBall():

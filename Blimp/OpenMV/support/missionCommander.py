@@ -73,54 +73,52 @@ class MissionCommander:
 
         
         #logger.log.verbose('sw flight mode: ' + str(dataClasses.rawData.rc_sw_flt_mode))
-        #logger.log.verbose('sw flight mode: ' + str(dataClasses.data.sw_flight_mode ))
+        #logger.log.verbose('sw flight mode: ' + str(dataClasses.config.controlAuthority ))
         #logger.log.verbose('sw door control: ' + str(dataClasses.data.sw_door_control))
 
         logger.log.verbose("FLIGHT MODE:")
-        logger.log.verbose(dataClasses.data.sw_flight_mode)
+        logger.log.verbose(dataClasses.config.controlAuthority)
 
-        logger.log.debugOnly('flight mode: ' + dataClasses.data.sw_flight_mode)
+        logger.log.debugOnly('flight mode: ' + dataClasses.config.controlAuthority)
 
-       # dataClasses.data.sw_flight_mode = CONTROL_AUTHORITY_RC_REMOTE_CONTROL
-        controlAuthority = ''        
+       # dataClasses.config.controlAuthority = CONTROL_AUTHORITY_RC_REMOTE_CONTROL
+             
         
-        if(dataClasses.data.sw_flight_mode == CONTROL_AUTHORITY_AUTO):
+        if(dataClasses.config.controlAuthority == dataClasses.constants.CONTROL_AUTHORITY_AUTO):
               self.updateState = self.updateStateAuto
-              controlAuthority = 'auto'
+              
         else:
             self.updateState = self.updateStateManualRemote
-            controlAuthority = 'rc remote control'
+            
 
         
-        # if( (dataClasses.data.sw_flight_mode == CONTROL_AUTHORITY_RC_REMOTE_CONTROL) or
+        # if( (dataClasses.config.controlAuthority == CONTROL_AUTHORITY_RC_REMOTE_CONTROL) or
         #      (dataClasses.gndStationCmd.controlAuthority == CONTROL_AUTHORITY_RC_REMOTE_CONTROL) ):
-        #     self.updateState = self.updateStateManualRemote
-        #     controlAuthority = 'rc remote control'
+        #     self.updateState = self.updateStateManualRemote        
 
-        # elif(dataClasses.data.sw_flight_mode == CONTROL_AUTHORITY_AUTO or
+        # elif(dataClasses.config.controlAuthority == CONTROL_AUTHORITY_AUTO or
         #     dataClasses.gndStationCmd.controlAuthority == WEB_ASSISTED_STATE_AUTO):
-        #      self.updateState = self.updateStateAuto
-        #      controlAuthority = 'auto'
+        #      self.updateState = self.updateStateAuto        
 
-        # elif(dataClasses.data.sw_flight_mode == CONTROL_AUTHORITY_AUTO_ASSISTED):            
+        # elif(dataClasses.config.controlAuthority == CONTROL_AUTHORITY_AUTO_ASSISTED):            
         #     if (dataClasses.gndStationCmd.controlAuthority == WEB_ASSISTED_STATE_TEST):
         #         logger.log.verbose("CONTROL AUTHORITY: Auto assisted")             
         #         self.updateState = self.updateStateAutoAssisted
-        #         controlAuthority = 'web auto-assisted'
+        #         webAuthority = 'web auto-assisted'
 
         #     elif (dataClasses.gndStationCmd.controlAuthority == WEB_ASSISTED_STATE_MANUAL):
         #         logger.log.verbose("CONTROL AUTHORITY: Manual Web")
         #         self.updateState = self.updateStateManualWeb
-        #         controlAuthority = 'web manual'
+        #         webAuthority = 'web manual'
 
         #     else:
         #         logger.log.verbose("CONTROL AUTHORITY: Manual Web")
         #         self.updateState = self.updateStateManualWeb
-        #         controlAuthority = 'web manual'
+        #         webAuthority = 'web manual'
 
 
-        logger.log.verbose('CONTROL AUTHORITY: ' + controlAuthority)
-        dataClasses.config.controlAuthority = controlAuthority
+        logger.log.verbose('CONTROL AUTHORITY: ' + dataClasses.config.controlAuthority)
+        
    
 
     def updateStateAutoAssisted(self):                              

@@ -382,17 +382,17 @@ class MavLink():
         return sensors #Any sensor that is not updated will return 'None'
 
 
-if __name__ == "__main__":
-     import pyb
-    class hardware():
-        def __init__(self):
-            UART_BAUDRATE = 115200
-            UART_TIMEOUT = 50
-            self.uart = pyb.UART(3)
-            self.uart.init(UART_BAUDRATE, timeout=UART_TIMEOUT, bits=8, parity=None, stop=1, flow=0, read_buf_len=64)
-        def systemFail(self):
-            pass
-    hw = hardware()
-    mvlink = MavLink(hw)
-    result = mvlink.getSensors()
-    logger.log.verbose(result)
+# if __name__ == "__main__":
+#     import pyb
+#     class hardware():
+#         def __init__(self):
+#             UART_BAUDRATE = 115200
+#             UART_TIMEOUT = 50
+#             self.uart = pyb.UART(3)
+#             self.uart.init(UART_BAUDRATE, timeout=UART_TIMEOUT, bits=8, parity=None, stop=1, flow=0, read_buf_len=64)
+#         def systemFail(self):
+#             pass
+#     hw = hardware()
+#     mvlink = MavLink(hw)
+#     result = mvlink.getSensors()
+#     logger.log.verbose(result)

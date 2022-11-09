@@ -60,7 +60,6 @@ def run():
     import groundStation
 
 
-
     loopPause = 0
 
     hw = hardware.Hardware()
@@ -92,28 +91,22 @@ def run():
         processing.parseSensorData()
             
         missionCmder.determineControlAuthority()
+        
 
-        missionCmder.updateState()
+        dataClasses.config.controlAuthority = dataClasses.constants.CONTROL_AUTHORITY_AUTO
+        if(dataClasses.config.controlAuthority != dataClasses.constants.CONTROL_AUTHORITY_RC_REMOTE_CONTROL):
+            missionCmder.updateState()
 
-        fltDirector.getNextStep()
+            fltDirector.getNextStep()
 
-        fltDirector.executeNextStep()
+            fltDirector.executeNextStep()
 
-        fltDirector.executeDoorPosition()        
+
+        fltDirector.executeDoorPosition() # this needs to always run even in manual mode!
+
 
         gndStation.sendStatusMessage(missionCmder,fltDirector)
         # logger.log.getLogsForServerAndClear()    #IF COMMENT OUT ABOVE, uncomment this so log buffer will clear!
-
-        logger.log.verbose("yaw rate: " + str(dataClasses.rawData.imu_yaw_rate))
-        logger.log.verbose("imu_yaw: " + str(dataClasses.rawData.imu_yaw))
-        logger.log.verbose("motor_yaw: " + str(dataClasses.rawData.motor_yaw))
-      
-        logger.log.verbose("yaw rate limited: " + str(dataClasses.data.imu_yaw_rate_limited))
-        logger.log.verbose("imu_yaw limited: " + str(dataClasses.data.imu_yaw_limited))        
-      
-    
-        logger.log.debugOnly("imu pitch: " + str(dataClasses.rawData.imu_pitch) )
-        logger.log.debugOnly("imu imu_roll: " + str(dataClasses.rawData.imu_roll) )
         
 
         if(dataClasses.gndStationCmd.doFtpLoadAndReset):

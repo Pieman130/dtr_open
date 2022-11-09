@@ -48,8 +48,6 @@ def run():
 
     import processing
 
-    dataClasses.rawData.lidar = 1200 #HACK
-
 
     logger.log.info('is micropython: ' + str(isMicroPython))
 
@@ -58,7 +56,6 @@ def run():
     import missionCommander
     import flightDirector
     import groundStation
-
 
 
     loopPause = 0
@@ -79,9 +76,7 @@ def run():
     LOOP_TIME_FIXED = 0.2
     
     keepRunning = 1
-    print(1/0)
-    while(0):
-    #while(keepRunning):                    
+    while(keepRunning):                    
 
         start = time.time_ns()
         
@@ -94,35 +89,35 @@ def run():
         processing.parseSensorData()
             
         missionCmder.determineControlAuthority()
+        
+        logger.log.debugOnly("control authority: " + dataClasses.config.controlAuthority)
+        if(dataClasses.config.controlAuthority != dataClasses.constants.CONTROL_AUTHORITY_RC_REMOTE_CONTROL):
+            missionCmder.updateState()
 
-        missionCmder.updateState()
+            fltDirector.getNextStep()
 
-        fltDirector.getNextStep()
+            fltDirector.executeNextStep()
 
-        fltDirector.executeNextStep()
+
+        fltDirector.executeDoorPosition() # this needs to always run even in manual mode!
+
 
         gndStation.sendStatusMessage(missionCmder,fltDirector)
         # logger.log.getLogsForServerAndClear()    #IF COMMENT OUT ABOVE, uncomment this so log buffer will clear!
+        
 
-        logger.log.verbose("yaw rate: " + str(dataClasses.rawData.imu_yaw_rate))
-        logger.log.verbose("imu_yaw: " + str(dataClasses.rawData.imu_yaw))
-        logger.log.verbose("motor_yaw: " + str(dataClasses.rawData.motor_yaw))
-      
-        logger.log.verbose("yaw rate limited: " + str(dataClasses.data.imu_yaw_rate_limited))
-        logger.log.verbose("imu_yaw limited: " + str(dataClasses.data.imu_yaw_limited))        
-      
-    
         if(dataClasses.gndStationCmd.doFtpLoadAndReset):
             keepRunning = 0            
 
         # make loop time fixed
-        loopTime = (time.time_ns() - start)/1e9
+        loopTime = (time.time_ns() - start)/1e9        
         loopPause = LOOP_TIME_FIXED - loopTime
         if(loopPause >0):
             time.sleep(loopPause)
             logger.log.verbose('loop pause added: ' + str(loopPause))        
 
         loopTime = (time.time_ns() - start)/1e9
+        dataClasses.rawData.lastLoopTime = loopTime
         logger.log.info('Loop time: ' + str(loopTime))
 
         

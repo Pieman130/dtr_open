@@ -12,6 +12,7 @@ RCCH = 35
 ATTITUDE = 30
 SERVO = 36
 LIDAR = 132
+PRESSURE = 29
 
 SUPPRESS_MSG = -1
 
@@ -317,6 +318,22 @@ class MavLink():
             return None
 
 
+    def __parse_pressure_msg(self,msg):
+        '''https://github.com/mavlink/c_library_v1/blob/master/common/mavlink_msg_scaled_pressure.h
+        https://mavlink.io/en/messages/common.html#SCALED_PRESSURE
+        Byte order:
+         _mav_put_uint32_t(buf, 0, time_boot_ms);
+         _mav_put_float(buf, 4, press_abs);
+         _mav_put_float(buf, 8, press_diff);
+         _mav_put_int16_t(buf, 12, temperature);
+         '''
+        try:
+            pres_tup = struct.unpack('<2fh',msg[4:14]) #(roll,pitch,yaw,rollspeed,pitchspeed,yawspeed)
+            return {'press_abs': pres_tup[0],'press_diff':pres_tup[1],'temp':pres_tup[2]}
+        except ValueError:
+            return None
+
+
     def getSensors(self):
         '''Returns dict where key = Sensor_type, value = most recent value received via mavlink'''
         start = time.time_ns()
@@ -332,7 +349,7 @@ class MavLink():
             logger.log.warning(">>>>>>>>>>>>>>>>>>") 
             self.hw.systemFail()
 
-        sensors = {'Attitude': None, 'RCCH': None, 'Servo': None, 'Lidar': None}
+        sensors = {'Attitude': None, 'RCCH': None, 'Servo': None, 'Lidar': None, 'Pressure': None}
         
         if msg_list != None:
             for msg in msg_list:
@@ -352,19 +369,30 @@ class MavLink():
                         sensors['Servo'] = result
                         logger.log.info("mavlink 3 - new servo data!")
                 elif msg[0] == LIDAR:
-                    result = self.__parse_lidar_msg(msg[1])  
-                   # logger.log.verbose('^^^^^^^^LIDAR^^^^^^^^^^^^^^^^')  
-                    #logger.log.verbose(result)
-                    #logger.log.debugOnly('lidar value = ' + str(result))                    
-                   # logger.log.verbose('^^^^^^^^^^^^^^^^^^^^^^^^')               
+                    result = self.__parse_lidar_msg(msg[1])               
                     if result != None:                                               
                         sensors['Lidar'] = result
                         logger.log.info("mavlink 4 - new lidar data!")
+                elif msg[0] == PRESSURE:
+                    result = self.__parse_pressure_msg(msg[1])               
+                    if result != None:                                               
+                        sensors['Pressure'] = result
+                        logger.log.info("mavlink 5 - new lidar data!")
 
         return sensors #Any sensor that is not updated will return 'None'
 
 
-if __name__ == "__main__":
-    mvlink = MavLink(hw)
-    result = mvlink.getSensors()
-    logger.log.verbose(result)
+# if __name__ == "__main__":
+#     import pyb
+#     class hardware():
+#         def __init__(self):
+#             UART_BAUDRATE = 115200
+#             UART_TIMEOUT = 50
+#             self.uart = pyb.UART(3)
+#             self.uart.init(UART_BAUDRATE, timeout=UART_TIMEOUT, bits=8, parity=None, stop=1, flow=0, read_buf_len=64)
+#         def systemFail(self):
+#             pass
+#     hw = hardware()
+#     mvlink = MavLink(hw)
+#     result = mvlink.getSensors()
+#     logger.log.verbose(result)

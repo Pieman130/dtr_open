@@ -73,6 +73,26 @@ class GroundStation:
         data = self.addToJsonStatusMsg(data,'error_scaling_up',dataClasses.gndStationCmd.error_scaling_up)
         data = self.addToJsonStatusMsg(data,'pid_min_up',dataClasses.gndStationCmd.pid_min_up)
 
+        data = self.addToJsonStatusMsg(data,'pid_min_up',dataClasses.gndStationCmd.pid_min_up)
+
+
+        data = self.addToJsonStatusMsg(data,'loopTime',dataClasses.rawData.lastLoopTime)        
+
+
+        data = self.addToJsonStatusMsg(data,'orangeGoalIsFound',dataClasses.data.orangeGoalIsFound)   
+        data = self.addToJsonStatusMsg(data,'yellowGoalIsFound',dataClasses.data.yellowGoalIsFound)   
+        data = self.addToJsonStatusMsg(data,'ballIsFound',dataClasses.data.ballIsFound)   
+        
+
+        data = self.addToJsonStatusMsg(data,'imu_yaw',dataClasses.rawData.imu_yaw)
+        data = self.addToJsonStatusMsg(data,'imu_yaw_rate',dataClasses.rawData.imu_yaw_rate)
+
+        data = self.addToJsonStatusMsg(data,'imu_yaw_limited',dataClasses.data.imu_yaw_limited)
+        data = self.addToJsonStatusMsg(data,'imu_yaw_rate_limited',dataClasses.data.imu_yaw_rate_limited)
+        
+        
+        
+        
 
 
 

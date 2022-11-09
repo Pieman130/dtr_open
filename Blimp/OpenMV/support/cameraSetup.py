@@ -1,3 +1,5 @@
+import logger
+
 class OpenMVcamera:
     def __init__(self,camera):
         self.camera = camera
@@ -16,5 +18,10 @@ class OpenMVcamera:
         self.camera.set_auto_whitebal(False)  # must turn this off to prevent image washout...   
         
     def snapshot(self):
-        img = self.camera.snapshot()
-        return img
+        try:
+            img = self.camera.snapshot()
+            return img
+        except RuntimeError:
+            logger.log.error("Camera Failed to Capture Image!")
+            return None
+

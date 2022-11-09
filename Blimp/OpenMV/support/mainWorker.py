@@ -76,9 +76,7 @@ def run():
     LOOP_TIME_FIXED = 0.2
     
     keepRunning = 1
-    print(1/0)
-    while(0):
-    #while(keepRunning):                    
+    while(keepRunning):                    
 
         start = time.time_ns()
         

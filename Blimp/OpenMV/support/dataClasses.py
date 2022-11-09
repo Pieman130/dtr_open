@@ -26,12 +26,12 @@ class RawData:
 
 class ProcessedData:
     def __init__(self):
-        self.irData = 0 
+        self.irData = 0
         self.colorDetected = ''
         self.goalColorChoice = None
         self.goalColorDetected = None
         self.isBallDetected = None
-              
+
         self.goalskew = None
         self.distanceToBall = None
         self.aprilTagFound = None
@@ -48,18 +48,18 @@ class ProcessedData:
 
         self.dist_yellow_goal = 0 # (float)
         self.dist_orange_goal = 0 # (float)
-        
+
         self.orangeGoalIsFound = None
         self.yellowGoalIsFound = None
 
         self.ball_xerror = None
-        self.ball_yerror = None  
+        self.ball_yerror = None
         self.ballIsFound = None
 
         self.imu_yaw_limited = None
         self.imu_yaw_rate_limited = None
         self.haveFoundBallPreviously = False
-        
+
 
 class GroundStationCommand:
     def __init__(self):
@@ -95,9 +95,8 @@ class GroundStationCommand:
         self.assisted_manualHeight = 100000
         self.resetOpenMVforFTPtsfr = 0
         self.doFtpLoadAndReset = 0
-        self.assisted_yawRate = 0        
+        self.assisted_yawRate = 0
         self.requestedState = None
-
     def print(self):
         print("manuever desc: " + self.maneuverDescription)
         print("base up: " + str(self.baseUpVal))

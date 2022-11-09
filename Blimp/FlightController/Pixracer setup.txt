@@ -11,7 +11,7 @@ Load from File (on right) and select ArudPlaneConfiguredParams.param file
 
 ESC Flashing
 Use the standard arduplane configured parameters
-Disconnect mission planner, arm safety button
+Disconnect mission planner, safety button should be disarmed (blinking rapidly)
 Ensure ESCs have power
 go to https://esc-configurator.com/ and connect to com port
 If connection successful, there should be 4 motors listed under Motor Control (regardless of how many actually connected.)

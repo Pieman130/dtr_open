@@ -79,6 +79,13 @@ class GroundStation:
         data = self.addToJsonStatusMsg(data,'loopTime',dataClasses.rawData.lastLoopTime)        
 
 
+        data = self.addToJsonStatusMsg(data,'orangeGoalIsFound',dataClasses.data.orangeGoalIsFound)   
+        data = self.addToJsonStatusMsg(data,'yellowGoalIsFound',dataClasses.data.yellowGoalIsFound)   
+        data = self.addToJsonStatusMsg(data,'ballIsFound',dataClasses.data.ballIsFound)   
+
+        
+
+
 
 
 

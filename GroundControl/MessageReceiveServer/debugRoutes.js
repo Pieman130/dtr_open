@@ -49,11 +49,22 @@ router.route('/status/')
             var yawMotor = req.body.yawMotor;
             var servoDoor = req.body.servoDoor;
             var controlAuthority = req.body.controlAuthority;
-            var loopTime = req.body.loopTime
+            var loopTime = req.body.loopTime;
+
+            var ballIsFound = convertNoneToZero(req.body.ballIsFound);
+            var yellowGoalIsFound = convertNoneToZero(req.body.yellowGoalIsFound);
+            var orangeGoalIsFound = convertNoneToZero(req.body.orangeGoalIsFound);
         
             yawMotor = convertNanToNull(yawMotor)
             upMotor = convertNanToNull(upMotor)
             throttleMotor = convertNanToNull(throttleMotor)    
+
+            function convertNoneToZero(val){
+                if(val === 'None'){
+                    val = 0;
+                }
+                return val;
+            }
         
             function convertNanToNull(val){
         
@@ -110,7 +121,11 @@ router.route('/status/')
                         " , throttleMotor = " + throttleMotor + 
                         " , yawMotor = " + yawMotor + 
                         " , servoDoor = " + servoDoor + 
-                        " , controlAuthority = '" + controlAuthority + "'" 
+                        " , controlAuthority = '" + controlAuthority + "'" +
+                        " , ballIsFound = " + ballIsFound +
+                        " , yellowGoalIsFound = " + yellowGoalIsFound +
+                        " , orangeGoalIsFound = " + orangeGoalIsFound                                                      
+
             sqlTools.sqlRequestPromise(sqlStr)
             .then(function(){
                 var valueStr = sqlTools.makeValuesStr(logLines,lastHeartbeat)
@@ -120,12 +135,12 @@ router.route('/status/')
             .then(function(){
                 var valueStr = sqlTools.makeValuesStr(lastHeartbeat,lidarDistance,irSensorDetection,upMotor,throttleMotor,yawMotor,servoDoor,isMicroPython,
                     p_up,i_up,d_up,p_throttle,i_throttle,d_throttle,p_yaw,i_yaw,d_yaw,scalar_up,scalar_yaw,scalar_throttle,error_rounding_up, error_scaling_up,pid_min_up,controlAuthority,loopTime,
-                currentManeuver,state_description,state_target,state_action)                    
+                currentManeuver,state_description,state_target,state_action, ballIsFound,yellowGoalIsFound,orangeGoalIsFound)                    
 
                 sqlStr = " INSERT INTO dataLogs(logTime,lidarDistance,irSensor,upMotor,throttleMotor,yawMotor,servoDoor,isMicroPython," +
                             "p_up,i_up,d_up,p_throttle,i_throttle,d_throttle,p_yaw,i_yaw,d_yaw,scalar_up,scalar_yaw,scalar_throttle," +
                             "error_rounding_up, error_scaling_up,pid_min_up,controlAuthority,loopTime," +
-                            "currentManeuver,state_description,state_target,state_action) " + valueStr;
+                            "currentManeuver,state_description,state_target,state_action, ballIsFound,yellowGoalIsFound,orangeGoalIsFound) " + valueStr;
                 return sqlTools.sqlRequestPromise(sqlStr);
             })
             .then(function(){

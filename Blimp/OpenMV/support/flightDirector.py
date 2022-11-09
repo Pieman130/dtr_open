@@ -132,6 +132,10 @@ class FlightDirector:
             #     self.currentManeuver.d_yaw = dataClasses.gndStationCmd.d_yaw
     def getNextAutonomousStep(self):                        
 
+        #self.autonomousHoverYaw()
+
+        self.autonomousOneGoalSeek()
+
         # if(dataClasses.data.irData):
         #     heightSetPoint = HEIGHT_HIGHER            
         #     hoverStr = "(higher)"
@@ -158,9 +162,7 @@ class FlightDirector:
         #         yawRate = YAW_RATE_SEEK
         #         seeTarget = "no" 
 
-        yawRate = 0
-        self.currentManeuver.execute_yaw_control(yawRate) 
-        self.currentManeuver.execute_assisted_altitude(HEIGHT_LOWER)
+        
 
 
         # UPDATING PRINTING / UI        
@@ -173,10 +175,37 @@ class FlightDirector:
         
         # self.currentState.action = "hover " + hoverStr + ". " + actionStr
 
-        # logger.log.info("INFO - Ball: " + ballCatchStr + ". Target: " + targetStr + ".  See target: " + seeTarget + ". ACTION - hover height: " + str(heightSetPoint) + " " + hoverStr + " , yaw rate: " + str(yawRate))
-                
         
+    def autonomousOneGoalSeek(self):
+        heightSetPoint = HEIGHT_HIGHER            
+        hoverStr = "(higher)"
+            
+        targetStr = "yellow goal"
+        ballCatchStr = 'caught'            
+            
+        if(dataClasses.data.yellowGoalIsFound):
+            seeTarget = "yes"
+            yawRate = 0                
+        else:
+            seeTarget = "no"
+            yawRate = YAW_RATE_SEEK   
+        
+        if(seeTarget == "yes"):
+            actionStr = "maintain yaw 0 to view target."  
+        else:
+            actionStr = "yaw to target"
 
+        self.currentState.action = "hover " + hoverStr + ". " + actionStr
+
+        logger.log.info("INFO - Ball: " + ballCatchStr + ". Target: " + targetStr + ".  See target: " + seeTarget + ". ACTION - hover height: " + str(heightSetPoint) + " " + hoverStr + " , yaw rate: " + str(yawRate))            
+        
+        self.currentManeuver.execute_yaw_control(yawRate) 
+        self.currentManeuver.execute_assisted_altitude(heightSetPoint)
+        
+    def autonomousHoverYaw(self):
+        yawRate = 0
+        self.currentManeuver.execute_yaw_control(yawRate) 
+        self.currentManeuver.execute_assisted_altitude(HEIGHT_LOWER)
 
     def executeNextStep(self): # to be defined by determine next step
         self.currentManeuver.execute() 

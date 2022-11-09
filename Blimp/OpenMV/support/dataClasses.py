@@ -44,11 +44,25 @@ class ProcessedData:
         self.goal_yellow_xerror = None
         self.goal_yellow_yerror = None
         self.goal_orange_xerror = None
+<<<<<<< Updated upstream
         self.goal_orange_goal_yerror = None
+        
+<<<<<<< HEAD
+=======
+        self.goal_orange_yerror = None
+
+        self.dist_yellow_goal = 0 # (float)
+        self.dist_orange_goal = 0 # (float)
         
         self.orangeGoalIsFound = None
         self.yellowGoalIsFound = None
 
+>>>>>>> Stashed changes
+=======
+        self.orangeGoalIsFound = None
+        self.yellowGoalIsFound = None
+
+>>>>>>> 878a215c1d0bfcd3c1fb16062f91914d6de47081
         self.ball_xerror = None
         self.ball_yerror = None  
         self.ballIsFound = None

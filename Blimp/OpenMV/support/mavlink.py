@@ -1,7 +1,7 @@
 import struct, time
 import logger
 
-UART_READ_SIZE = 128 #64, 128, 256
+UART_READ_SIZE = 256 #64, 128, 256
 
 THROTTLE_SERVO = 1  
 YAW_SERVO = 2
@@ -13,6 +13,8 @@ ATTITUDE = 30
 SERVO = 36
 LIDAR = 132
 PRESSURE = 29
+QUATERNION = 31
+RAWIMU = 27
 
 SUPPRESS_MSG = -1
 
@@ -38,6 +40,9 @@ class MavLink():
         self.send_set_msg_interval_cmd(ATTITUDE,MSG_RATE) #Attitude
         self.send_set_msg_interval_cmd(SERVO,MSG_RATE) #Servo Channels
         self.send_set_msg_interval_cmd(LIDAR,MSG_RATE_LIDAR) #LIDAR
+        self.send_set_msg_interval_cmd(QUATERNION,MSG_RATE) 
+        self.send_set_msg_interval_cmd(PRESSURE,MSG_RATE) 
+        #self.send_set_msg_interval_cmd(RAWIMU,MSG_RATE) 
 
 
     def __get_ps(self):
@@ -213,16 +218,48 @@ class MavLink():
                 if result[r_pntr] == 254:
                     try: #Message found
                         msg_type = result[r_pntr+5] #Message Id
+                        full_msg = result[r_pntr+1:r_pntr+6+result[r_pntr+1]]
+                        crc = result[r_pntr+6+result[r_pntr+1]:r_pntr+6+result[r_pntr+1]+2]
                         payload = result[r_pntr+6:r_pntr+6+result[r_pntr+1]] #Msg payload in bytes
                         msg = (result[r_pntr+5],payload)
-                        msg_list.append(msg)
+                        if self.__decode_checksum(msg_type,full_msg,crc): #is checksum valid
+                            msg_list.append(msg)
                         r_pntr += 6+result[r_pntr+1]+2 #advance read pointer to next message
                     except IndexError:
-                        #Incomplete Message
-                        r_pntr += 1
+                        return msg_list
                 else:
                     r_pntr += 1
             return msg_list
+
+
+    def __decode_checksum(self,msg_id,msg,checksum):
+        '''check the checksum from incoming message'''
+        if msg_id == RCCH:
+            extra_crc = 244
+        elif msg_id == ATTITUDE:
+            extra_crc = 39
+        elif msg_id == SERVO:
+            extra_crc = 222
+        elif msg_id == LIDAR:
+            extra_crc = 85
+        elif msg_id == PRESSURE:
+            extra_crc = 115
+        elif msg_id == QUATERNION:
+            extra_crc = 246
+        else:
+            return True
+
+        computed_checksum = self.__checksum(msg,extra_crc)
+        try:
+            rcvd_checksum = struct.unpack("<H",checksum)[0]
+           # print("RCVD CHECKSUM: ", cs)
+            if computed_checksum == rcvd_checksum: #good CRC
+                return True
+            
+            else: #bad CRC
+                return False
+        except ValueError: #msg cutoff before crc was read
+            return False
 
 
     def __parse_lidar_msg(self,msg):
@@ -334,6 +371,27 @@ class MavLink():
             return None
 
 
+    def __parse_quarternion_msg(self,msg):
+        '''https://github.com/mavlink/c_library_v1/blob/master/common/mavlink_msg_scaled_pressure.h
+        https://mavlink.io/en/messages/common.html#ATTITUDE_QUATERNION
+        Byte order:
+         _mav_put_uint32_t(buf, 0, time_boot_ms);
+         _mav_put_float(buf, 4, q1);
+         _mav_put_float(buf, 8, q2);
+         _mav_put_float(buf, 12, q3);
+         _mav_put_float(buf, 16, q4);
+         _mav_put_float(buf, 20, rollspeed);
+         _mav_put_float(buf, 24, pitchspeed);
+         _mav_put_float(buf, 28, yawspeed);
+         '''
+        try:
+            att_tup = struct.unpack('<7f',msg[4:32]) #(q1,q2,q3,q4,rollspeed,pitchspeed,yawspeed)
+            return {'q1': att_tup[0],'q2':att_tup[1],'q3':att_tup[2], 'q4':att_tup[3],
+                    'roll_speed':att_tup[4],'pitch_speed':att_tup[5],'yaw_speed':att_tup[6]}
+        except ValueError:
+            return None
+
+
     def getSensors(self):
         '''Returns dict where key = Sensor_type, value = most recent value received via mavlink'''
         start = time.time_ns()
@@ -344,9 +402,9 @@ class MavLink():
 
 
         if(msg_list == None):
-            logger.log.warning(">>>>>>>>>>>>>>>>>>") 
-            logger.log.warning("MAVLINK LINK FAIL")
-            logger.log.warning(">>>>>>>>>>>>>>>>>>") 
+            #logger.log.warning(">>>>>>>>>>>>>>>>>>") 
+            #logger.log.warning("MAVLINK LINK FAIL")
+            #logger.log.warning(">>>>>>>>>>>>>>>>>>") 
             self.hw.systemFail()
 
         sensors = {'Attitude': None, 'RCCH': None, 'Servo': None, 'Lidar': None, 'Pressure': None}
@@ -357,32 +415,37 @@ class MavLink():
                     result = self.__parse_attitude_msg(msg[1])
                     if result != None:
                         sensors['Attitude'] = result
-                        logger.log.info("mavlink 1 - new attitude data!")
+                        #logger.log.info("mavlink 1 - new attitude data!")
                 elif msg[0] == RCCH:
                     result = self.__parse_rc_ch_msg(msg[1])
                     if result != None:
                         sensors['RCCH'] = result
-                        logger.log.info("mavlink 2 - new rcch data!")
+                        #logger.log.info("mavlink 2 - new rcch data!")
                 elif msg[0] == SERVO:
                     result = self.__parse_servo_output_msg(msg[1])
                     if result != None:
                         sensors['Servo'] = result
-                        logger.log.info("mavlink 3 - new servo data!")
+                        #logger.log.info("mavlink 3 - new servo data!")
                 elif msg[0] == LIDAR:
                     result = self.__parse_lidar_msg(msg[1])               
                     if result != None:                                               
                         sensors['Lidar'] = result
-                        logger.log.info("mavlink 4 - new lidar data!")
+                        #logger.log.info("mavlink 4 - new lidar data!")
                 elif msg[0] == PRESSURE:
                     result = self.__parse_pressure_msg(msg[1])               
                     if result != None:                                               
                         sensors['Pressure'] = result
-                        logger.log.info("mavlink 5 - new lidar data!")
+                        #logger.log.info("mavlink 5 - new lidar data!")
+                elif msg[0] == QUATERNION:
+                    result = self.__parse_quarternion_msg(msg[1])               
+                    if result != None:                                               
+                        sensors['Quarternion'] = result
+                        #logger.log.info("mavlink 6 - new lidar data!")
 
         return sensors #Any sensor that is not updated will return 'None'
 
 
-# if __name__ == "__main__":
+#if __name__ == "__main__":
 #     import pyb
 #     class hardware():
 #         def __init__(self):
@@ -394,5 +457,12 @@ class MavLink():
 #             pass
 #     hw = hardware()
 #     mvlink = MavLink(hw)
-#     result = mvlink.getSensors()
-#     logger.log.verbose(result)
+#     mn = 1
+#     while True:
+#        result = mvlink.getSensors()
+#        #print(result)
+#        mn += 1
+#        time.sleep(0.5)
+#        print(result)
+#     #logger.log.verbose(result)
+

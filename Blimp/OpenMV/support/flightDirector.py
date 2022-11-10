@@ -133,7 +133,7 @@ class FlightDirector:
             
     def getNextAutonomousStep(self):                        
 
-        self.autonomousHoverYaw()
+        self.autonomousOneGoalSeek()
 
         #self.autonomousOneGoalSeek()
 

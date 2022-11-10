@@ -35,7 +35,7 @@ def updateStatus(host,path,filename):
 def postRuntimeError(host,path,runTimeErrorJson):
     print("in post runtime eror function")
     fullAddress = 'http://%s%s' %(host, path)    
-    print("about to post to: " + str(fullAddress))
+    print("about to post to: "  + str(fullAddress))
     data = '{"runTimeError":"' + str(runTimeErrorJson) + '"}'
     print("data: " + data)
     headers = {'Content-Type': 'application/json'}    
@@ -64,21 +64,3 @@ def exceptionToStr(e):
     ret = ret.replace('"','')
     ret = ret.replace('\n','')
     return ret
-
-    #errStr = "Error: {}".format(e)
-
-    
-    #return errStr
-
-    #martin changes:
-
-    
-
-
-
-    #errStr = sys.print_exception(e)
-    #print(errStr)
-    #print("after print")
-    #attr , mod, tr = sys.exc_info()      
-    #errStr = mod.args[0] + ", lineno: " + str(tr.tb_lineno)
-    #return errStr

@@ -9,9 +9,14 @@ class OpenMVcamera:
 
         self.camera.set_framesize(self.camera.QVGA)
         #self.camera.set_framesize(self.camera.QQVGA) #needed for april tag detections
-        self.camera.skip_frames(20)
-        self.camera.set_auto_gain(False) # must be turned off for color tracking
-        self.camera.set_auto_whitebal(True)
+
+    # self.camera.skip_frames(2000)
+
+    # needed for april tag finder
+        self.camera.set_auto_gain(False)  # must turn this off to prevent image washout...
+
+        self.camera.set_auto_whitebal(False)  # must turn this off to prevent image washout...   
+        
     def snapshot(self):
         try:
             img = self.camera.snapshot()

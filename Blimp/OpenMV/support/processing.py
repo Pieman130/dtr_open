@@ -36,11 +36,11 @@ def parseSensorData():  # https://github.com/mavlink/c_library_v1/blob/master/ch
     logger.log.debugOnly("imu pitch: " + str(dataClasses.rawData.imu_pitch) )
     logger.log.debugOnly("imu imu_roll: " + str(dataClasses.rawData.imu_roll) )
 
-    logger.log.verbose('yellow x error' + str(dataClasses.data.goal_yellow_xerror) )
-    logger.log.verbose('yellow y error' + str(dataClasses.data.goal_yellow_yerror) )
+    logger.log.verbose('yellow x error' + str(dataClasses.data.goal_yellow_goal_xerror) )
+    logger.log.verbose('yellow y error' + str(dataClasses.data.goal_yellow_goal_yerror) )
 
-    logger.log.verbose('orange x error' + str(dataClasses.data.goal_orange_xerror) )
-    logger.log.verbose('orange x error' + str(dataClasses.data.goal_orange_yerror) )
+    logger.log.verbose('orange x error' + str(dataClasses.data.goal_orange_goal_xerror) )
+    logger.log.verbose('orange x error' + str(dataClasses.data.goal_orange_goal_yerror) )
 
     logger.log.verbose('ball x error: ' + str(dataClasses.data.ball_xerror) )
     logger.log.verbose('ball y error: '  + str(dataClasses.data.ball_yerror) ) 

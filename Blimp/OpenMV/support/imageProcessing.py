@@ -59,8 +59,8 @@ class ImageProcessing():
 
         #misc. variables
         self.alpha_rect = .85 # alpha value of the rectangle that bounds the ball
-        self.goal_alpha = .85 # alpha value of the rectangle that bounds the goal
-        self.ball_alpha = .85 # alpha value of the centroid of the ball
+        self.goal_alpha = .25 # alpha value of the rectangle that bounds the goal
+        self.ball_alpha = .75 # alpha value of the centroid of the ball
 
         self.orange_goal_xerror = 0 # Distance in pixels away from the goal horizontally from center (int)
         self.orange_goal_yerror = 0 # Distance in pixels away from the goal vertically from center (int)
@@ -146,6 +146,8 @@ class ImageProcessing():
                         self.yellow_SQerror = height/width
                         print(self.yellow_SQerror)
                 if biggest[0] != -1:
+                    img.draw_line(minormax)
+                    img.draw_line(majormax)
                     if self.yellow_goalx_ema == None:
                         self.yellow_goalx_ema = EMA(biggest[0], self.goal_alpha)
                         self.yellow_goaly_ema = EMA(biggest[1], self.goal_alpha)
@@ -211,4 +213,15 @@ class ImageProcessing():
         else:
             logger.log.warning("No Image Passed to ImageProcessing!")
 
-        logger.log.verbose("IMAGE PROCESSING_ orange goal is: " + str(dataClasses.data.orangeGoalIsFound))
+    def wall_detection(self,img):
+        if img != None:
+            hist = img.get_histogram()
+            stat = hist.get_statistics()
+            some_value = 85
+            if (stat.l_max() < some_value):
+                #if (stat.a_min() > some_value and stat.a_max() < some_value):
+                    #if (stat.b_min() > some_value and stat.b_max() < some_value):
+                print("Wall Detected! Ahhh, gtfo of here")
+            print("L min:" + str(stat.l_min()) + " L max:"  + str(stat.l_max()) + " A min:" + str(stat.a_min()) + " A max:" + str(stat.a_max()) + " B min:" + str(stat.b_min()) + " B max:" + str(stat.b_max()))
+        else:
+            print("no image")

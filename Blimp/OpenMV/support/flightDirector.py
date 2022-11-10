@@ -130,11 +130,12 @@ class FlightDirector:
             #     self.currentManeuver.p_yaw = dataClasses.gndStationCmd.p_yaw
             #     self.currentManeuver.i_yaw = dataClasses.gndStationCmd.i_yaw
             #     self.currentManeuver.d_yaw = dataClasses.gndStationCmd.d_yaw
+            
     def getNextAutonomousStep(self):                        
 
-        #self.autonomousHoverYaw()
+        self.autonomousHoverYaw()
 
-        self.autonomousOneGoalSeek()
+        #self.autonomousOneGoalSeek()
 
         # if(dataClasses.data.irData):
         #     heightSetPoint = HEIGHT_HIGHER            
@@ -203,7 +204,7 @@ class FlightDirector:
         self.currentManeuver.execute_assisted_altitude(heightSetPoint)
         
     def autonomousHoverYaw(self):
-        yawRate = 0
+        yawRate = YAW_RATE_SEEK
         self.currentManeuver.execute_yaw_control(yawRate) 
         self.currentManeuver.execute_assisted_altitude(HEIGHT_LOWER)
 

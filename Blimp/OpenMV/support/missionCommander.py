@@ -85,8 +85,9 @@ class MissionCommander:
              
         
         if(dataClasses.config.controlAuthority == dataClasses.constants.CONTROL_AUTHORITY_AUTO):
-              self.updateState = self.updateStateAuto
-              
+            self.updateState = self.updateStateAuto
+        elif( dataClasses.config.controlAuthority == CONTROL_AUTHORITY_AUTO_ASSISTED):
+            self.updateState = self.updateStateAutoAssisted
         else:
             self.updateState = self.updateStateManualRemote
             

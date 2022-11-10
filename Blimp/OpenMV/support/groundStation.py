@@ -91,13 +91,9 @@ class GroundStation:
         data = self.addToJsonStatusMsg(data,'imu_yaw_rate_limited',dataClasses.data.imu_yaw_rate_limited)
         
         
-        
-        
-
-
-
-
-
+        data = self.addToJsonStatusMsg(data,'dist_yellow_goal', dataClasses.data.dist_yellow_goal)
+        data = self.addToJsonStatusMsg(data,'dist_orange_goal', dataClasses.data.dist_orange_goal)
+                
 
 
         logs = logger.log.getLogsForServerAndClear()

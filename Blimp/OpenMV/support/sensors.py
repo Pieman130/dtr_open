@@ -55,8 +55,10 @@ class Sensors:
         #print('PYB HARDWARE RESET DONE')
     
         #logger.log.verbose("collecting data")
-        
-        dataClasses.rawData.img = self.camera.snapshot()     
+        try:
+            dataClasses.rawData.img = self.camera.snapshot()     
+        except RuntimeError as e:
+            pass # keep going.
 
     
         #dataClasses.rawData.imu_pitch = sensors.imuSensor.getRoll()

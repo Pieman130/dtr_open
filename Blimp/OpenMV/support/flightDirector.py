@@ -4,8 +4,9 @@ import logger
 
 HEIGHT_LOWER = 1000
 HEIGHT_HIGHER = 550
-YAW_RATE_SEEK = 0.25
-YAW_RATE_TUNE = 0.1
+YAW_RATE_SEEK = -0.4
+YAW_RATE_TUNE = 0
+SAFE_DISTANCE_FROM_GOAL_NON_UNITS = 250
 class FlightDirector:    
     ''' 
         Goal of the flight director:
@@ -183,17 +184,31 @@ class FlightDirector:
         hoverStr = "(higher)"
             
         targetStr = "yellow goal"
-        ballCatchStr = 'caught'            
+        ballCatchStr = 'caught'         
+
+        self.currentManeuver.controls.throttle = 0   
             
         if(dataClasses.data.yellowGoalIsFound):
             seeTarget = "yes"                    
 
+            # DETERMINE MOTION TOWARDS GOAL
+
+            # THROTTLE
+            if(dataClasses.data.dist_yellow_goal > SAFE_DISTANCE_FROM_GOAL_NON_UNITS):
+                self.currentManeuver.controls.throttle = -0.4
+
+
+            # YAW
             if(dataClasses.data.goal_yellow_xerror is None):
                 yawRate = 0
             elif( dataClasses.data.goal_yellow_xerror < 0 ):
                 yawRate = YAW_RATE_TUNE * -1
             else:
                 yawRate = YAW_RATE_TUNE
+
+            
+
+          
 
         else:
             seeTarget = "no"
@@ -207,6 +222,7 @@ class FlightDirector:
         self.currentState.action = "hover " + hoverStr + ". " + actionStr
 
         logger.log.info("INFO - Ball: " + ballCatchStr + ". Target: " + targetStr + ".  See target: " + seeTarget + ". ACTION - hover height: " + str(heightSetPoint) + " " + hoverStr + " , yaw rate: " + str(yawRate))            
+        
         
         
 

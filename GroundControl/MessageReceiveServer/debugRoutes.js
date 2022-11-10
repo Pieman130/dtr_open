@@ -118,6 +118,11 @@ router.route('/status/')
             var error_scaling_up = req.body.error_scaling_up;
             var pid_min_up = req.body.pid_min_up;
         
+
+            var goal_yellow_goal_xerror = convertNoneToNull(req.body.goal_yellow_goal_xerror);
+            var goal_yellow_goal_yerror = convertNoneToNull(req.body.goal_yellow_goal_yerror);
+            var goal_orange_goal_xerror = convertNoneToNull(req.body.goal_orange_goal_xerror);
+            var goal_orange_goal_yerror = convertNoneToNull(req.body.goal_orange_goal_yerror);
         
             var isMicroPython = req.body.isMicroPython;
         
@@ -146,7 +151,13 @@ router.route('/status/')
                         " , yellowGoalIsFound = " + yellowGoalIsFound +
                         " , orangeGoalIsFound = " + orangeGoalIsFound +
                         " , dist_yellow_goal = " + dist_yellow_goal +
-                        " , dist_orange_goal = " + dist_orange_goal                                                   
+                        " , dist_orange_goal = " + dist_orange_goal +
+                        " , goal_yellow_goal_xerror = " + goal_yellow_goal_xerror +
+                        " , goal_yellow_goal_yerror = " + goal_yellow_goal_yerror +
+                        " , goal_orange_goal_xerror = " + goal_orange_goal_xerror +
+                        " , goal_orange_goal_yerror = " + goal_orange_goal_yerror                     
+                                
+
 
             sqlTools.sqlRequestPromise(sqlStr)
             .then(function(){

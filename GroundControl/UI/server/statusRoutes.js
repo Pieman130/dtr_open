@@ -17,7 +17,7 @@ router.route('/heartbeat/')
 
     var sqlStr = " SELECT ID, convert(varchar(50),blimpLastHeartbeat,13) as blimpLastHeartbeat, cameraDetectionStr, isIrSensorDetection " +
             ", currentManeuver, state_description,state_target,state_action,lidarDistance, upMotor,throttleMotor,yawMotor,servoDoor,controlAuthority " +
-            ", ballIsFound, yellowGoalIsFound, orangeGoalIsFound, dist_yellow_goal,dist_orange_goal " +
+            ", ballIsFound, yellowGoalIsFound, orangeGoalIsFound, dist_yellow_goal,dist_orange_goal,goal_yellow_goal_xerror,goal_yellow_goal_yerror,goal_orange_goal_xerror,goal_orange_goal_yerror " +      
             " FROM systemStatus ";
     sqlTools.sqlRequestPromise(sqlStr)
     .then(function(ret){

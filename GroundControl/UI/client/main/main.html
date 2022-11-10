@@ -75,13 +75,26 @@
     <div class="card" style="width: 30rem;"> 
         <h5 class="card-header">Sensor Information:</h5>
 
-        <h4>Camera detection string: {{m.status.cameraDetectionStr}}</h4>    
-        <h4>Ir Sensor Detection: {{m.status.isIrSensorDetection}}</h4>            
-        <h4>Lidar Distance (cm): {{m.status.lidarDistance}}</h4>        
+        <!--<h4>Camera detection string: {{m.status.cameraDetectionStr}}</h4>    -->
+        <h5>Ir Sensor Detection: {{m.status.isIrSensorDetection}}</h5>            
+        <h5>Lidar Distance (cm): {{m.status.lidarDistance}}</h5>        
 
-        <h4>Yellow Goal Found: {{m.status.yellowGoalIsFound}}</h4>        
-        <h4>Orange Goal Found: {{m.status.orangeGoalIsFound}}</h4>        
-        <h4>Ball Found: {{m.status.ballIsFound}}</h4>        
+        <h5>Yellow Goal Found: {{m.status.yellowGoalIsFound}}</h5>                
+        <h5>Distance to yellow goal: {{m.status.dist_yellow_goal}}</h5>
+        <h6>Yellow x error: {{m.status.goal_yellow_goal_xerror}}</h6>
+        <h6>Yellow y error: {{m.status.goal_yellow_goal_yerror}}</h6>
+        
+
+        <h5>Orange Goal Found: {{m.status.orangeGoalIsFound}}</h5>       
+        <h5>Distance to orange goal: {{m.status.dist_orange_goal}}</h5>  
+        <h6>Orange x error: {{m.status.goal_orange_goal_xerror}}</h6>
+        <h6>Orange y error: {{m.status.goal_orange_goal_yerror}}</h6> 
+        <h5>Ball Found: {{m.status.ballIsFound}}</h5>    
+        
+        
+        
+      
+
 
     
     </div>

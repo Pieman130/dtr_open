@@ -93,6 +93,14 @@ class GroundStation:
         
         data = self.addToJsonStatusMsg(data,'dist_yellow_goal', dataClasses.data.dist_yellow_goal)
         data = self.addToJsonStatusMsg(data,'dist_orange_goal', dataClasses.data.dist_orange_goal)
+
+
+        data = self.addToJsonStatusMsg(data,'goal_yellow_goal_xerror', dataClasses.data.goal_yellow_xerror)
+        data = self.addToJsonStatusMsg(data,'goal_yellow_goal_yerror', dataClasses.data.goal_yellow_yerror)
+
+
+        data = self.addToJsonStatusMsg(data,'goal_orange_goal_xerror', dataClasses.data.goal_orange_xerror)
+        data = self.addToJsonStatusMsg(data,'goal_orange_goal_yerror', dataClasses.data.goal_orange_yerror)
                 
 
 

@@ -73,11 +73,35 @@ class GroundStation:
         data = self.addToJsonStatusMsg(data,'error_scaling_up',dataClasses.gndStationCmd.error_scaling_up)
         data = self.addToJsonStatusMsg(data,'pid_min_up',dataClasses.gndStationCmd.pid_min_up)
 
+        data = self.addToJsonStatusMsg(data,'pid_min_up',dataClasses.gndStationCmd.pid_min_up)
 
 
+        data = self.addToJsonStatusMsg(data,'loopTime',dataClasses.rawData.lastLoopTime)        
 
 
+        data = self.addToJsonStatusMsg(data,'orangeGoalIsFound',dataClasses.data.orangeGoalIsFound)   
+        data = self.addToJsonStatusMsg(data,'yellowGoalIsFound',dataClasses.data.yellowGoalIsFound)   
+        data = self.addToJsonStatusMsg(data,'ballIsFound',dataClasses.data.ballIsFound)   
+        
 
+        data = self.addToJsonStatusMsg(data,'imu_yaw',dataClasses.rawData.imu_yaw)
+        data = self.addToJsonStatusMsg(data,'imu_yaw_rate',dataClasses.rawData.imu_yaw_rate)
+
+        data = self.addToJsonStatusMsg(data,'imu_yaw_limited',dataClasses.data.imu_yaw_limited)
+        data = self.addToJsonStatusMsg(data,'imu_yaw_rate_limited',dataClasses.data.imu_yaw_rate_limited)
+        
+        
+        data = self.addToJsonStatusMsg(data,'dist_yellow_goal', dataClasses.data.dist_yellow_goal)
+        data = self.addToJsonStatusMsg(data,'dist_orange_goal', dataClasses.data.dist_orange_goal)
+
+
+        data = self.addToJsonStatusMsg(data,'goal_yellow_goal_xerror', dataClasses.data.goal_yellow_xerror)
+        data = self.addToJsonStatusMsg(data,'goal_yellow_goal_yerror', dataClasses.data.goal_yellow_yerror)
+
+
+        data = self.addToJsonStatusMsg(data,'goal_orange_goal_xerror', dataClasses.data.goal_orange_xerror)
+        data = self.addToJsonStatusMsg(data,'goal_orange_goal_yerror', dataClasses.data.goal_orange_yerror)
+                
 
 
         logs = logger.log.getLogsForServerAndClear()
@@ -146,7 +170,7 @@ class GroundStation:
         dataClasses.gndStationCmd.scalar_yaw = jsonDict['scalar_yaw'] 
         dataClasses.gndStationCmd.scalar_throttle = jsonDict['scalar_throttle'] 
         dataClasses.gndStationCmd.controlAuthority = jsonDict['control'] 
-        dataClasses.gndStationCmd.manualHeight = jsonDict['manualHeight']
+        dataClasses.gndStationCmd.assisted_manualHeight = jsonDict['manualHeight']
 
         dataClasses.gndStationCmd.resetOpenMVforFTPtsfr = jsonDict['resetOpenMVforFTPtsfr']
 
@@ -155,5 +179,6 @@ class GroundStation:
         dataClasses.gndStationCmd.pid_min_up = jsonDict['pid_min_up']
 
         dataClasses.gndStationCmd.doFtpLoadAndReset = jsonDict['doFtpLoadAndReset']
+        dataClasses.gndStationCmd.assisted_yawRate = jsonDict['yawRate']
  
 

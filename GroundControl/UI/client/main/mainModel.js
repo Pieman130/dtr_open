@@ -8,6 +8,7 @@ angular.module('mainModel',[])
             var ytitle = 'y title'
             var obj = {
                 control: '',
+                mode: '',                
                 status: {},       
                 logs: {
                     lines: '',
@@ -21,6 +22,11 @@ angular.module('mainModel',[])
                         yaw: null,
                         doorOpen: 0                                            
                 },
+                assistedParams: {
+                    yawRate: null,
+                    heightSetPoint: null
+                },
+                updateOpenMvCodeStatus:{},
                 config: {
                     pid: {
                         up: {
@@ -57,6 +63,13 @@ angular.module('mainModel',[])
                         })                        
                     })
                 },
+                sendAssistedParams(){
+                    return new Promise(function(resolve,reject){
+                        MainToServer.sendAssistedParams(obj.assistedParams).then(function(){
+                            resolve();
+                        })                        
+                    })
+                },
                 sendControlChange(){
                     return new Promise(function(resolve,reject){
                         let info={
@@ -66,9 +79,25 @@ angular.module('mainModel',[])
                         if(obj.control === 'manualWeb'){
                             info.requestedState = 'manualTesting'                            
                         }else if(obj.control === 'auto-assisted'){
-                            info.requestedState = 'hover'      
+                            info.requestedState =  obj.mode    
                         }
                         MainToServer.sendControlChange(info).then(function(){
+                            resolve();
+                        })
+                    })
+                },
+                triggerOpenMVcodeUpload(){
+                    return new Promise(function(resolve,reject){
+                        MainToServer.triggerOpenMVcodeUpload().then(function(){
+                            resolve();
+                        })
+                    })
+                },
+                getUploaderStatus(){
+                    return new Promise(function(resolve,reject){
+                        MainToServer.getUploaderStatus().then(function(ret){
+                            var d = ret.data[0];
+                            obj.updateOpenMvCodeStatus = d;
                             resolve();
                         })
                     })
@@ -110,6 +139,9 @@ angular.module('mainModel',[])
                                 obj.config.pid.up.error_scaling_up = d.error_scaling_up;
                                 obj.config.pid.up.pid_min_up = d.pid_min_up;
 
+                                obj.assistedParams.yawRate = d.yawRate
+                                obj.assistedParams.heightSetPoint = d.manualHeight 
+
                                 obj.control = d.control;
 
                                 resolve();
@@ -123,6 +155,7 @@ angular.module('mainModel',[])
                 },
                 getStatus(){
                     return new Promise(function(resolve,reject){
+                        
                         MainToServer.getStatus(obj.numLogLoopsToView).then(function(ret){
                             obj.status = ret.data.systemStatus;
                             obj.logs.lines = obj.parseLogLines(ret.data.logger);
@@ -134,11 +167,14 @@ angular.module('mainModel',[])
                             var yVar = "irSensor";
                             var plotData = D3factory.convertDbDataToChartReadySeriesData(dbData,seriesNames,seriesColors,xVar,yVar);
                             $timeout(function(){
-                                obj.plotting.data  = plotData;
-                                resolve();
+                                obj.plotting.data  = plotData;                                
                             })
-                            
-                        })          
+                            return obj.getUploaderStatus();                            
+                        })        
+                        .then(function(){
+                            resolve();
+                        })  
+                        
                     })
                               
                 },

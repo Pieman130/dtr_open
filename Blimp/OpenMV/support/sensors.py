@@ -5,6 +5,12 @@
 import time
 import dataClasses
 import logger
+if ( dataClasses.config.isMicroPython):
+    import cameraSetup
+else:
+    import cameraSetupMock
+    cameraSetup = cameraSetupMock
+    dataClasses.rawData.lidar = 1
 
 
 class Sensors:
@@ -33,14 +39,14 @@ class Sensors:
         self.camera.set_pixformat(self.camera.RGB565)
         
         #sensor.set_framesize(sensor.QVGA)
-        self.camera.set_framesize(self.camera.QQVGA) #needed for april tag detections
+        self.camera.set_framesize(self.camera.QVGA) 
         
         # self.camera.skip_frames(2000)
 
         # needed for april tag finder
         self.camera.set_auto_gain(False)  # must turn this off to prevent image washout...
         
-        self.camera.set_auto_whitebal(False)  # must turn this off to prevent image washout...        
+        self.camera.set_auto_whitebal(True)  # must turn this off to prevent image washout...        
 
     def collectData(self):
 
@@ -49,8 +55,10 @@ class Sensors:
         #print('PYB HARDWARE RESET DONE')
     
         #logger.log.verbose("collecting data")
-        
-        dataClasses.rawData.img = self.camera.snapshot()     
+        try:
+            dataClasses.rawData.img = self.camera.snapshot()     
+        except RuntimeError as e:
+            pass # keep going.
 
     
         #dataClasses.rawData.imu_pitch = sensors.imuSensor.getRoll()
@@ -82,8 +90,13 @@ class Sensors:
 
         if current_raw_sensor_data['RCCH'] != None:
             dataClasses.rawData.rc_sw_door = current_raw_sensor_data['RCCH']['ch7'] 
-            dataClasses.rawData.rc_sw_flt_mode = current_raw_sensor_data['RCCH']['ch6'] 
-            dataClasses.rawData.rc_sw_st_cntl = current_raw_sensor_data['RCCH']['ch5'] 
+            dataClasses.rawData.rc_sw_flt_mode = current_raw_sensor_data['RCCH']['ch5'] 
+            dataClasses.rawData.rc_sw_st_cntl = current_raw_sensor_data['RCCH']['ch6'] 
+
+            logger.log.verbose("Raw data states:")
+            logger.log.verbose("DR_CTRL:\t " + str(dataClasses.rawData.rc_sw_door))
+            logger.log.verbose("FLT_MDE:\t " + str(dataClasses.rawData.rc_sw_flt_mode))
+            logger.log.verbose("ST_CNTL:\t " + str(dataClasses.rawData.rc_sw_st_cntl))
 
         if current_raw_sensor_data['Servo'] != None:
             dataClasses.rawData.motor_throttle = current_raw_sensor_data['Servo']['servo1'] 
@@ -98,7 +111,6 @@ class Sensors:
 
         dataClasses.rawData.door_position = self.hw.servo.angle()
             
-        
-        logger.log.debugOnly("lidar = " + str(dataClasses.data.lidarDistance))
+            
         logger.log.verbose("motor up value = " + str(dataClasses.rawData.motor_up))       
       

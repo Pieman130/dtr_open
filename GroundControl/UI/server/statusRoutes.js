@@ -13,8 +13,11 @@ router.route('/heartbeat/')
         logger: {},
         data: {}
     };
+
+
     var sqlStr = " SELECT ID, convert(varchar(50),blimpLastHeartbeat,13) as blimpLastHeartbeat, cameraDetectionStr, isIrSensorDetection " +
             ", currentManeuver, state_description,state_target,state_action,lidarDistance, upMotor,throttleMotor,yawMotor,servoDoor,controlAuthority " +
+            ", ballIsFound, yellowGoalIsFound, orangeGoalIsFound, dist_yellow_goal,dist_orange_goal,goal_yellow_goal_xerror,goal_yellow_goal_yerror,goal_orange_goal_xerror,goal_orange_goal_yerror " +      
             " FROM systemStatus ";
     sqlTools.sqlRequestPromise(sqlStr)
     .then(function(ret){
@@ -40,7 +43,8 @@ router.route('/getLastControlRequestedValues/')
                  " p_up, i_up, d_up, scalar_up," +
                  " p_throttle, i_throttle, d_throttle, scalar_throttle," +
                  " p_yaw, i_yaw, d_yaw, scalar_yaw, " +
-                 " control, pid_min_up, error_scaling_up, error_rounding_up " + 
+                 " control, pid_min_up, error_scaling_up, error_rounding_up, " + 
+                 " yawRate, manualHeight " +
                  " FROM maneuverToExecute " 
     sqlTools.run(sqlStr,res);
 })
@@ -66,6 +70,27 @@ router.route('/sendControlRequest/')
                             ", manual_up = " + up
     sqlTools.run(sqlStr,res);
 })
+
+router.route('/sendAssistedParams/')
+.post(function(req,res){
+    var yawRate = req.body.yawRate;
+    var heightSetPoint = req.body.heightSetPoint;
+    var sqlStr = "UPDATE maneuverToExecute SET manualHeight = " + heightSetPoint + ", yawRate = " + yawRate;
+    sqlTools.run(sqlStr,res)
+})
+
+router.route('/triggerOpenMVcodeUpload/')
+.post(function(req,res){
+    var sqlStr = "UPDATE blimpCodeUploader SET isUploadRequested = 1; UPDATE maneuverToExecute SET doFtpLoadAndReset = 1"
+    sqlTools.run(sqlStr,res);
+})
+
+router.route('/getUploaderStatus/')
+.get(function(req,res){
+    var sqlStr = "SELECT convert(varchar(50),datetimeLastUpload,13) as datetimeLastUpload, lastRunTimeError,updateStatus  FROM blimpCodeUploader "
+    sqlTools.run(sqlStr,res);
+})
+
 
 router.route('/sendConfigValues/')
 .post(function(req,res){

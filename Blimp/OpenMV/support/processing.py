@@ -23,7 +23,7 @@ def parseSensorData():  # https://github.com/mavlink/c_library_v1/blob/master/ch
     
     imageProcessing.find_ball(dataClasses.rawData.img)
     imageProcessing.find_yellow_goal(dataClasses.rawData.img)
-   # imageProcessing.find_orange_goal(dataClasses.rawData.img)
+    imageProcessing.find_orange_goal(dataClasses.rawData.img)
 
     logger.log.verbose("yaw rate: " + str(dataClasses.rawData.imu_yaw_rate))
     logger.log.verbose("imu_yaw: " + str(dataClasses.rawData.imu_yaw))

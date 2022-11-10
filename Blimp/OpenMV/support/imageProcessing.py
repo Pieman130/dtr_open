@@ -2,6 +2,7 @@ from dataClasses import ProcessedData
 import dataClasses
 import logger
 import math
+from math import sqrt
 import time
 
 if dataClasses.config.isMicroPython:
@@ -21,8 +22,8 @@ THRESHOLDS = [(47, 77, -39, -13, 38, 93), #yellow 0
               (30, 100, -48, -13, -88, 127), #green 1
               (30, 100, 18, 88, 3, 66)] #orange 2
 
-class ImageProcessing():
 
+class ImageProcessing():
 
     def __init__(self):
         self.density_min = 100000
@@ -79,7 +80,7 @@ class ImageProcessing():
                 for blob in blobs:
                     dataClasses.data.ballIsFound = 1
                     current = [blob.cx(), blob.cy(), blob.rect()[2], blob.rect()[3]]
-                    if current[2] > biggest[2] and ((blob.density()/0.7854) > .65):
+                    if current[2] > biggest[2] and ((blob.density()/0.7854) > .65) and (current[2]/current[3]) < 2:
                         biggest = current
                         hold = (blob.density()/0.7854)
                         r = blob.rect()
@@ -105,7 +106,7 @@ class ImageProcessing():
                         self.rect_ema[2].update(r[2])
                         self.rect_ema[3].update(r[3])
                     if (self.rect_ema[2].get_value() != 0):
-                        dataClasses.data.distanceToBall = 22/(math.tan((self.rect_ema[2].get_value() * .22125)/2)) #rect_ema[2].getvalue() gives ball width, use equation for pixel width to meters away
+                        dataClasses.data.distanceToBall = 22/(math.tan((self.rect_ema[2].get_value()*.22125*0.01745329)/2)) #rect_ema[2].getvalue() gives ball width, use equation for pixel width to meters away
                     #img.draw_rectangle(blob.rect())
                     img.draw_rectangle([round(ema.get_value()) for ema in self.rect_ema], [0, 255, 0])
                     img.draw_string(round(self.rect_ema[0].get_value()),round(self.rect_ema[1].get_value()), "Ball", [0, 255, 0], mono_space = False)
@@ -120,34 +121,30 @@ class ImageProcessing():
                 logger.log.verbose("No Ball Found!")
                 # XXX return here right?
                 return
-            
         else:
             logger.log.warning("No Image Passed to ImageProcessing!")
 
     def find_yellow_goal(self,img):
         if img != None:
-            blobs = img.find_blobs([THRESHOLDS[0]], pixels_threshold=10, area_threshold=12, merge=True, margin=10)
+            blobs = img.find_blobs([THRESHOLDS[0]], pixels_threshold=10, area_threshold=12, merge=True, margin=5)
             biggest = [-1,-1,0,0] #[cx, cy, width, height]
             #dataClasses.data.yellowGoalIsFound = 0
             if blobs: #goal like object detected
                 for blob in blobs:
                     dataClasses.data.yellowGoalIsFound = 1
                     current = [blob.cx(), blob.cy(), blob.rect()[2], blob.rect()[3]]
-                    width = current[2]
-                    height = current[3]
-                    self.yellow_SQerror = width/height
-                    if (current[3] > biggest[3] and (blob.density()) < .65): #and (self.yellow_SQerror < 1.5) and (self.yellow_SQerror > .33):
+                    minor = blob.minor_axis_line()
+                    major = blob.major_axis_line()
+                    width = sqrt((pow(minor[0] - minor[2], 2) + pow(minor[1] - minor[3], 2)))
+                    height = sqrt((pow(major[0] - major[2], 2) + pow(major[1] - major[3], 2)))
+                    current[2] = width
+                    current[3] = height
+                    if (width > biggest[3] and (blob.solidity()) < .65 and ((height/width) < 1.75)): #and (self.yellow_SQerror < 1.5) and (self.yellow_SQerror > .33):
+                        majormax = major
+                        minormax = minor
                         biggest = current
-                        hold = blob.density()
-                        #print("Yellow: " + str(blob.density()/.7854))
-                        if (hold < self.density_min):
-                            self.density_min = hold
-                        if (hold > self.density_max):
-                            self.density_max = hold
-                        #print("Min " + str(self.density_min))
-                        #print("Cur " + str(hold))
-                        #print("Max " + str(self.density_max))
-
+                        self.yellow_SQerror = height/width
+                        print(self.yellow_SQerror)
                 if biggest[0] != -1:
                     if self.yellow_goalx_ema == None:
                         self.yellow_goalx_ema = EMA(biggest[0], self.goal_alpha)
@@ -169,20 +166,28 @@ class ImageProcessing():
 
     def find_orange_goal(self,img):
         if img != None:
-            blobs = img.find_blobs([THRESHOLDS[2]], pixels_threshold=3, area_threshold=12, merge=True, margin=10)
+            blobs = img.find_blobs([THRESHOLDS[2]], pixels_threshold=3, area_threshold=20, merge=True, margin=0)
             biggest = [-1,-1,0,0] #[cx, cy, width, height]
             #dataClasses.data.orangeGoalIsFound = 0
             if blobs: #goal like object detected
                 for blob in blobs:
                     dataClasses.data.orangeGoalIsFound = 1
                     current = [blob.cx(), blob.cy(), blob.rect()[2], blob.rect()[3]]
-                    width = current[2]
-                    height = current[3]
-                    self.orange_SQerror = width/height
-                    if (current[3] > biggest[3] and (blob.density()) < .65) : # and self.orange_SQerror < 1.5 and self.yellow_SQerror > .75):
+                    minor = blob.minor_axis_line()
+                    major = blob.major_axis_line()
+                    width = sqrt((pow(minor[0] - minor[2], 2) + pow(minor[1] - minor[3], 2)))
+                    height = sqrt((pow(major[0] - major[2], 2) + pow(major[1] - major[3], 2)))
+                    current[2] = width
+                    current[3] = height
+                    if (width > biggest[3] and (blob.solidity()) < .65 and ((height/width) < 1.75)): # and self.orange_SQerror < 1.5 and self.yellow_SQerror > .75):
+                        majormax = major
+                        minormax = minor
                         biggest = current
-                        #print("Orange: " + str(blob.density()/.7854))
+                        self.orange_SQerror = height/width
+                        print(self.orange_SQerror)
                 if biggest[0] != -1:
+                    img.draw_line(minormax)
+                    img.draw_line(majormax)
                     if self.orange_goalx_ema == None:
                         self.orange_goalx_ema = EMA(biggest[0], self.goal_alpha)
                         self.orange_goaly_ema = EMA(biggest[1], self.goal_alpha)

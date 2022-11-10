@@ -16,8 +16,8 @@ while(True):
     start = time.time_ns()
 
     imageprocessing.find_ball(dataClasses.rawData.img)
-    #imageprocessing.find_yellow_goal(dataClasses.rawData.img)
-    #imageprocessing.find_orange_goal(dataClasses.rawData.img)
+    imageprocessing.find_yellow_goal(dataClasses.rawData.img)
+    imageprocessing.find_orange_goal(dataClasses.rawData.img)
 
     #logger.log.verbose('Is yellow goal seen' + str(dataClasses.data.yellowGoalIsFound))
     #logger.log.verbose('yellow x error' + str(dataClasses.data.goal_yellow_xerror) )

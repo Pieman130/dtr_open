@@ -13,9 +13,11 @@ router.route('/heartbeat/')
         logger: {},
         data: {}
     };
+
+
     var sqlStr = " SELECT ID, convert(varchar(50),blimpLastHeartbeat,13) as blimpLastHeartbeat, cameraDetectionStr, isIrSensorDetection " +
             ", currentManeuver, state_description,state_target,state_action,lidarDistance, upMotor,throttleMotor,yawMotor,servoDoor,controlAuthority " +
-            ", ballIsFound, yellowGoalIsFound, orangeGoalIsFound " +
+            ", ballIsFound, yellowGoalIsFound, orangeGoalIsFound, dist_yellow_goal,dist_orange_goal " +
             " FROM systemStatus ";
     sqlTools.sqlRequestPromise(sqlStr)
     .then(function(ret){

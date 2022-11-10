@@ -50,6 +50,12 @@ router.route('/status/')
             var servoDoor = req.body.servoDoor;
             var controlAuthority = req.body.controlAuthority;
             var loopTime = req.body.loopTime;
+            var openMvHwIdentifier = req.body.openMvHwIdentifier;
+
+
+            var dist_yellow_goal = req.body.dist_yellow_goal;
+            var dist_orange_goal = req.body.dist_orange_goal;
+
 
             var imu_yaw = convertNoneToNull(req.body.imu_yaw);
             var imu_yaw_rate = convertNoneToNull(req.body.imu_yaw_rate);
@@ -138,7 +144,9 @@ router.route('/status/')
                         " , controlAuthority = '" + controlAuthority + "'" +
                         " , ballIsFound = " + ballIsFound +
                         " , yellowGoalIsFound = " + yellowGoalIsFound +
-                        " , orangeGoalIsFound = " + orangeGoalIsFound                                                      
+                        " , orangeGoalIsFound = " + orangeGoalIsFound +
+                        " , dist_yellow_goal = " + dist_yellow_goal +
+                        " , dist_orange_goal = " + dist_orange_goal                                                   
 
             sqlTools.sqlRequestPromise(sqlStr)
             .then(function(){
@@ -150,7 +158,6 @@ router.route('/status/')
                 var valueStr = sqlTools.makeValuesStr(lastHeartbeat,lidarDistance,irSensorDetection,upMotor,throttleMotor,yawMotor,servoDoor,isMicroPython,
                     p_up,i_up,d_up,p_throttle,i_throttle,d_throttle,p_yaw,i_yaw,d_yaw,scalar_up,scalar_yaw,scalar_throttle,error_rounding_up, error_scaling_up,pid_min_up,controlAuthority,loopTime,
                 currentManeuver,state_description,state_target,state_action, ballIsFound,yellowGoalIsFound,orangeGoalIsFound,imu_yaw ,imu_yaw_rate,imu_yaw_limited , imu_yaw_rate_limited)                    
-
                 
                 sqlStr = " INSERT INTO dataLogs(logTime,lidarDistance,irSensor,upMotor,throttleMotor,yawMotor,servoDoor,isMicroPython," +
                             "p_up,i_up,d_up,p_throttle,i_throttle,d_throttle,p_yaw,i_yaw,d_yaw,scalar_up,scalar_yaw,scalar_throttle," +

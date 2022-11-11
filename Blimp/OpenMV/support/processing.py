@@ -75,7 +75,7 @@ def parseLidarData():
     logger.log.verbose(dataClasses.rawData.lidar )
     if (dataClasses.rawData.lidar != None):
         rawDist = dataClasses.rawData.lidar 
-        correctedDist_ft = attitudeCorrectDistance(
+        correctedDist = attitudeCorrectDistance(
             rawDist, dataClasses.rawData.imu_roll, dataClasses.rawData.imu_pitch)
         # if correctedDist_ft != None:
         #     dataClasses.data.lidarDistance = correctedDist_ft
@@ -85,8 +85,8 @@ def parseLidarData():
         if( (rawDist > 1600) or rawDist == 0):
             pass
         else:
-            dataClasses.data.lidarDistance = rawDist
-            logger.log.debugOnly('lidar value = ' + str(rawDist) + ', lidar corr = ' + str(correctedDist_ft) + ',imu_roll = ' + str(dataClasses.rawData.imu_roll) + ', imu_pitch =' + str(dataClasses.rawData.imu_pitch))
+            dataClasses.data.lidarDistance = correctedDist
+            logger.log.debugOnly('lidar value = ' + str(rawDist) + ', lidar corr = ' + str(correctedDist) + ',imu_roll = ' + str(dataClasses.rawData.imu_roll) + ', imu_pitch =' + str(dataClasses.rawData.imu_pitch))
 
         
         
